@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -237,6 +237,12 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
 .meter { position: relative; height: 12px; border-radius: 99px; background: var(--paper2); overflow: visible; }
 .meter i.f { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--c); transition: width 1s cubic-bezier(.2,.8,.2,1); }
 .meter i.g { position: absolute; top: -4px; width: 2.5px; height: 20px; background: var(--ink); border-radius: 2px; }
+.install { display: flex; align-items: center; gap: 12px; background: var(--ink); color: var(--paper); border-radius: 16px; padding: 12px 8px 12px 14px; margin-bottom: 12px; }
+.install .tx { flex: 1; font-size: 13.5px; line-height: 1.4; }
+.install .tx b { font-family: var(--fd); font-size: 15px; display: block; }
+.install .btn { background: var(--hi); color: var(--hi-ink); min-height: 38px; padding: 0 16px; font-size: 14px; }
+.install .icon-btn:hover { background: transparent; }
+.install svg.i { display: inline-block; vertical-align: -4px; }
 .warnbar { background: color-mix(in srgb, var(--warn) 18%, var(--paper)); border-radius: 12px; padding: 10px 12px; font-size: 13px; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
@@ -246,6 +252,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     <div class="brand"><span class="brand-mark" id="brandMark"></span>TrueTotal</div>
     <button class="icon-btn" data-act="settings" aria-label="Settings" id="gearBtn"></button>
   </header>
+  <div id="installBar" class="install" hidden></div>
   <div id="storeWarn" class="warnbar" hidden style="margin-bottom:12px">This browser can't save your data, so it will be lost when you close the page. Copy your results before you leave.</div>
   <main id="view"></main>
 </div>
@@ -277,7 +284,8 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     left: '<path d="M15 5l-7 7 7 7"/>',
     right: '<path d="M9 5l7 7-7 7"/>',
     x: '<path d="M6 6l12 12M18 6L6 18"/>',
-    check: '<path d="M5 12l5 5 9-10"/>'
+    check: '<path d="M5 12l5 5 9-10"/>',
+    share: '<path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/>'
   };
   function ic(n, s) { s = s || 20; return '<svg class="i" width="' + s + '" height="' + s + '" viewBox="0 0 24 24" aria-hidden="true">' + IC[n] + "</svg>"; }
 
@@ -968,6 +976,8 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       calday: function () { cal.sel = t.dataset.d; render(); },
       mbar: function () { var n = Number(t.dataset.i); cal.mi = cal.mi === n ? -1 : n; render(); },
       reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { S.revealed = true; save(); view = "home"; closeFlow(); window.scrollTo(0, 0); },
+      install: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; $("#installBar").hidden = true; } },
+      installoff: function () { $("#installBar").hidden = true; try { localStorage.setItem("tt-install-off", "1"); } catch (er) {} },
       post: function () { openFlow("post"); }, check: function () { openFlow("check"); }, copy: copyResults, ics: downloadICS,
       sheetclose: function () { closeSheet(); },
       /* item sheet */
@@ -1018,10 +1028,26 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") { if (flowEl) closeFlow(); else if (sheet) closeSheet(); } });
 
+  /* ---------- install prompt (only on the hosted copy, only in a browser tab) ---------- */
+  var deferredInstall = null;
+  function installDismissed() { try { return localStorage.getItem("tt-install-off") === "1"; } catch (e) { return false; } }
+  function inApp() { return (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true; }
+  function showInstall() {
+    var bar = $("#installBar");
+    if (!bar || typeof window.claude !== "undefined" || inApp() || installDismissed()) return;
+    var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    if (!ios && !deferredInstall) return;
+    bar.innerHTML = '<div class="tx"><b>Install TrueTotal</b>' + (ios ? "Tap " + ic("share", 16) + " Share, then <b style=\"display:inline;font-size:inherit\">Add to Home Screen</b>. It opens full screen, like an app." : "Add it to your home screen so it opens full screen, like an app.") + "</div>" + (ios ? "" : '<button class="btn" data-act="install">Install</button>') + '<button class="icon-btn" data-act="installoff" aria-label="Dismiss">' + ic("x", 20) + "</button>";
+    bar.hidden = false;
+  }
+  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); deferredInstall = e; showInstall(); });
+  window.addEventListener("appinstalled", function () { $("#installBar").hidden = true; });
+  showInstall();
+
   function applyTheme() { if (S.theme === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", S.theme); }
   applyTheme();
   render();
   if (!S.onboarded) openFlow("onboard");
 })();
 </script>
-</body></html>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script></body></html>

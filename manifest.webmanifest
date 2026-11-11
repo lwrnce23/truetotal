@@ -1,0 +1,17 @@
+{
+  "name": "TrueTotal",
+  "short_name": "TrueTotal",
+  "description": "See what your pay-later plans, subscriptions, bills and loans really add up to.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#E8ECF0",
+  "theme_color": "#E8ECF0",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
