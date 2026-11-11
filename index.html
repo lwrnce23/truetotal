@@ -23,6 +23,7 @@
   --k-bill: #2F80ED;
   --k-loan: #E5A100;
   --k-other: #7B8794;
+  --k-game: #0E9AA7;
   --k-left: #8FD3B0;
   --fd: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
   --fb: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -32,14 +33,14 @@
   :root:not([data-theme="light"]) {
     --ground: #0C0E11; --paper: #171A1F; --paper2: #1F2329; --ink: #EDF0F4; --ink2: #98A2B0; --line: #2B3038;
     --good: #3DD68C; --warn: #F2A93B; --bad: #FF6B74;
-    --k-pay: #FF6F8E; --k-sub: #9C86FF; --k-bill: #5AA0FF; --k-loan: #F5BE3A; --k-other: #98A2B0; --k-left: #2F6B52;
+    --k-pay: #FF6F8E; --k-sub: #9C86FF; --k-bill: #5AA0FF; --k-loan: #F5BE3A; --k-other: #98A2B0; --k-game: #4FD1D9; --k-left: #2F6B52;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --ground: #0C0E11; --paper: #171A1F; --paper2: #1F2329; --ink: #EDF0F4; --ink2: #98A2B0; --line: #2B3038;
   --good: #3DD68C; --warn: #F2A93B; --bad: #FF6B74;
-  --k-pay: #FF6F8E; --k-sub: #9C86FF; --k-bill: #5AA0FF; --k-loan: #F5BE3A; --k-other: #98A2B0; --k-left: #2F6B52;
+  --k-pay: #FF6F8E; --k-sub: #9C86FF; --k-bill: #5AA0FF; --k-loan: #F5BE3A; --k-other: #98A2B0; --k-game: #4FD1D9; --k-left: #2F6B52;
   color-scheme: dark;
 }
 
@@ -286,7 +287,8 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     x: '<path d="M6 6l12 12M18 6L6 18"/>',
     check: '<path d="M5 12l5 5 9-10"/>',
     share: '<path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/>',
-    addsq: '<rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M12 8v8M8 12h8"/>'
+    addsq: '<rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M12 8v8M8 12h8"/>',
+    game: '<rect x="3" y="8" width="18" height="10" rx="5"/><path d="M8 11v4M6 13h4M16 12h.01M18 14h.01"/>'
   };
   function ic(n, s) { s = s || 20; return '<svg class="i" width="' + s + '" height="' + s + '" viewBox="0 0 24 24" aria-hidden="true">' + IC[n] + "</svg>"; }
 
@@ -296,9 +298,11 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     sub: { name: "Subscriptions", icon: "repeat", need: false },
     bill: { name: "Rent & bills", icon: "home", need: true },
     loan: { name: "Loans & cards", icon: "card", need: true },
+    game: { name: "Games & apps", icon: "game", need: false },
     other: { name: "Other", icon: "dots", need: false }
   };
-  var KORDER = ["pay", "sub", "bill", "loan", "other"];
+  var TEEN_NAMES = { bill: "Phone & data" };
+  var KORD_A = ["pay", "sub", "bill", "loan", "other"], KORD_T = ["sub", "game", "pay", "bill", "other"];
   var kcol = function (k) { return "var(--k-" + k + ")"; };
   var FREQ = {
     weekly: { l: "Every week", short: "Weekly", per: 52 / 12, days: 7 },
@@ -306,8 +310,9 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     monthly: { l: "Every month", short: "Monthly", per: 1, days: 30.4375 },
     yearly: { l: "Every year", short: "Yearly", per: 1 / 12, days: 365.25 }
   };
-  var PRESETS = [["Tabby", "pay"], ["Tamara", "pay"], ["Postpay", "pay"], ["Streaming", "sub"], ["Music app", "sub"], ["Gym", "sub"], ["Cloud storage", "sub"], ["Rent", "bill"], ["Phone plan", "bill"], ["Utilities", "bill"], ["Car loan", "loan"], ["Credit card", "loan"]];
-  var QUIZ = [
+  var PRESETS_T = [["Streaming", "sub"], ["Music app", "sub"], ["App subscription", "sub"], ["Game pass", "game"], ["In-game coins", "game"], ["Phone top-up", "bill"], ["Tabby or Tamara", "pay"], ["Something else", "other"]];
+  var PRESETS_A = [["Tabby", "pay"], ["Tamara", "pay"], ["Postpay", "pay"], ["Streaming", "sub"], ["Music app", "sub"], ["Gym", "sub"], ["Cloud storage", "sub"], ["Rent", "bill"], ["Phone plan", "bill"], ["Utilities", "bill"], ["Car loan", "loan"], ["Credit card", "loan"]];
+  var QUIZ_A = [
     { q: "You have three separate pay-later plans running at once. What is true?", o: ["Each one is separate, so they don't affect each other", "They add together into one monthly total you have to cover", "Only the biggest one counts", "They are not debt"], c: 1, shuffle: true, e: "Every plan is a promise to pay. Together they make one monthly total." },
     { q: "You pay AED 300 a month on subscriptions. About how much is that over a year?", o: ["AED 900", "AED 2,400", "AED 3,600", "AED 6,000"], c: 2, e: "300 x 12 = AED 3,600. Small monthly charges add up quietly." },
     { q: "What is the most useful way to judge if a regular payment is affordable?", o: ["Whether the amount sounds small", "What share of your income it takes", "Whether your friends have it too", "Whether it is on sale"], c: 1, shuffle: true, e: "The share of your income shows how much room it takes from everything else." },
@@ -315,7 +320,16 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     { q: "In the 50/30/20 rule of thumb, what is the 20% for?", o: ["Savings and paying down debt", "Rent", "Subscriptions", "Eating out"], c: 0, shuffle: true, e: "About 50% needs, 30% wants, 20% savings and debt repayment. It is a rough guide." },
     { q: "Pay-later is a form of debt.", o: ["True", "False"], c: 0, e: "You are borrowing and paying back in instalments. Late fees can apply." }
   ];
-  var CONF = ["I know what share of my income goes to my regular payments.", "I could list every pay-later plan and subscription I'm paying for right now."];
+  var CONF_A = ["I know what share of my income goes to my regular payments.", "I could list every pay-later plan and subscription I'm paying for right now."];
+  var QUIZ_T = [
+    { q: "You pay for 3 apps at AED 25 a month each. About how much is that in a year?", o: ["AED 300", "AED 600", "AED 900", "AED 1,200"], c: 2, e: "3 x 25 = 75 a month. 75 x 12 = AED 900. Small payments that repeat add up." },
+    { q: "A game offers a free trial that turns into a paid subscription. What should you do if you do not want to pay?", o: ["Do nothing, it cancels by itself", "Cancel before the trial ends", "Delete the app, that always cancels it", "Wait until they email you"], c: 1, shuffle: true, e: "Trials usually start charging automatically. Cancel in your account settings before the trial ends. Deleting the app often does not cancel it." },
+    { q: "Which of these is a need, not a want?", o: ["Extra coins in a game", "Lunch at school", "A limited-edition sneaker", "A new streaming subscription"], c: 1, shuffle: true, e: "Needs are things you must have, like food. Wants are nice to have." },
+    { q: "You get AED 200 pocket money and put AED 50 into savings. What share did you save?", o: ["10%", "20%", "25%", "50%"], c: 2, e: "50 / 200 = 0.25, so 25%." },
+    { q: "What does buy now, pay later mean?", o: ["You get the item free", "You borrow money and pay it back in instalments", "You only pay if you like it", "You pay with a gift card"], c: 1, shuffle: true, e: "It is borrowing. You take the item now and pay for it over time, and late fees can apply." },
+    { q: "A friend gets a new phone and now you want one too. What is a smart first step?", o: ["Buy one straight away on pay-later", "Wait a week and see if you still want it", "Ask your friend to pay", "Ignore the price"], c: 1, shuffle: true, e: "Waiting a week is a simple cooling-off rule. If you still want it, you have time to save for it." }
+  ];
+  var CONF_T = ["I know how much I spend on subscriptions, games and apps each month.", "I could list every subscription and in-app payment I have right now."];
   var CONF_LBL = ["Not at all", "A little", "Somewhat", "Quite well", "Completely"];
   var RATE = ["TrueTotal helped me understand where my money goes.", "Seeing the share of my income made each payment feel more real.", "I would recommend it to a friend."];
   var ACTIONS = ["Cancel a subscription", "Avoid a new pay-later plan", "Pay one off early", "Make a budget", "Nothing", "Other"];
@@ -347,7 +361,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   var KEY = "truetotal-v2";
   var storeOK = true;
   function fresh() {
-    return { v: 2, id: "TT-" + String(1000 + Math.floor(Math.random() * 9000)), startedAt: Date.now(), income: 0, guess: null, items: [], onboarded: false, revealed: false, about: null, pre: null, post: null, check: null, theme: "auto", remind: 1 };
+    return { v: 2, id: "TT-" + String(1000 + Math.floor(Math.random() * 9000)), startedAt: Date.now(), income: 0, guess: null, items: [], onboarded: false, revealed: false, about: null, pre: null, post: null, check: null, theme: "auto", remind: 1, mode: "adult", goal: null };
   }
   function load() {
     try { var r = localStorage.getItem(KEY); if (r) { var o = JSON.parse(r); if (o && o.v === 2) return o; } } catch (e) { storeOK = false; }
@@ -358,6 +372,15 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   try { localStorage.setItem("tt-test", "1"); localStorage.removeItem("tt-test"); } catch (e) { storeOK = false; }
   if (!storeOK) $("#storeWarn").hidden = false;
 
+  function isTeen() { return S && S.mode === "teen"; }
+  function curMode() { if (F && F.kind === "onboard") return F.d.age === "Under 18" ? "teen" : "adult"; return isTeen() ? "teen" : "adult"; }
+  function quiz() { return curMode() === "teen" ? QUIZ_T : QUIZ_A; }
+  function confQ() { return curMode() === "teen" ? CONF_T : CONF_A; }
+  function presets() { return isTeen() ? PRESETS_T : PRESETS_A; }
+  function korder() { return isTeen() ? KORD_T : KORD_A; }
+  function kname(k) { return (isTeen() && TEEN_NAMES[k]) || KINDS[k].name; }
+  function baseWord() { return S.income > 0 ? (isTeen() ? "of pocket money" : "of income") : "of your total"; }
+  function flexLabel() { return isTeen() ? "Subscriptions, games and pay-later" : "Pay later + subscriptions"; }
   var uid = function () { return "i" + Math.random().toString(36).slice(2, 9); };
 
   /* ---------- maths ---------- */
@@ -367,9 +390,9 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   var total = function () { return sumBy(function () { return true; }); };
   var kindTotal = function (k) { return sumBy(function (i) { return i.kind === k; }); };
   var needs = function () { return sumBy(function (i) { return KINDS[i.kind].need; }); };
-  var flexible = function () { return kindTotal("pay") + kindTotal("sub"); };
+  var flexible = function () { return isTeen() ? kindTotal("sub") + kindTotal("game") + kindTotal("pay") : kindTotal("pay") + kindTotal("sub"); };
   var leftOver = function () { return S.income - total(); };
-  var share = function (v) { return S.income > 0 ? v / S.income * 100 : 0; };
+  var share = function (v) { var b = S.income > 0 ? S.income : total(); return b > 0 ? v / b * 100 : 0; };
   var payLaterOwed = function () { return counted().filter(function (i) { return i.kind === "pay" && i.left != null; }).reduce(function (s, i) { return s + i.amount * i.left; }, 0); };
 
   function nth(it, k) {
@@ -434,7 +457,27 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   }
 
   /* ---------- tips ---------- */
+  function tipsTeen() {
+    var t = [], tot = total(), subs = counted().filter(function (i) { return i.kind === "sub"; }), games = counted().filter(function (i) { return i.kind === "game"; }), pays = counted().filter(function (i) { return i.kind === "pay"; });
+    if (!counted().length) return t;
+    t.push({ l: "ok", lab: "Per year", h: "Your payments add up to " + aed(tot * 12) + " a year", p: "That is " + aed(tot) + " a month, or about " + aed(tot * 12 / 52) + " a week. Small amounts that repeat add up fast." });
+    if (S.income > 0) {
+      var sp = share(tot);
+      if (sp >= 50) t.push({ l: "bad", lab: "Act now", h: "Your payments take " + pc(sp) + " of your pocket money", p: "That leaves very little for anything else. Pick one or two to switch off and see what changes." });
+      else if (sp >= 25) t.push({ l: "warn", lab: "Watch out", h: "Your payments take " + pc(sp) + " of your pocket money", p: "Try to keep room to save. A good habit is to put some aside first, before you spend." });
+      else t.push({ l: "good", lab: "Good", h: "Your payments take " + pc(sp) + " of your pocket money", p: "That leaves room to save. Keep new subscriptions and in-app purchases small." });
+    }
+    if (subs.length) t.push({ l: subs.length >= 3 ? "warn" : "ok", lab: subs.length >= 3 ? "Watch out" : "Idea", h: subs.length + " subscription" + (subs.length === 1 ? "" : "s") + " cost " + aed(kindTotal("sub") * 12) + " a year", p: "Switch off the ones you use least and watch the total fall. Cancel before a free trial ends if you do not want to pay." });
+    if (games.length) t.push({ l: "warn", lab: "Watch out", h: "Games and apps cost " + aed(kindTotal("game") * 12) + " a year", p: "In-game coins and passes feel small when you buy them. Try a rule: wait 7 days before buying anything extra." });
+    if (pays.length) t.push({ l: "warn", lab: "Watch out", h: "Pay-later is borrowing", p: "It means paying in instalments for something you already have. Talk to a parent or guardian before you use it." });
+    if (S.goal) t.push({ l: "good", lab: "Goal", h: "You are saving for " + S.goal.name, p: "Switch off a cost on the Total tab to see how much faster you could reach " + aed(S.goal.target) + "." });
+    t.push({ l: "good", lab: "Habit", h: "Wait 7 days before a new subscription or purchase", p: "If you still want it after a week, it is more likely a real want. It also gives you time to save instead of borrowing." });
+    t.push({ l: "good", lab: "Habit", h: "Check what renews every month", p: "Subscriptions keep charging until you cancel. Ten minutes a month keeps the total honest." });
+    var o = { bad: 0, warn: 1, ok: 2, good: 3 };
+    return t.sort(function (a, b) { return o[a.l] - o[b.l]; }).slice(0, 8);
+  }
   function tips() {
+    if (isTeen()) return tipsTeen();
     var t = [], inc = S.income, tot = total(), left = leftOver(), lp = share(left);
     if (!(inc > 0) || !counted().length) return t;
     if (left < 0) t.push({ l: "bad", lab: "Act now", h: "You're committed to more than you earn", p: "Your payments come to " + aed(tot) + " a month, which is " + aed(-left) + " above your income. Look at which plan, subscription or bill you can clear or cut first." });
@@ -469,14 +512,14 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   var LV = { good: "var(--good)", ok: "var(--k-bill)", warn: "var(--warn)", bad: "var(--bad)" };
 
   /* ---------- scoring + export ---------- */
-  var score = function (a) { return a ? a.reduce(function (s, v, i) { return s + (v === QUIZ[i].c ? 1 : 0); }, 0) : 0; };
+  var score = function (a) { return a ? a.reduce(function (s, v, i) { return s + (v === quiz()[i].c ? 1 : 0); }, 0) : 0; };
   function resultsText() {
-    var L = ["TRUETOTAL RESULTS", "Code: " + S.id];
+    var L = ["TRUETOTAL RESULTS", "Code: " + S.id, "Track: " + (isTeen() ? "under 18" : "18+")];
     if (S.about) L.push("About: age " + (S.about.age || "-") + ", " + (S.about.stat || "-") + ", pay-later use " + (S.about.pl || "-"));
     if (S.pre) L.push("Before: quiz " + score(S.pre.a) + "/6, confidence " + S.pre.c.join(","));
     if (S.post) L.push("After: quiz " + score(S.post.a) + "/6, confidence " + S.post.c.join(","));
-    if (S.guess != null) L.push("Guess (pay later + subscriptions): " + aed(S.guess) + "; real: " + aed(flexible()) + (S.guess > 0 ? " (" + (flexible() >= S.guess ? "+" : "") + Math.round((flexible() - S.guess) / S.guess * 100) + "%)" : ""));
-    L.push("Items tracked: " + S.items.length + "; share of income committed: " + (S.income > 0 ? pc(share(total())) : "-"));
+    if (S.guess != null) L.push("Guess (" + flexLabel().toLowerCase() + "): " + aed(S.guess) + "; real: " + aed(flexible()) + (S.guess > 0 ? " (" + (flexible() >= S.guess ? "+" : "") + Math.round((flexible() - S.guess) / S.guess * 100) + "%)" : ""));
+    L.push("Items tracked: " + S.items.length + "; " + (S.income > 0 ? "share of " + (isTeen() ? "pocket money" : "income") + " committed: " + pc(share(total())) : "per year: " + aed(total() * 12)));
     if (S.post) {
       L.push("Ratings: " + S.post.r.join(",") + "; helped most: " + (S.post.h || "-"));
       L.push("Will do: " + (S.post.act.join("; ") || "-"));
@@ -537,14 +580,28 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   }
 
   /* ---------- HOME ---------- */
+  function teenStamp() {
+    if (S.income > 0) { var p = share(total()); return p >= 50 ? ["Heavy", "var(--bad)"] : p >= 25 ? ["Watch", "var(--warn)"] : ["Light", "var(--good)"]; }
+    return ["Added up", "var(--k-bill)"];
+  }
+  function ldr(label, val, color) { return '<div class="leader"><span>' + label + '</span><span class="dots"></span><span class="amt"' + (color ? ' style="color:' + color + '"' : "") + ">" + val + "</span></div>"; }
+  function goalCard() {
+    var g = S.goal, freed = S.items.filter(function (i) { return !i.on; }).reduce(function (s, i) { return s + monthly(i); }, 0);
+    if (!g) return '<section class="card stack"><h3 style="font-size:18px;font-weight:800">Saving for something?</h3><p class="sm">Set a goal and see how much faster you could reach it by switching off costs.</p><button class="btn ghost" data-act="goal">Set a goal</button></section>';
+    var m = freed > 0 ? Math.ceil(g.target / freed) : null;
+    return '<section class="card stack"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Goal: ' + esc(g.name) + '</h3><span class="mono" style="font-weight:600">' + aed(g.target) + "</span></div>" + (m ? '<p>Switch off the costs above and you free <b>' + aed(freed) + '</b> a month. You would reach this goal in <span class="hl" style="font-weight:600">' + m + " month" + (m === 1 ? "" : "s") + "</span>.</p>" : '<p class="sm">Switch off a cost in "What if you cancelled?" to see how fast you could reach this goal.</p>') + '<button class="btn ghost sm2" data-act="goal">Edit goal</button></section>';
+  }
+
   function vHome() {
+    var teen = isTeen();
     if (!S.items.length) {
-      return '<div class="card empty"><span class="ico lg" style="--c:var(--k-pay)">' + ic("receipt", 22) + '</span><h2 style="font-size:24px;font-weight:800">Add what you pay for</h2><p class="muted">Pay-later plans, subscriptions, rent, bills, loans. Add the day each one is paid and TrueTotal fills your calendar.</p><button class="btn hi" data-act="add">' + ic("plus", 18) + 'Add a payment</button><button class="btn ghost" data-act="example">Try example numbers</button></div>';
+      return '<div class="card empty"><span class="ico lg" style="--c:var(--k-pay)">' + ic("receipt", 22) + '</span><h2 style="font-size:24px;font-weight:800">Add what you pay for</h2><p class="muted">' + (teen ? "Subscriptions, games, in-app purchases, phone top-ups. Add the day each one is paid and TrueTotal fills your calendar." : "Pay-later plans, subscriptions, rent, bills, loans. Add the day each one is paid and TrueTotal fills your calendar.") + '</p><button class="btn hi" data-act="add">' + ic("plus", 18) + 'Add a payment</button><button class="btn ghost" data-act="example">Try example numbers</button></div>';
     }
     if (!S.revealed) {
       return '<div class="card empty"><h2 style="font-size:26px;font-weight:800">Ready for the real number?</h2><p class="muted">You added ' + S.items.length + " item" + (S.items.length === 1 ? "" : "s") + '. When you\'re done adding, reveal your TrueTotal.</p><button class="btn hi block" data-act="reveal">Reveal my TrueTotal</button><button class="btn ghost block" data-act="add">' + ic("plus", 18) + "Add another</button></div>";
     }
-    var tot = total(), left = leftOver(), lp = share(left), st = left < 0 ? ["Overspent", "var(--bad)"] : lp < 10 ? ["Tight", "var(--warn)"] : lp < 20 ? ["Close", "var(--k-bill)"] : ["On track", "var(--good)"];
+    var tot = total(), left = leftOver(), lp = share(left);
+    var st = teen ? teenStamp() : (left < 0 ? ["Overspent", "var(--bad)"] : lp < 10 ? ["Tight", "var(--warn)"] : lp < 20 ? ["Close", "var(--k-bill)"] : ["On track", "var(--good)"]);
     var up = upcoming(7), upSum = up.reduce(function (s, e) { return s + e.it.amount; }, 0);
     var h = "";
     h += '<button class="card row-between" data-act="goCal" style="text-align:left;width:100%"><span><span class="eyebrow">Next 7 days</span><br><b style="font-family:var(--fm);font-size:20px">' + aed(upSum) + '</b> <small>' + up.length + " payment" + (up.length === 1 ? "" : "s") + (up[0] ? " · next " + rel(daysUntil(up[0].d)) : "") + "</small></span>" + ic("right", 20) + "</button>";
@@ -552,28 +609,33 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     h += '<section class="paper"><div class="stamp" style="--c:' + st[1] + '">' + st[0] + "</div>";
     h += '<div class="eyebrow">TrueTotal · per month</div><div class="eyebrow" style="margin-top:2px">' + fDateY(today()) + "</div>";
     h += '<h1 style="font-size:28px;font-weight:800;margin:14px 0 4px;line-height:1.1;max-width:62%">Everything you pay for</h1><hr class="rule">';
-    KORDER.forEach(function (k) {
+    korder().forEach(function (k) {
       var t = kindTotal(k), n = counted().filter(function (i) { return i.kind === k; }).length;
       if (!n) return;
-      h += '<div class="leader"><span class="nm"><span class="ico" style="--c:' + kcol(k) + '">' + ic(KINDS[k].icon) + "</span>" + KINDS[k].name + ' <small>×' + n + '</small></span><span class="dots"></span><span class="amt" data-count="' + t + '" data-key="k' + k + '" data-pre="AED ">AED ' + nf.format(t) + "</span></div>";
+      h += '<div class="leader"><span class="nm"><span class="ico" style="--c:' + kcol(k) + '">' + ic(KINDS[k].icon) + "</span>" + kname(k) + ' <small>×' + n + '</small></span><span class="dots"></span><span class="amt" data-count="' + t + '" data-key="k' + k + '" data-pre="AED ">AED ' + nf.format(t) + "</span></div>";
       h += '<div class="share"><div class="bar" style="--c:' + kcol(k) + '"><i data-w="' + Math.min(100, share(t)) + '"></i></div><small class="mono">' + pc(share(t)) + "</small></div>";
     });
     h += '<hr class="rule"><div class="leader total-line"><span>TOTAL</span><span class="dots"></span><span class="total-num"><span class="hl" data-count="' + tot + '" data-key="tot" data-pre="AED ">AED ' + nf.format(tot) + "</span></span></div>";
-    h += '<div class="leader" style="margin-top:8px"><span>Share of income</span><span class="dots"></span><span class="amt">' + (S.income > 0 ? pc(share(tot)) : "-") + "</span></div>";
-    h += '<div class="leader"><span>Left over</span><span class="dots"></span><span class="amt" style="color:' + (left < 0 ? "var(--bad)" : "var(--good)") + '">' + (left < 0 ? "-" : "") + aed(Math.abs(left)) + "</span></div>";
-    h += '<div class="leader"><span>Per year</span><span class="dots"></span><span class="amt">' + aed(tot * 12) + "</span></div>";
-    h += '<div class="barcode" aria-hidden="true"></div></section>';
+    h += '<div style="margin-top:8px">';
+    if (teen) {
+      h += ldr("Per week", aed(tot * 12 / 52)) + ldr("Per year", aed(tot * 12));
+      if (S.income > 0) h += ldr("Share of pocket money", pc(share(tot))) + ldr("Left over", (left < 0 ? "-" : "") + aed(Math.abs(left)), left < 0 ? "var(--bad)" : "var(--good)");
+    } else {
+      h += ldr("Share of income", S.income > 0 ? pc(share(tot)) : "-") + ldr("Left over", (left < 0 ? "-" : "") + aed(Math.abs(left)), left < 0 ? "var(--bad)" : "var(--good)") + ldr("Per year", aed(tot * 12));
+    }
+    h += '</div><div class="barcode" aria-hidden="true"></div></section>';
 
-    h += '<section class="card"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Where your income goes</h3><small>tap a slice</small></div>' + donutHTML() + "</section>";
+    h += '<section class="card"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (S.income > 0 ? "Where your " + (teen ? "pocket money" : "income") + " goes" : "Where your money goes") + '</h3><small>tap a slice</small></div>' + donutHTML() + "</section>";
 
     var top = S.items.slice().sort(function (a, b) { return monthly(b) - monthly(a); }).slice(0, 5), freed = S.items.filter(function (i) { return !i.on; }).reduce(function (s, i) { return s + monthly(i); }, 0);
     h += '<section class="card"><h3 style="font-size:18px;font-weight:800">What if you cancelled?</h3><p class="sm" style="margin:2px 0 4px">Switch a cost off and watch the total, the chart and the calendar change.</p><div class="group" style="padding:0;background:none">';
     top.forEach(function (it) { h += itemRow(it, true); });
     h += "</div>" + (freed > 0 ? '<p style="margin-top:8px"><span class="hl" style="font-weight:600">Saves ' + aed(freed) + " a month · " + aed(freed * 12) + " a year</span></p>" : "") + "</section>";
+    if (teen) h += goalCard();
 
     if (S.guess != null) {
       var real = flexible(), diff = real - S.guess;
-      h += '<section class="card"><div class="eyebrow">Your guess vs the real number</div><div class="row-between" style="margin-top:6px"><div><small>You guessed</small><div class="mono" style="font-size:22px;color:var(--ink2)">' + aed(S.guess) + '</div></div><div style="text-align:right"><small>Pay later + subscriptions</small><div class="mono" style="font-size:22px;font-weight:600">' + aed(real) + "</div></div></div>" +
+      h += '<section class="card"><div class="eyebrow">Your guess vs the real number</div><div class="row-between" style="margin-top:6px;align-items:flex-start;gap:16px"><div style="white-space:nowrap"><small>You guessed</small><div class="mono" style="font-size:22px;color:var(--ink2)">' + aed(S.guess) + '</div></div><div style="text-align:right"><small>' + flexLabel() + '</small><div class="mono" style="font-size:22px;font-weight:600">' + aed(real) + "</div></div></div>" +
         '<p style="margin-top:8px">' + (Math.abs(diff) < Math.max(10, real * 0.05) ? "You were close." : diff > 0 ? aed(diff) + " more than you thought." : aed(-diff) + " less than you feared.") + '</p><button class="btn ghost sm2" data-act="reveal" style="margin-top:10px">Replay the reveal</button></section>';
     }
     return h;
@@ -581,7 +643,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
 
   function donutHTML() {
     var sl = [];
-    KORDER.forEach(function (k) { var t = kindTotal(k); if (t > 0) sl.push({ id: k, name: KINDS[k].name, v: t, c: kcol(k) }); });
+    korder().forEach(function (k) { var t = kindTotal(k); if (t > 0) sl.push({ id: k, name: kname(k), v: t, c: kcol(k) }); });
     var left = leftOver();
     if (left > 0) sl.push({ id: "left", name: "Left over", v: left, c: "var(--k-left)" });
     var all = Math.max(S.income, total()) || 1, R = 76, C = 2 * Math.PI * R, off = 0, svg = "";
@@ -591,8 +653,8 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       svg += '<circle class="seg-c" data-act="seg" data-id="' + s.id + '" cx="100" cy="100" r="' + R + '" stroke="' + s.c + '" style="stroke-dasharray:0 ' + C + ";stroke-dashoffset:" + (-off) + ';' + (donutSel && donutSel !== s.id ? "opacity:.3;" : "") + '" data-da="' + len + " " + (C - len) + '"/>';
       off += s.v / all * C;
     });
-    var sel = sl.filter(function (s) { return s.id === donutSel; })[0], over = total() > S.income;
-    var mid = sel ? '<small>' + esc(sel.name) + '</small><b class="mono" style="font-size:18px;white-space:nowrap">' + aed(sel.v) + '</b><small>' + pc(share(sel.v)) + " of income</small>" : over ? '<small>Over by</small><b class="mono" style="font-size:19px;color:var(--bad);white-space:nowrap">' + aed(total() - S.income) + "</b>" : '<small>Monthly income</small><b class="mono" style="font-size:19px;white-space:nowrap">' + aed(S.income) + "</b>";
+    var sel = sl.filter(function (s) { return s.id === donutSel; })[0], over = S.income > 0 && total() > S.income;
+    var mid = sel ? '<small>' + esc(sel.name) + '</small><b class="mono" style="font-size:18px;white-space:nowrap">' + aed(sel.v) + '</b><small>' + pc(share(sel.v)) + " of income</small>" : over ? '<small>Over by</small><b class="mono" style="font-size:19px;color:var(--bad);white-space:nowrap">' + aed(total() - S.income) + "</b>" : S.income > 0 ? '<small>' + (isTeen() ? "Pocket money" : "Monthly income") + '</small><b class="mono" style="font-size:19px;white-space:nowrap">' + aed(S.income) + "</b>" : '<small>Per month</small><b class="mono" style="font-size:19px;white-space:nowrap">' + aed(total()) + "</b>";
     var h = '<div class="donut-wrap"><svg viewBox="0 0 200 200" role="img" aria-label="Income split by category">' + svg + '</svg><div class="donut-mid">' + mid + "</div></div><div class=\"legend\">";
     sl.forEach(function (s) {
       h += '<button class="lg" data-act="seg" data-id="' + s.id + '" aria-pressed="' + (donutSel === s.id) + '" style="--c:' + s.c + '"><span class="dot"></span><span class="nm">' + s.name + '</span><span class="mono sm">' + aed(s.v) + '</span><span class="mono" style="min-width:48px;text-align:right;font-weight:600">' + pc(share(s.v)) + "</span></button>";
@@ -603,17 +665,17 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   /* ---------- ITEMS ---------- */
   function itemRow(it, compact) {
     var sh = share(monthly(it)), eq = it.freq !== "monthly" ? " · about " + aed(monthly(it)) + "/mo" : "";
-    return '<div class="item' + (it.on ? "" : " off") + '"><button class="main" data-act="edit" data-id="' + it.id + '"><span class="ico lg" style="--c:' + kcol(it.kind) + '">' + ic(KINDS[it.kind].icon) + '</span><span class="tx"><b>' + esc(it.name) + "</b><small>" + aed(it.amount) + " " + FREQ[it.freq].l.toLowerCase() + (it.left != null ? " · " + it.left + " left" : "") + eq + "</small>" + (compact ? "" : "<small>" + payText(it) + "</small>") + '</span><span class="rt"><b class="mono" style="color:' + kcol(it.kind) + '">' + (S.income > 0 ? pc(sh) : "") + '</b><small>of income</small></span></button><button class="tapzone" data-act="toggle" data-id="' + it.id + '" role="switch" aria-checked="' + it.on + '" aria-label="Count ' + esc(it.name) + '"><span class="sw" aria-hidden="true" ' + 'aria-checked="' + it.on + '"></span></button></div>';
+    return '<div class="item' + (it.on ? "" : " off") + '"><button class="main" data-act="edit" data-id="' + it.id + '"><span class="ico lg" style="--c:' + kcol(it.kind) + '">' + ic(KINDS[it.kind].icon) + '</span><span class="tx"><b>' + esc(it.name) + "</b><small>" + aed(it.amount) + " " + FREQ[it.freq].l.toLowerCase() + (it.left != null ? " · " + it.left + " left" : "") + eq + "</small>" + (compact ? "" : "<small>" + payText(it) + "</small>") + '</span><span class="rt"><b class="mono" style="color:' + kcol(it.kind) + '">' + pc(sh) + '</b><small>' + baseWord() + '</small></span></button><button class="tapzone" data-act="toggle" data-id="' + it.id + '" role="switch" aria-checked="' + it.on + '" aria-label="Count ' + esc(it.name) + '"><span class="sw" aria-hidden="true" ' + 'aria-checked="' + it.on + '"></span></button></div>';
   }
   function vItems() {
     var h = '<div class="row-between"><div><h1 class="pg-title">Everything you pay for</h1><small>' + S.items.length + " item" + (S.items.length === 1 ? "" : "s") + " · " + aed(total()) + " a month</small></div><button class=\"btn hi sm2\" data-act=\"add\">" + ic("plus", 16) + "Add</button></div>";
-    if (!S.items.length) h += '<div class="card empty"><span class="ico lg" style="--c:var(--k-sub)">' + ic("list", 22) + '</span><p class="muted">Nothing yet. Add a pay-later plan, a subscription, your rent or a loan.</p><button class="btn ghost" data-act="example">Try example numbers</button></div>';
+    if (!S.items.length) h += '<div class="card empty"><span class="ico lg" style="--c:var(--k-sub)">' + ic("list", 22) + '</span><p class="muted">Nothing yet. ' + (isTeen() ? "Add a subscription, a game, a phone top-up or anything else you pay for." : "Add a pay-later plan, a subscription, your rent or a loan.") + '</p><button class="btn ghost" data-act="example">Try example numbers</button></div>';
     if (S.items.length && !S.revealed) h += '<button class="btn hi block" data-act="reveal">Reveal my TrueTotal</button>';
-    KORDER.forEach(function (k) {
+    korder().forEach(function (k) {
       var g = S.items.filter(function (i) { return i.kind === k; });
       if (!g.length) return;
       var t = g.filter(function (i) { return i.on; }).reduce(function (s, i) { return s + monthly(i); }, 0);
-      h += '<section class="group"><div class="group-h"><span class="ico" style="--c:' + kcol(k) + '">' + ic(KINDS[k].icon) + "</span><h3>" + KINDS[k].name + '</h3><span class="mono sm">' + aed(t) + (S.income > 0 ? " · " + pc(share(t)) : "") + "</span></div>" + g.map(function (i) { return itemRow(i, false); }).join("") + "</section>";
+      h += '<section class="group"><div class="group-h"><span class="ico" style="--c:' + kcol(k) + '">' + ic(KINDS[k].icon) + "</span><h3>" + kname(k) + '</h3><span class="mono sm">' + aed(t) + " · " + pc(share(t)) + "</span></div>" + g.map(function (i) { return itemRow(i, false); }).join("") + "</section>";
     });
     return h;
   }
@@ -640,7 +702,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     h += "</div></section>";
     var de = (monthEvents(sel.getFullYear(), sel.getMonth())[sel.getDate()] || []), ds = de.reduce(function (a, i) { return a + i.amount; }, 0);
     h += '<section class="card"><div class="row-between"><h3 style="font-size:17px;font-weight:800">' + fDate(sel) + '</h3><span class="mono" style="font-weight:600">' + (ds ? '<span class="hl">' + aed(ds) + "</span>" : "") + "</span></div>";
-    h += de.length ? de.map(function (i) { return '<div class="pay-row"><span class="ico lg" style="--c:' + kcol(i.kind) + '">' + ic(KINDS[i.kind].icon) + '</span><div class="tx"><b>' + esc(i.name) + "</b><small>" + KINDS[i.kind].name + (i.left != null ? " · " + i.left + " payments in total" : "") + '</small></div><span class="mono">' + aed(i.amount) + "</span></div>"; }).join("") : '<p class="muted" style="padding-top:6px">Nothing due this day.</p>';
+    h += de.length ? de.map(function (i) { return '<div class="pay-row"><span class="ico lg" style="--c:' + kcol(i.kind) + '">' + ic(KINDS[i.kind].icon) + '</span><div class="tx"><b>' + esc(i.name) + "</b><small>" + kname(i.kind) + (i.left != null ? " · " + i.left + " payments in total" : "") + '</small></div><span class="mono">' + aed(i.amount) + "</span></div>"; }).join("") : '<p class="muted" style="padding-top:6px">Nothing due this day.</p>';
     h += "</section>";
     var up = upcoming(14);
     h += '<section class="card"><h3 style="font-size:17px;font-weight:800;margin-bottom:4px">Coming up · next 14 days</h3>';
@@ -659,7 +721,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     var slot = iw / 12, bw = slot * 0.68;
     md.forEach(function (m, i) {
       var cx = ml + slot * i + slot / 2, acc = 0, dim_ = cal.mi !== i && cal.mi !== -1;
-      KORDER.forEach(function (k) {
+      korder().forEach(function (k) {
         var v = m.by[k] || 0;
         if (!v) return;
         var y0 = y(acc), y1 = y(acc + v);
@@ -671,9 +733,9 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     var sel = md[cal.mi === -1 ? 0 : cal.mi], peak = md.reduce(function (a, b) { return b.tot > a.tot ? b : a; }, md[0]);
     var free = counted().filter(function (i) { return i.kind === "pay" && i.left != null; }).map(lastDate).sort(function (a, b) { return b - a; })[0];
     var h = '<section class="card"><div class="row-between"><h3 style="font-size:17px;font-weight:800">What leaves your account</h3><small>tap a month</small></div><svg viewBox="0 0 ' + W + " " + H + '" style="width:100%;height:auto;display:block;margin-top:6px" role="img" aria-label="Stacked bars of payments per month for the next 12 months">' + svg + "</svg>";
-    h += '<div class="chips" style="margin-top:8px">' + KORDER.filter(function (k) { return counted().some(function (i) { return i.kind === k; }); }).map(function (k) { return '<span class="sm" style="display:inline-flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:3px;background:' + kcol(k) + '"></i>' + KINDS[k].name + "</span>"; }).join("") + '</div><p class="sm" style="margin-top:8px">This month only counts payments still to come.</p></section>';
+    h += '<div class="chips" style="margin-top:8px">' + korder().filter(function (k) { return counted().some(function (i) { return i.kind === k; }); }).map(function (k) { return '<span class="sm" style="display:inline-flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:3px;background:' + kcol(k) + '"></i>' + kname(k) + "</span>"; }).join("") + '</div><p class="sm" style="margin-top:8px">This month only counts payments still to come.</p></section>';
     h += '<section class="card"><div class="row-between"><h3 style="font-size:17px;font-weight:800">' + sel.f.toLocaleDateString("en-GB", { month: "long", year: "numeric" }) + '</h3><span class="mono hl" style="font-weight:600">' + aed(sel.tot) + "</span></div>";
-    h += KORDER.filter(function (k) { return sel.by[k]; }).map(function (k) { return '<div class="leader" style="margin-top:8px"><span class="nm"><span class="ico" style="--c:' + kcol(k) + '">' + ic(KINDS[k].icon) + "</span>" + KINDS[k].name + '</span><span class="dots"></span><span class="amt">' + aed(sel.by[k]) + "</span></div>"; }).join("") + "</section>";
+    h += korder().filter(function (k) { return sel.by[k]; }).map(function (k) { return '<div class="leader" style="margin-top:8px"><span class="nm"><span class="ico" style="--c:' + kcol(k) + '">' + ic(KINDS[k].icon) + "</span>" + kname(k) + '</span><span class="dots"></span><span class="amt">' + aed(sel.by[k]) + "</span></div>"; }).join("") + "</section>";
     h += '<div class="grid2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="card"><div class="eyebrow">Biggest month</div><div class="mono" style="font-size:20px;font-weight:600;margin-top:4px">' + aed(peak.tot) + "</div><small>" + peak.f.toLocaleDateString("en-GB", { month: "long" }) + '</small></div><div class="card"><div class="eyebrow">Pay-later clear</div><div style="font-family:var(--fd);font-size:19px;font-weight:800;margin-top:4px">' + (free ? fDateY(free) : "No plans") + "</div><small>" + (free ? "last payment" : "with an end date") + "</small></div></div>";
     return h;
   }
@@ -691,14 +753,18 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     h += '<button class="btn ' + (S.post ? "ghost" : "hi") + ' block" data-act="post">' + (S.post ? "Retake the after-quiz" : "Take the after-quiz") + "</button>";
     h += '<button class="btn ghost block" data-act="check">' + (S.check ? "Update your check-in" : "5-day check-in") + '</button><button class="btn block" data-act="copy">Copy my results</button></section>';
 
-    if (S.income > 0 && counted().length) {
-      var np = share(needs()), wp = share(total() - needs()), sp = share(leftOver());
-      h += '<section class="card stack"><h3 style="font-size:18px;font-weight:800">The 50/30/20 rule of thumb</h3><p class="sm">A common guide: about 50% of income on needs, up to 30% on wants, 20% saved. A rough guide, not a law.</p>' +
-        meter("Needs (rent, bills, loans)", np, 50, false, "var(--k-bill)") + meter("Wants (pay later, subscriptions, other)", wp, 30, false, "var(--k-pay)") + meter("Left over to save", Math.max(0, sp), 20, true, "var(--good)") + "</section>";
+    if (counted().length) {
+      if (!isTeen() && S.income > 0) {
+        var np = share(needs()), wp = share(total() - needs()), sp = share(leftOver());
+        h += '<section class="card stack"><h3 style="font-size:18px;font-weight:800">The 50/30/20 rule of thumb</h3><p class="sm">A common guide: about 50% of income on needs, up to 30% on wants, 20% saved. A rough guide, not a law.</p>' +
+          meter("Needs (rent, bills, loans)", np, 50, false, "var(--k-bill)") + meter("Wants (pay later, subscriptions, other)", wp, 30, false, "var(--k-pay)") + meter("Left over to save", Math.max(0, sp), 20, true, "var(--good)") + "</section>";
+      } else if (isTeen() && S.income > 0) {
+        h += '<section class="card stack"><h3 style="font-size:18px;font-weight:800">Save first</h3><p class="sm">A good habit: keep at least 20% of your pocket money before you spend the rest. A rough guide, not a rule.</p>' + meter("Left after your payments", Math.max(0, share(leftOver())), 20, true, "var(--good)") + "</section>";
+      }
       var ts = tips();
-      h += '<section class="card"><h3 style="font-size:18px;font-weight:800;margin-bottom:6px">What to do next</h3>' + ts.map(function (x) { return '<div class="tipcard"><span class="tag" style="--c:' + LV[x.l] + '">' + x.lab + '</span><div><b style="font-weight:600">' + esc(x.h) + '</b><p class="sm" style="margin-top:2px">' + esc(x.p) + "</p></div></div>"; }).join("") + "</section>";
+      if (ts.length) h += '<section class="card"><h3 style="font-size:18px;font-weight:800;margin-bottom:6px">What to do next</h3>' + ts.map(function (x) { return '<div class="tipcard"><span class="tag" style="--c:' + LV[x.l] + '">' + x.lab + '</span><div><b style="font-weight:600">' + esc(x.h) + '</b><p class="sm" style="margin-top:2px">' + esc(x.p) + "</p></div></div>"; }).join("") + "</section>";
     }
-    h += '<section class="card"><h3 style="font-size:18px;font-weight:800;margin-bottom:6px">Good to know</h3>' + [["bag", "pay", "Pay later is still debt", "Splitting a purchase into instalments is easy to ignore, but each plan is a promise to pay. Several small plans at once can add up to a large monthly bill."], ["repeat", "sub", "Subscriptions are bills you chose", "A few small monthly charges can cost thousands a year. Yearly totals make them easier to judge."], ["receipt", "bill", "Share of income is the real measure", "AED 300 means little on its own. As a share of your income it shows how much room it takes from everything else."]].map(function (x) { return '<div class="tipcard"><span class="ico lg" style="--c:' + kcol(x[1]) + '">' + ic(x[0], 20) + '</span><div><b style="font-weight:600">' + x[2] + '</b><p class="sm" style="margin-top:2px">' + x[3] + "</p></div></div>"; }).join("") + '</section><p class="sm" style="padding-bottom:8px">TrueTotal is a learning tool, not financial advice. The bands are rules of thumb, not official limits. Late fees and terms differ by provider, so check your own.</p>';
+    h += '<section class="card"><h3 style="font-size:18px;font-weight:800;margin-bottom:6px">Good to know</h3>' + (isTeen() ? [["repeat", "sub", "Free trials turn into bills", "Many apps start with a free trial and then charge you every month. Cancel before it ends if you do not want to pay."], ["game", "game", "In-game coins add up", "Small purchases feel like nothing in the moment. Add them up over a month and a year to see the real cost."], ["bag", "pay", "Wait 7 days", "If you still want it after a week, it is more likely a real want. Waiting also gives you time to save instead of borrowing."]] : [["bag", "pay", "Pay later is still debt", "Splitting a purchase into instalments is easy to ignore, but each plan is a promise to pay. Several small plans at once can add up to a large monthly bill."], ["repeat", "sub", "Subscriptions are bills you chose", "A few small monthly charges can cost thousands a year. Yearly totals make them easier to judge."], ["receipt", "bill", "Share of income is the real measure", "AED 300 means little on its own. As a share of your income it shows how much room it takes from everything else."]]).map(function (x) { return '<div class="tipcard"><span class="ico lg" style="--c:' + kcol(x[1]) + '">' + ic(x[0], 20) + '</span><div><b style="font-weight:600">' + x[2] + '</b><p class="sm" style="margin-top:2px">' + x[3] + "</p></div></div>"; }).join("") + '</section><p class="sm" style="padding-bottom:8px">TrueTotal is a learning tool, not financial advice. The bands are rules of thumb, not official limits. Late fees and terms differ by provider, so check your own.</p>';
     return h;
   }
   function meter(label, v, goal, higher, col) {
@@ -709,10 +775,10 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   /* ---------- sheets ---------- */
   var layer = $("#layer");
   var sheet = null;
-  function openSheet(html, init) {
+  function openSheet(html, init, kind) {
     closeSheet(true);
     layer.insertAdjacentHTML("beforeend", '<div class="scrim" id="scrim" data-act="sheetclose"></div><div class="sheet" id="sheet" role="dialog" aria-modal="true"><div class="grab"></div>' + html + "</div>");
-    sheet = $("#sheet");
+    sheet = $("#sheet"); sheet.dataset.kind = kind || "";
     requestAnimationFrame(function () { requestAnimationFrame(function () { $("#scrim").classList.add("on"); sheet.classList.add("on"); }); });
     if (init) init(sheet);
   }
@@ -730,11 +796,11 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     var ex = S.items.filter(function (i) { return i.id === id; })[0];
     ed = ex ? JSON.parse(JSON.stringify(ex)) : { id: uid(), name: "", kind: "sub", amount: 0, freq: "monthly", anchor: iso(today()), left: null, on: true, isNew: true };
     ed.hasEnd = ed.left != null; ed.leftN = ed.left != null ? ed.left : 3;
-    openSheet(itemSheetHTML(), function () { var n = $("#fName"); if (ed.isNew && n) setTimeout(function () { n.focus(); }, 380); });
+    openSheet(itemSheetHTML(), function () { var n = $("#fName"); if (ed.isNew && n) setTimeout(function () { n.focus(); }, 380); }, "item");
   }
   function itemSheetHTML() {
     var h = '<div class="stack" style="gap:14px"><div class="row-between"><h2>' + (ed.isNew ? "Add a payment" : "Edit payment") + '</h2><button class="icon-btn" data-act="sheetclose" aria-label="Close">' + ic("x", 22) + "</button></div>";
-    if (ed.isNew) h += '<div><div class="lbl" style="margin-bottom:8px">Quick fill</div><div class="chips" style="flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;margin-right:-18px;padding-right:18px">' + PRESETS.map(function (p, i) { return '<button class="chip" data-act="preset" data-i="' + i + '">' + p[0] + "</button>"; }).join("") + "</div></div>";
+    if (ed.isNew) h += '<div><div class="lbl" style="margin-bottom:8px">Quick fill</div><div class="chips" style="flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;margin-right:-18px;padding-right:18px">' + presets().map(function (p, i) { return '<button class="chip" data-act="preset" data-i="' + i + '">' + p[0] + "</button>"; }).join("") + "</div></div>";
     h += '<div class="field"><label for="fName">Name</label><input id="fName" type="text" data-in="name" placeholder="e.g. Tabby, sneakers" value="' + esc(ed.name) + '" autocomplete="off"></div>';
     h += '<div><div class="lbl" style="margin-bottom:8px">Type</div><div class="chips" id="kindChips">' + kindChips() + "</div></div>";
     h += '<div class="field"><label for="fAmt">Each payment (AED)</label><div class="money"><span>AED</span><input id="fAmt" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="amount" placeholder="250" value="' + (ed.amount > 0 ? ed.amount : "") + '"></div></div>';
@@ -746,7 +812,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     h += '<div class="sticky" style="display:flex;gap:10px">' + (ed.isNew ? "" : '<button class="btn ghost" data-act="delitem" style="color:var(--bad)">Delete</button>') + '<button class="btn block" id="saveItem" data-act="saveitem">Save</button></div></div>';
     return h;
   }
-  var kindChips = function () { return KORDER.map(function (k) { return '<button class="chip" data-act="kind" data-k="' + k + '" aria-pressed="' + (ed.kind === k) + '">' + ic(KINDS[k].icon, 15) + KINDS[k].name + "</button>"; }).join(""); };
+  var kindChips = function () { return korder().map(function (k) { return '<button class="chip" data-act="kind" data-k="' + k + '" aria-pressed="' + (ed.kind === k) + '">' + ic(KINDS[k].icon, 15) + kname(k) + "</button>"; }).join(""); };
   var freqSeg = function () { return ["weekly", "biweekly", "monthly", "yearly"].map(function (f) { return '<button data-act="freq" data-f="' + f + '" aria-pressed="' + (ed.freq === f) + '">' + FREQ[f].short + "</button>"; }).join(""); };
   var dateLabel = function () { return ed.freq === "monthly" ? "Next payment date (the day repeats each month)" : ed.freq === "yearly" ? "Next payment date (repeats each year)" : "Next payment date"; };
   function dateHint() {
@@ -756,7 +822,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     return payText(it) + (ed.freq === "monthly" && a.getDate() > 28 ? ". In shorter months it moves to the last day." : ".");
   }
   function previewHTML() {
-    var mo = (ed.amount || 0) * FREQ[ed.freq].per, h = '<div class="row-between"><div><b class="mono" style="font-size:17px">' + aed(mo) + '</b> <small>a month</small><br><small>' + (S.income > 0 ? pc(share(mo)) + " of your income" : "Add your income in Settings to see the share") + "</small></div>";
+    var mo = (ed.amount || 0) * FREQ[ed.freq].per, h = '<div class="row-between"><div><b class="mono" style="font-size:17px">' + aed(mo) + '</b> <small>a month</small><br><small>' + (S.income > 0 ? pc(share(mo)) + " " + baseWord() : "About " + aed(mo * 12) + " a year") + "</small></div>";
     if (ed.hasEnd && ed.amount > 0 && ed.anchor) h += '<div style="text-align:right"><b class="mono">' + aed(ed.amount * ed.leftN) + "</b><br><small>still to pay · ends " + fDateY(nth({ anchor: ed.anchor, freq: ed.freq }, ed.leftN - 1)) + "</small></div>";
     h += "</div>";
     if (ed.amount > 0 && ed.name.trim() && ed.anchor) h += '<p class="sm" style="margin-top:8px"><a class="link" target="_blank" rel="noopener" href="' + gcal(ed) + '">Remind me in Google Calendar</a></p>';
@@ -779,54 +845,65 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     $("#endSw").parentNode.setAttribute("aria-checked", ed.hasEnd);
   }
 
+  var gd = null;
+  function openGoal() {
+    gd = S.goal ? { name: S.goal.name, target: S.goal.target } : { name: "", target: 0 };
+    openSheet('<div class="stack" style="gap:14px"><div class="row-between"><h2>Savings goal</h2><button class="icon-btn" data-act="sheetclose" aria-label="Close">' + ic("x", 22) + '</button></div><div class="field"><label for="gName">What are you saving for?</label><input id="gName" type="text" data-in="goalname" placeholder="e.g. New headphones" value="' + esc(gd.name) + '" autocomplete="off"></div><div class="field"><label for="gAmt">How much does it cost? (AED)</label><div class="money"><span>AED</span><input id="gAmt" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="goaltarget" placeholder="600" value="' + (gd.target > 0 ? gd.target : "") + '"></div></div><div style="display:flex;gap:10px">' + (S.goal ? '<button class="btn ghost" data-act="goaldel" style="color:var(--bad)">Remove</button>' : "") + '<button class="btn block" data-act="goalsave">Save goal</button></div></div>', null, "goal");
+  }
+
   function openSettings() {
     var st = function (k) { return 'aria-pressed="' + (S.theme === k) + '"'; };
     openSheet('<div class="stack" style="gap:16px"><div class="row-between"><h2>Settings</h2><button class="icon-btn" data-act="sheetclose" aria-label="Close">' + ic("x", 22) + '</button></div>' +
-      '<div class="field"><label for="sInc">Monthly income after tax (AED)</label><div class="money"><span>AED</span><input id="sInc" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="income" value="' + (S.income > 0 ? S.income : "") + '" placeholder="9000"></div><small>Every percentage in the app is measured against this.</small></div>' +
+      '<div class="field"><label for="sInc">' + (isTeen() ? "Pocket money per month (AED), optional" : "Monthly income after tax (AED)") + '</label><div class="money"><span>AED</span><input id="sInc" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="income" value="' + (S.income > 0 ? S.income : "") + '" placeholder="9000"></div><small>' + (isTeen() ? "Leave it empty if you do not get any. Percentages then show the share of your own total." : "Every percentage in the app is measured against this.") + '</small></div>' +
       '<div class="field"><div class="lbl">Reminder time for calendar file</div><div class="seg" id="remSeg"><button data-act="rem" data-v="0" ' + 'aria-pressed="' + (S.remind === 0) + '">On the day</button><button data-act="rem" data-v="1" aria-pressed="' + (S.remind === 1) + '">1 day before</button><button data-act="rem" data-v="2" aria-pressed="' + (S.remind === 2) + '">2 days before</button></div></div>' +
       '<div class="field"><div class="lbl">Appearance</div><div class="seg" id="themeSeg"><button data-act="theme" data-v="auto" ' + st("auto") + '>Auto</button><button data-act="theme" data-v="light" ' + st("light") + '>Light</button><button data-act="theme" data-v="dark" ' + st("dark") + ">Dark</button></div></div>" +
       '<div class="stack" style="gap:8px"><button class="btn ghost block" data-act="reveal">Replay the reveal</button><button class="btn ghost block" data-act="copy">Copy my results</button><button class="btn danger block" id="clearBtn" data-act="clear">Delete all my data</button></div>' +
-      '<p class="sm">Everything is stored only on this device. Your tester code is <span class="mono">' + S.id + "</span>.</p></div>");
+      '<p class="sm">Everything is stored only on this device. Your tester code is <span class="mono">' + S.id + "</span>.</p></div>", null, "settings");
   }
 
   /* ---------- flows ---------- */
   var flowEl = null, F = null;
   function perm(qi) {
-    var q = QUIZ[qi], idx = q.o.map(function (_, i) { return i; });
+    var q = quiz()[qi], idx = q.o.map(function (_, i) { return i; });
     if (F.kind !== "post" || !q.shuffle) return idx;
     var seed = 0, s = S.id + qi; for (var i = 0; i < s.length; i++) seed = (seed * 31 + s.charCodeAt(i)) % 9973;
     for (var j = idx.length - 1; j > 0; j--) { seed = (seed * 31 + 7) % 9973; var r = seed % (j + 1), t = idx[j]; idx[j] = idx[r]; idx[r] = t; }
     return idx;
   }
   function quizSteps() {
-    return QUIZ.map(function (q, qi) {
+    return [0, 1, 2, 3, 4, 5].map(function (qi) {
       return {
         quiz: qi, need: function () { return F.d.a[qi] != null; },
         html: function () {
-          var order = perm(qi);
-          return '<p class="eyebrow">Question ' + (qi + 1) + " of 6</p><h2>" + esc(q.q) + '</h2><div class="stack" style="gap:10px">' + order.map(function (oi, n) { return '<button class="opt" data-act="fopt" data-o="' + oi + '" aria-pressed="' + (F.d.a[qi] === oi) + '"><span class="k">' + "ABCD"[n] + "</span>" + esc(q.o[oi]) + "</button>"; }).join("") + "</div>" + (F.kind === "pre" ? '<p class="sm">Just your best answer. No looking things up.</p>' : "");
+          var q = quiz()[qi], order = perm(qi);
+          return '<p class="eyebrow">Question ' + (qi + 1) + " of 6</p><h2>" + esc(q.q) + '</h2><div class="stack" style="gap:10px">' + order.map(function (oi, n) { return '<button class="opt" data-act="fopt" data-o="' + oi + '" aria-pressed="' + (F.d.a[qi] === oi) + '"><span class="k">' + "ABCD"[n] + "</span>" + esc(q.o[oi]) + "</button>"; }).join("") + "</div>" + (F.kind === "onboard" ? '<p class="sm">Just your best answer. No looking things up.</p>' : "");
         }
       };
     });
   }
   function confStep() {
     return { need: function () { return true; }, html: function () {
-      return '<p class="eyebrow">How you feel right now</p><h2>How sure are you about your own money?</h2>' + CONF.map(function (c, i) { return '<div class="card stack" style="gap:6px"><p style="font-weight:500">' + c + '</p><input type="range" min="1" max="5" step="1" value="' + F.d.c[i] + '" data-in="conf' + i + '" aria-label="' + esc(c) + '"><div class="range-lbl"><span>Not at all</span><b id="cl' + i + '" style="color:var(--ink)">' + CONF_LBL[F.d.c[i] - 1] + "</b><span>Completely</span></div></div>"; }).join("");
+      return '<p class="eyebrow">How you feel right now</p><h2>How sure are you about your own money?</h2>' + confQ().map(function (c, i) { return '<div class="card stack" style="gap:6px"><p style="font-weight:500">' + c + '</p><input type="range" min="1" max="5" step="1" value="' + F.d.c[i] + '" data-in="conf' + i + '" aria-label="' + esc(c) + '"><div class="range-lbl"><span>Not at all</span><b id="cl' + i + '" style="color:var(--ink)">' + CONF_LBL[F.d.c[i] - 1] + "</b><span>Completely</span></div></div>"; }).join("");
     } };
   }
   function buildFlow(kind) {
     var d = { a: [null, null, null, null, null, null], c: [3, 3], r: [3, 3, 3], h: null, act: [], cm: "", saved: "", use: null, age: null, stat: null, pl: null, guess: "", income: S.income > 0 ? String(S.income) : "" }, steps = [];
     if (kind === "onboard") {
       steps.push({ need: function () { return true; }, next: "Let's go", html: function () { return '<div style="padding-top:18px" class="stack"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>What do you <span class="hl">really</span> pay for each month?</h1><p class="muted" style="font-size:16px">Add every pay-later plan, subscription, bill and loan. TrueTotal prints them as one receipt, shows what share of your income each takes, and puts every pay day on a calendar.</p></div><div class="note">This is part of a student financial literacy project. Your answers are anonymous, stay on this phone, and you can skip any question. It takes about 4 minutes.</div>'; } });
+      steps.push({ need: function () { return F.d.age != null; }, html: function () {
+        var teen = F.d.age === "Under 18";
+        return '<p class="eyebrow">First question</p><h2>How old are you?</h2><div class="chips">' + ["Under 18", "18-22", "23-30", "31+"].map(function (o) { return '<button class="chip" data-act="fchip" data-k="age" data-v="' + o + '" aria-pressed="' + (F.d.age === o) + '">' + o + "</button>"; }).join("") + "</div>" + (teen ? '<div class="note">Under 18? You get a version made for you, with no income questions. If you are not sure it is OK to take part, ask a parent or guardian first.</div>' : '<p class="sm">If you are under 18 you get a different version of the quiz and the app.</p>');
+      } });
       steps.push({ need: function () { return true; }, html: function () {
+        var teen = curMode() === "teen";
         var grp = function (key, label, opts) { return '<div><div class="lbl" style="margin-bottom:8px">' + label + '</div><div class="chips">' + opts.map(function (o) { return '<button class="chip" data-act="fchip" data-k="' + key + '" data-v="' + o + '" aria-pressed="' + (F.d[key] === o) + '">' + o + "</button>"; }).join("") + "</div></div>"; };
-        return '<h2>A little about you</h2><p class="muted">Optional. It helps the project see who tested the app.</p>' + grp("age", "Age group", ["Under 18", "18-22", "23-30", "31+"]) + grp("stat", "You are", ["Student", "Working", "Both", "Other"]) + grp("pl", "Do you use pay-later (Tabby, Tamara, Postpay)?", ["Yes", "No", "Not sure"]);
+        return '<h2>A little about you</h2><p class="muted">Optional. It helps the project see who tested the app.</p>' + (teen ? grp("stat", "Do you get pocket money?", ["Yes, regularly", "Sometimes", "No"]) + grp("pl", "Do you pay for apps, games or subscriptions?", ["Yes", "My parents pay", "Both", "No"]) : grp("stat", "You are", ["Student", "Working", "Both", "Other"]) + grp("pl", "Do you use pay-later (Tabby, Tamara, Postpay)?", ["Yes", "No", "Not sure"]));
       } });
       steps.push({ need: function () { return true; }, next: "Start the quiz", skip: "Skip the quiz", html: function () { return '<p class="eyebrow">Before you start</p><h2>Six quick questions</h2><p class="muted">First, how confident do you feel about your own money? Then six short questions. This shows how much you learn from using the app.</p>'; } });
       steps.push(confStep());
       quizSteps().forEach(function (s) { steps.push(s); });
-      steps.push({ need: function () { return parseFloat(F.d.guess) >= 0 && F.d.guess !== ""; }, html: function () { return '<p class="eyebrow">Before we look</p><h2>Take a guess</h2><p class="muted">About how much do you spend each month on <b>pay-later plus subscriptions</b> together?</p><div class="money"><span>AED</span><input class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="guess" placeholder="e.g. 500" value="' + esc(F.d.guess) + '"></div><p class="sm">No peeking at your bank app. We\'ll compare it with the real number later.</p>'; } });
-      steps.push({ need: function () { return parseFloat(F.d.income) > 0; }, next: "Add my payments", html: function () { return '<p class="eyebrow">Last setup step</p><h2>What is your monthly income?</h2><p class="muted">After tax, in AED. Every percentage is measured against this. It never leaves your phone.</p><div class="money"><span>AED</span><input class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="income" placeholder="e.g. 9000" value="' + esc(F.d.income) + '"></div>'; } });
+      steps.push({ need: function () { return parseFloat(F.d.guess) >= 0 && F.d.guess !== ""; }, html: function () { var teen = curMode() === "teen"; return '<p class="eyebrow">Before we look</p><h2>Take a guess</h2><p class="muted">About how much do you spend each month on ' + (teen ? "<b>subscriptions, games, in-app purchases and pay-later</b> together?" : "<b>pay-later plus subscriptions</b> together?") + '</p><div class="money"><span>AED</span><input class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="guess" placeholder="e.g. 500" value="' + esc(F.d.guess) + '"></div><p class="sm">No peeking at your bank app or your phone. We\'ll compare it with the real number later.</p>'; } });
+      steps.push({ need: function () { return curMode() === "teen" || parseFloat(F.d.income) > 0; }, next: "Add my payments", html: function () { var teen = curMode() === "teen"; return teen ? '<p class="eyebrow">Last setup step</p><h2>Do you get pocket money?</h2><p class="muted">Enter how much you get each month in AED, or leave it empty if you do not get any. It never leaves your phone.</p><div class="money"><span>AED</span><input class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="income" placeholder="e.g. 200" value="' + esc(F.d.income) + '"></div>' : '<p class="eyebrow">Last setup step</p><h2>What is your monthly income?</h2><p class="muted">After tax, in AED. Every percentage is measured against this. It never leaves your phone.</p><div class="money"><span>AED</span><input class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="income" placeholder="e.g. 9000" value="' + esc(F.d.income) + '"></div>'; } });
     } else if (kind === "pre") {
       /* not used */
     } else if (kind === "post") {
@@ -846,7 +923,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   function resultHTML() {
     var post = score(F.d.a), pre = S.pre ? score(S.pre.a) : null;
     var h = '<p class="eyebrow">Your result</p><h1>' + post + " out of 6" + (pre != null ? ' <span class="hl">' + (post - pre >= 0 ? "+" : "") + (post - pre) + "</span>" : "") + "</h1>" + (pre != null ? '<p class="muted">Before you started: ' + pre + " out of 6.</p>" : "");
-    h += QUIZ.map(function (q, i) { var ok = F.d.a[i] === q.c; return '<div class="card stack" style="gap:6px"><div class="row-between"><b style="font-weight:600;font-size:14px">' + esc(q.q) + '</b><span class="tag" style="--c:' + (ok ? "var(--good)" : "var(--bad)") + '">' + (ok ? "Right" : "Not quite") + '</span></div><p class="sm">' + (ok ? "" : "Answer: " + esc(q.o[q.c]) + ". ") + esc(q.e) + "</p></div>"; }).join("");
+    h += quiz().map(function (q, i) { var ok = F.d.a[i] === q.c; return '<div class="card stack" style="gap:6px"><div class="row-between"><b style="font-weight:600;font-size:14px">' + esc(q.q) + '</b><span class="tag" style="--c:' + (ok ? "var(--good)" : "var(--bad)") + '">' + (ok ? "Right" : "Not quite") + '</span></div><p class="sm">' + (ok ? "" : "Answer: " + esc(q.o[q.c]) + ". ") + esc(q.e) + "</p></div>"; }).join("");
     return h;
   }
   function openFlow(kind) {
@@ -873,6 +950,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     var k = F.kind, d = F.d;
     if (k === "onboard") {
       S.about = { age: d.age, stat: d.stat, pl: d.pl };
+      S.mode = d.age === "Under 18" ? "teen" : "adult";
       if (d.a.every(function (x) { return x != null; })) S.pre = { a: d.a.slice(), c: d.c.slice(), at: Date.now() };
       S.guess = parseFloat(d.guess); if (isNaN(S.guess)) S.guess = null;
       S.income = parseFloat(d.income) || 0;
@@ -893,14 +971,14 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     document.documentElement.style.overflow = "hidden";
     var items = S.items.filter(function (i) { return i.on; }).sort(function (a, b) { return monthly(b) - monthly(a); }), shown = items.slice(0, 7), more = items.length - shown.length, tot = total(), real = flexible(), g = S.guess;
     var h = '<div class="in"><div class="prog"><span style="width:44px"></span><div class="track" style="visibility:hidden"></div><button class="icon-btn" data-act="fclose" aria-label="Close">' + ic("x", 22) + '</button></div><div class="body rv">';
-    h += g != null ? '<div><p class="eyebrow">You guessed</p><div class="mono" style="font-size:30px;font-weight:600">' + aed(g) + '</div><small>for pay later + subscriptions</small></div>' : '<p class="eyebrow">Printing your TrueTotal…</p>';
+    h += g != null ? '<div><p class="eyebrow">You guessed</p><div class="mono" style="font-size:30px;font-weight:600">' + aed(g) + '</div><small>for ' + flexLabel().toLowerCase() + '</small></div>' : '<p class="eyebrow">Printing your TrueTotal…</p>';
     h += '<section class="paper" data-act="rvskip"><div class="eyebrow">TrueTotal · per month</div><hr class="rule">';
     shown.forEach(function (it, i) { h += '<div class="line" data-i="' + i + '"><span class="nm" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(it.name) + '</span><span class="dots" style="flex:1;border-bottom:2px dotted var(--ink2);opacity:.4;transform:translateY(-4px)"></span><span class="mono">' + aed(monthly(it)) + "</span></div>"; });
     if (more > 0) h += '<div class="line" data-i="' + shown.length + '"><span class="muted">and ' + more + " more…</span></div>";
     h += '<hr class="rule"><div class="leader total-line"><span>TOTAL</span><span class="dots"></span><span class="total-num"><span class="hl" id="rvTot">AED 0</span></span></div><div class="barcode" aria-hidden="true"></div></section>';
-    h += '<div class="fade" id="rvCmp">' + (g != null ? '<div class="cmp"><div><div class="row-between"><small>Your guess</small><b class="mono">' + aed(g) + '</b></div><div class="bar" style="--c:var(--k-other)"><i id="rvB1" data-w="0"></i></div></div><div><div class="row-between"><small>Real: pay later + subscriptions</small><b class="mono">' + aed(real) + '</b></div><div class="bar" style="--c:var(--k-pay)"><i id="rvB2" data-w="0"></i></div></div></div>' : "") + "</div>";
+    h += '<div class="fade" id="rvCmp">' + (g != null ? '<div class="cmp"><div><div class="row-between"><small>Your guess</small><b class="mono">' + aed(g) + '</b></div><div class="bar" style="--c:var(--k-other)"><i id="rvB1" data-w="0"></i></div></div><div><div class="row-between"><small>Real: ' + flexLabel().toLowerCase() + '</small><b class="mono">' + aed(real) + '</b></div><div class="bar" style="--c:var(--k-pay)"><i id="rvB2" data-w="0"></i></div></div></div>' : "") + "</div>";
     var diff = real - (g || 0), msg = g == null ? "Here is what you pay for, all in one place." : Math.abs(diff) < Math.max(10, real * 0.05) ? "You were close. Most people aren't." : diff > 0 ? aed(diff) + " more than you thought" + (g > 0 ? " (" + Math.round(diff / g * 100) + "% higher)" : "") + ". Small payments add up." : aed(-diff) + " less than you feared.";
-    h += '<div class="fade" id="rvMsg"><h2>' + msg + '</h2>' + (S.income > 0 ? '<p class="muted" style="margin-top:6px">Everything you pay for takes <b>' + pc(share(tot)) + "</b> of your income.</p>" : "") + '</div></div><div class="foot fade" id="rvFoot"><button class="btn hi block" data-act="rvdone">See my breakdown</button></div></div>';
+    h += '<div class="fade" id="rvMsg"><h2>' + msg + '</h2>' + (S.income > 0 ? '<p class="muted" style="margin-top:6px">Everything you pay for takes <b>' + pc(share(tot)) + "</b> " + baseWord() + ".</p>" : '<p class="muted" style="margin-top:6px">Everything you pay for adds up to about <b>' + aed(tot * 12) + "</b> a year.</p>") + '</div></div><div class="foot fade" id="rvFoot"><button class="btn hi block" data-act="rvdone">See my breakdown</button></div></div>';
     flowEl.innerHTML = h;
     var lines = $$(".line", flowEl), totEl = $("#rvTot"), run = 0, end;
     var finish = function () {
@@ -932,7 +1010,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, fallback); else fallback();
   }
   function showText(txt) {
-    openSheet('<div class="stack"><div class="row-between"><h2>Your results</h2><button class="icon-btn" data-act="sheetclose" aria-label="Close">' + ic("x", 22) + '</button></div><p class="sm">Press and hold the text, choose Select All, then Copy.</p><textarea readonly style="min-height:200px;font-family:var(--fm);font-size:13px" id="rtxt">' + esc(txt) + "</textarea></div>", function () { var t = $("#rtxt"); t.focus(); t.select(); });
+    openSheet('<div class="stack"><div class="row-between"><h2>Your results</h2><button class="icon-btn" data-act="sheetclose" aria-label="Close">' + ic("x", 22) + '</button></div><p class="sm">Press and hold the text, choose Select All, then Copy.</p><textarea readonly style="min-height:200px;font-family:var(--fm);font-size:13px" id="rtxt">' + esc(txt) + "</textarea></div>", function () { var t = $("#rtxt"); t.focus(); t.select(); }, "text");
   }
   function buildICS() {
     var f = function (d) { return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()); }, trig = ["PT9H", "-PT15H", "-PT39H"][S.remind], L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//TrueTotal//EN", "CALSCALE:GREGORIAN"];
@@ -952,7 +1030,14 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   }
 
   /* ---------- example ---------- */
+  function loadExampleTeen() {
+    S.income = 300; S.guess = 100; S.revealed = false; S.goal = { name: "New headphones", target: 600 };
+    var m = function (n, k, a, day) { return { id: uid(), name: n, kind: k, amount: a, freq: "monthly", anchor: iso(nextDom(day)), left: null, on: true }; };
+    S.items = [m("Streaming service", "sub", 35, 8), m("Music app", "sub", 22, 8), m("App subscription", "sub", 15, 14), m("Game pass", "game", 45, 3), m("In-game coins", "game", 30, 20), m("Phone top-up", "bill", 50, 1)];
+    save(); render(); toast("Example numbers loaded");
+  }
   function loadExample() {
+    if (isTeen()) { loadExampleTeen(); return; }
     S.income = 9000; S.guess = 450; S.revealed = false;
     var m = function (n, k, a, day, left) { return { id: uid(), name: n, kind: k, amount: a, freq: "monthly", anchor: iso(nextDom(day)), left: left == null ? null : left, on: true }; };
     S.items = [m("Rent", "bill", 3200, 1), m("Utilities and internet", "bill", 520, 5), m("Phone plan", "bill", 199, 12), m("Credit card payment", "loan", 450, 25), m("Streaming service", "sub", 55, 8), m("Music app", "sub", 25, 8), m("Gym membership", "sub", 260, 15),
@@ -982,10 +1067,13 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       copylink: function () { var u = location.origin + location.pathname, ok = function () { toast("Link copied. Paste it in Safari."); }; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(ok, function () { toast(u); }); else toast(u); },
       install: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; $("#installBar").hidden = true; } },
       installoff: function () { $("#installBar").hidden = true; try { localStorage.setItem("tt-install-off", "1"); } catch (er) {} },
+      goal: openGoal,
+      goalsave: function () { if (!gd || !gd.name.trim() || !(gd.target > 0)) { toast("Add a name and an amount"); return; } S.goal = { name: gd.name.trim(), target: gd.target }; save(); closeSheet(); toast("Goal saved"); },
+      goaldel: function () { S.goal = null; save(); closeSheet(); toast("Goal removed"); },
       post: function () { openFlow("post"); }, check: function () { openFlow("check"); }, copy: copyResults, ics: downloadICS,
       sheetclose: function () { closeSheet(); },
       /* item sheet */
-      preset: function () { var p = PRESETS[+t.dataset.i]; ed.name = p[0]; ed.kind = p[1]; if (p[1] === "pay") { ed.hasEnd = true; } $("#fName").value = ed.name; refreshItemSheet(); },
+      preset: function () { var p = presets()[+t.dataset.i]; ed.name = p[0]; ed.kind = p[1]; if (p[1] === "pay") { ed.hasEnd = true; } $("#fName").value = ed.name; refreshItemSheet(); },
       kind: function () { ed.kind = t.dataset.k; if (ed.kind === "pay" && !ed.hasEnd && ed.isNew) ed.hasEnd = true; refreshItemSheet(); },
       freq: function () { ed.freq = t.dataset.f; refreshItemSheet(); },
       endtoggle: function () { ed.hasEnd = !ed.hasEnd; refreshItemSheet(); },
@@ -1018,11 +1106,13 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   document.addEventListener("input", function (e) {
     var el = e.target, k = el.dataset && el.dataset.in;
     if (!k) return;
-    if (ed && sheet && sheet.contains(el)) {
+    var sk = sheet && sheet.contains(el) ? sheet.dataset.kind : "";
+    if (sk === "item" && ed) {
       if (k === "name") ed.name = el.value; else if (k === "amount") ed.amount = parseFloat(el.value) || 0; else if (k === "anchor") ed.anchor = el.value;
-      if (k !== "income") { $("#dateHint").textContent = dateHint(); $("#prev").innerHTML = previewHTML(); }
+      $("#dateHint").textContent = dateHint(); $("#prev").innerHTML = previewHTML();
     }
-    if (k === "income" && sheet && sheet.contains(el)) { S.income = Math.max(0, parseFloat(el.value) || 0); save(); }
+    if (sk === "settings" && k === "income") { S.income = Math.max(0, parseFloat(el.value) || 0); save(); }
+    if (sk === "goal" && gd) { if (k === "goalname") gd.name = el.value; else if (k === "goaltarget") gd.target = parseFloat(el.value) || 0; }
     if (F && flowEl && flowEl.contains(el)) {
       if (/^conf\d$/.test(k)) { var i = +k.slice(4); F.d.c[i] = +el.value; $("#cl" + i).textContent = CONF_LBL[el.value - 1]; }
       else if (/^rate\d$/.test(k)) { var j = +k.slice(4); F.d.r[j] = +el.value; $("#rl" + j).textContent = el.value + " of 5"; }
