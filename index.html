@@ -285,7 +285,8 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     right: '<path d="M9 5l7 7-7 7"/>',
     x: '<path d="M6 6l12 12M18 6L6 18"/>',
     check: '<path d="M5 12l5 5 9-10"/>',
-    share: '<path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/>'
+    share: '<path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/>',
+    addsq: '<rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M12 8v8M8 12h8"/>'
   };
   function ic(n, s) { s = s || 20; return '<svg class="i" width="' + s + '" height="' + s + '" viewBox="0 0 24 24" aria-hidden="true">' + IC[n] + "</svg>"; }
 
@@ -976,6 +977,9 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       calday: function () { cal.sel = t.dataset.d; render(); },
       mbar: function () { var n = Number(t.dataset.i); cal.mi = cal.mi === n ? -1 : n; render(); },
       reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { S.revealed = true; save(); view = "home"; closeFlow(); window.scrollTo(0, 0); },
+      gateskip: leaveGate,
+      gateinstall: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; } leaveGate(); },
+      copylink: function () { var u = location.origin + location.pathname, ok = function () { toast("Link copied. Paste it in Safari."); }; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(ok, function () { toast(u); }); else toast(u); },
       install: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; $("#installBar").hidden = true; } },
       installoff: function () { $("#installBar").hidden = true; try { localStorage.setItem("tt-install-off", "1"); } catch (er) {} },
       post: function () { openFlow("post"); }, check: function () { openFlow("check"); }, copy: copyResults, ics: downloadICS,
@@ -1044,14 +1048,44 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     bar.innerHTML = '<div class="tx"><b>Install TrueTotal</b>' + msg + "</div>" + btn + '<button class="icon-btn" data-act="installoff" aria-label="Dismiss">' + ic("x", 20) + "</button>";
     bar.hidden = false;
   }
-  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); deferredInstall = e; showInstall(); });
+  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); deferredInstall = e; if (gateOpen) openGate(); else showInstall(); });
   window.addEventListener("appinstalled", function () { $("#installBar").hidden = true; });
   showInstall();
+
+  /* ---------- install-first screen (iPhone cannot be installed automatically, so we guide) ---------- */
+  function gateEnv() {
+    var q = /[?&]gate=(ios|android)/.exec(location.search), ua = navigator.userAgent;
+    var ios = q ? q[1] === "ios" : /iphone|ipad|ipod/i.test(ua), android = q ? q[1] === "android" : /android/i.test(ua);
+    return { ios: ios, android: android, inapp: !q && ios && !/Safari\//.test(ua), forced: !!q };
+  }
+  function shouldGate() {
+    var e = gateEnv();
+    if (!e.forced) {
+      if (typeof window.claude !== "undefined" || !(e.ios || e.android) || inApp()) return false;
+      try { if (localStorage.getItem("tt-gate-seen") === "1") return false; } catch (x) {}
+    }
+    return e.ios || e.android;
+  }
+  var gateOpen = false;
+  function openGate() {
+    var e = gateEnv(), b = function (t) { return '<b style="display:inline;font-size:inherit;color:var(--ink)">' + t + "</b>"; };
+    var steps = e.ios
+      ? [["share", "Tap Share", "The square with an arrow, in the bottom bar of Safari."], ["addsq", "Tap Add to Home Screen", "Swipe up in the share sheet to find it. Keep " + b("Open as Web App") + " switched on."], ["receipt", "Open TrueTotal from your home screen", "Then start. It opens full screen, like an app."]]
+      : deferredInstall ? [] : [["dots", "Open the browser menu", "The three dots at the top right of Chrome."], ["addsq", "Tap Install app or Add to Home screen", "Then open TrueTotal from your home screen."]];
+    var h = '<div class="in"><div class="body" style="padding-top:18px"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>Install it <span class="hl">first</span></h1><p class="muted" style="font-size:16px">TrueTotal works best as an app on your home screen. Install it before you start. Your answers are saved inside whichever one you use, so starting in the browser would not carry over.</p>';
+    if (e.inapp) h += '<div class="warnbar"><b>You are in an app\'s built-in browser.</b> Installing does not work here. Tap the compass or ⋯ button and choose ' + b("Open in Safari") + ", or copy the link below and paste it into Safari.</div>";
+    h += steps.map(function (s, i) { return '<div class="card" style="display:flex;gap:14px;align-items:center"><span class="ico lg" style="--c:var(--ink)">' + ic(s[0], 22) + '</span><div><b style="font-family:var(--fd);font-size:16px">' + (i + 1) + ". " + s[1] + '</b><p class="sm" style="margin-top:2px">' + s[2] + "</p></div></div>"; }).join("");
+    h += '</div><div class="foot">' + (deferredInstall && !e.ios ? '<button class="btn hi block" data-act="gateinstall">Install TrueTotal</button>' : "") + '<button class="btn ghost block" data-act="copylink">Copy the link</button><button class="btn ghost block" data-act="gateskip">Skip, use it in the browser</button></div></div>';
+    if (!flowEl) { flowEl = document.createElement("div"); flowEl.className = "flow"; flowEl.setAttribute("role", "dialog"); flowEl.setAttribute("aria-modal", "true"); document.body.appendChild(flowEl); }
+    document.documentElement.style.overflow = "hidden";
+    flowEl.innerHTML = h; gateOpen = true; flowEl.scrollTop = 0;
+  }
+  function leaveGate() { gateOpen = false; try { localStorage.setItem("tt-gate-seen", "1"); } catch (x) {} closeFlow(); openFlow("onboard"); }
 
   function applyTheme() { if (S.theme === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", S.theme); }
   applyTheme();
   render();
-  if (!S.onboarded) openFlow("onboard");
+  if (!S.onboarded) { if (shouldGate()) openGate(); else openFlow("onboard"); }
 })();
 </script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script></body></html>
