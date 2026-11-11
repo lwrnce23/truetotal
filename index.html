@@ -1035,9 +1035,13 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   function showInstall() {
     var bar = $("#installBar");
     if (!bar || typeof window.claude !== "undefined" || inApp() || installDismissed()) return;
-    var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    if (!ios && !deferredInstall) return;
-    bar.innerHTML = '<div class="tx"><b>Install TrueTotal</b>' + (ios ? "Tap " + ic("share", 16) + " Share, then <b style=\"display:inline;font-size:inherit\">Add to Home Screen</b>. It opens full screen, like an app." : "Add it to your home screen so it opens full screen, like an app.") + "</div>" + (ios ? "" : '<button class="btn" data-act="install">Install</button>') + '<button class="icon-btn" data-act="installoff" aria-label="Dismiss">' + ic("x", 20) + "</button>";
+    var ua = navigator.userAgent, ios = /iphone|ipad|ipod/i.test(ua), android = /android/i.test(ua);
+    if (!ios && !android) return;
+    var msg, btn = "";
+    if (ios) msg = "Tap " + ic("share", 16) + " Share, then <b style=\"display:inline;font-size:inherit\">Add to Home Screen</b>. No Share option? Open this link in <b style=\"display:inline;font-size:inherit\">Safari</b>, not inside WhatsApp or Instagram.";
+    else if (deferredInstall) { msg = "Add it to your home screen so it opens full screen, like an app."; btn = '<button class="btn" data-act="install">Install</button>'; }
+    else msg = "Open the browser menu (three dots), then <b style=\"display:inline;font-size:inherit\">Install app</b> or <b style=\"display:inline;font-size:inherit\">Add to Home screen</b>. Not there? Open this link in <b style=\"display:inline;font-size:inherit\">Chrome</b> first.";
+    bar.innerHTML = '<div class="tx"><b>Install TrueTotal</b>' + msg + "</div>" + btn + '<button class="icon-btn" data-act="installoff" aria-label="Dismiss">' + ic("x", 20) + "</button>";
     bar.hidden = false;
   }
   window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); deferredInstall = e; showInstall(); });
