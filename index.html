@@ -515,7 +515,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   var score = function (a) { return a ? a.reduce(function (s, v, i) { return s + (v === quiz()[i].c ? 1 : 0); }, 0) : 0; };
   function resultsText() {
     var L = ["TRUETOTAL RESULTS", "Code: " + S.id, "Track: " + (isTeen() ? "under 18" : "18+")];
-    if (S.about) L.push("About: age " + (S.about.age || "-") + ", " + (S.about.stat || "-") + ", pay-later use " + (S.about.pl || "-"));
+    if (S.about) L.push("About: age " + (S.about.age || "-") + (isTeen() ? ", pocket money: " + (S.about.stat || "-") + ", pays for apps/games: " : ", " + (S.about.stat || "-") + ", pay-later use: ") + (S.about.pl || "-"));
     if (S.pre) L.push("Before: quiz " + score(S.pre.a) + "/6, confidence " + S.pre.c.join(","));
     if (S.post) L.push("After: quiz " + score(S.post.a) + "/6, confidence " + S.post.c.join(","));
     if (S.guess != null) L.push("Guess (" + flexLabel().toLowerCase() + "): " + aed(S.guess) + "; real: " + aed(flexible()) + (S.guess > 0 ? " (" + (flexible() >= S.guess ? "+" : "") + Math.round((flexible() - S.guess) / S.guess * 100) + "%)" : ""));
