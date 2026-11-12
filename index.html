@@ -257,6 +257,30 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
 .ideas li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ink2); margin-top: 8px; flex: none; }
 .save-off { opacity: .55; }
 .warnbar { background: color-mix(in srgb, var(--warn) 18%, var(--paper)); border-radius: 12px; padding: 10px 12px; font-size: 13px; }
+/* colour + motion */
+body { background-image: radial-gradient(70% 38% at 0% -4%, color-mix(in srgb, var(--k-sub) 20%, transparent), transparent 70%), radial-gradient(55% 32% at 100% 2%, color-mix(in srgb, var(--k-pay) 15%, transparent), transparent 70%), radial-gradient(60% 30% at 100% 100%, color-mix(in srgb, var(--k-game) 14%, transparent), transparent 70%); background-attachment: fixed; }
+.brand-mark { background: linear-gradient(135deg, var(--k-pay), var(--k-sub) 55%, var(--k-bill)); color: #fff; box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--k-sub) 80%, transparent); }
+.paper { background: linear-gradient(90deg, var(--k-pay), var(--k-sub), var(--k-bill), var(--k-game), var(--k-loan)) top / 100% 5px no-repeat, var(--paper); }
+.card { box-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 4%, transparent), 0 10px 24px -18px color-mix(in srgb, var(--ink) 40%, transparent); }
+.card.steps { background: linear-gradient(135deg, color-mix(in srgb, var(--k-sub) 10%, var(--paper)), var(--paper) 55%); }
+button.card:active { transform: scale(.985); }
+.btn.hi { background: linear-gradient(135deg, var(--hi), #A9F28C); box-shadow: 0 8px 18px -10px #6CC24A; }
+.btn { transition: transform .15s, filter .15s, box-shadow .15s; }
+.flow .prog .track i { background: linear-gradient(90deg, var(--k-pay), var(--k-sub), var(--k-bill)); }
+.seg5 { display: inline-flex; gap: 4px; }
+.seg5 i { width: 22px; height: 7px; border-radius: 99px; background: var(--line); transition: background .3s; }
+.seg5 i.on:nth-child(1) { background: var(--k-pay); } .seg5 i.on:nth-child(2) { background: var(--k-sub); } .seg5 i.on:nth-child(3) { background: var(--k-bill); } .seg5 i.on:nth-child(4) { background: var(--k-game); } .seg5 i.on:nth-child(5) { background: var(--k-loan); }
+nav.tabs button:nth-child(1) { --tc: var(--k-sub); } nav.tabs button:nth-child(2) { --tc: var(--k-bill); } nav.tabs button:nth-child(3) { --tc: var(--k-game); } nav.tabs button:nth-child(4) { --tc: var(--k-pay); } nav.tabs button:nth-child(5) { --tc: var(--k-loan); }
+nav.tabs button .pill { color: var(--tc); }
+nav.tabs button[aria-current="page"] .pill { background: color-mix(in srgb, var(--tc) 22%, var(--paper)); color: var(--tc); }
+nav.tabs .pill svg { transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
+nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-6deg); }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+#view.enter > * { animation: rise .45s cubic-bezier(.2,.8,.2,1) both; }
+#view.enter > *:nth-child(2) { animation-delay: .05s; } #view.enter > *:nth-child(3) { animation-delay: .1s; } #view.enter > *:nth-child(4) { animation-delay: .15s; } #view.enter > *:nth-child(5) { animation-delay: .2s; } #view.enter > *:nth-child(n+6) { animation-delay: .25s; }
+@keyframes pop { 0% { transform: scale(.6); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+.chip[aria-pressed="true"], .opt[aria-pressed="true"] { animation: pop .25s ease-out; }
+@media (hover: hover) { .btn:hover { transform: translateY(-1px); } button.card:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -16px color-mix(in srgb, var(--ink) 45%, transparent); } }
 /* hover + keyboard polish */
 .skip { position: absolute; left: -9999px; top: 8px; background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 10px; z-index: 100; font-weight: 600; }
 .skip:focus { left: 16px; }
@@ -656,11 +680,12 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     var lock = !!(sheet || flowEl);
     [".shell", "nav.tabs", ".skip"].forEach(function (sel) { var e = $(sel); if (e) e.inert = lock; });
   }
-  var lastSig = null;
+  var lastSig = null, lastView = null;
   function render() {
     var v = $("#view"), sig = sigOf(document.activeElement);
     v.innerHTML = view === "home" ? vHome() : view === "items" ? vItems() : view === "cal" ? vCal() : view === "save" ? vSave() : vLearn();
     v.className = "v-" + view;
+    if (lastView !== view) { lastView = view; v.classList.add("enter"); }
     renderTabs();
     runCounts(v);
     if (sig && (document.activeElement === document.body || !document.activeElement)) refocus(sig);
@@ -683,7 +708,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     var sent = !!(S.sentAt && S.post && S.sentAt >= S.post.at);
     var d = [!!S.pre, !!S.revealed, !!S.post, !!S.post, sent];
     var T = [["Do the before-quiz", "Done when you first opened TrueTotal."], ["Add what you pay for", "Add your payments, then tap Reveal my TrueTotal."], ["Use it for a few days", "Open the calendar, try the cancel switches, look at Ways to pay less."], ["Do the after-quiz", "Learn tab, then Take the after-quiz. Same questions as before."], ["Send your results", "Tap the button below (or Learn, then Send). This is how your before and after get counted."]];
-    var cur = d.indexOf(false), h = '<section class="card steps"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (compact ? "Next step" : "Your 5 steps") + '</h3><small class="mono">Step ' + (Math.min(cur < 0 ? 5 : cur + 1, 5)) + " of 5</small></div>";
+    var cur = d.indexOf(false), h = '<section class="card steps"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (compact ? "Next step" : "Your 5 steps") + '</h3><span class="seg5" role="img" aria-label="' + d.filter(Boolean).length + ' of 5 steps done">' + d.map(function (x, i) { return "<i" + (x || i === cur ? ' class="on"' : "") + "></i>"; }).join("") + "</span></div>";
     if (cur < 0) return h + '<p class="sm" style="margin-top:6px">All done. Thank you for taking part!</p></section>';
     var dd0 = Math.floor((Date.now() - S.startedAt) / 864e5); if (cur === 2 && dd0 >= 3) T[2][1] = "It has been " + dd0 + " days since you started. Ready for the after-quiz?";
     T.forEach(function (t, i) { if (compact && i !== cur) return; h += '<div class="stp' + (d[i] ? " done" : i === cur ? " now" : "") + '"><span class="num">' + (d[i] ? "✓" : i + 1) + '</span><div><b style="font-weight:600">' + t[0] + "</b>" + (i === cur ? '<p class="sm">' + t[1] + "</p>" : "") + "</div></div>"; });
@@ -693,6 +718,20 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     if (cta && (cta[0] !== "send" || canSend())) h += '<button class="btn ' + (cur === 2 ? "ghost " : "hi ") + 'block" data-act="' + cta[0] + '" style="margin-top:8px">' + cta[1] + "</button>";
     if (cur === 2) h += '<p class="sm">Best after 3 to 5 days of real use, but you can do it any time.</p>';
     return h + (compact ? '<button class="btn ghost sm2" data-act="guide" style="margin-top:8px">How this works</button>' : '<button class="btn ghost block" data-act="guide" style="margin-top:8px">' + ic("bulb", 16) + "Show me how this works</button>") + "</section>";
+  }
+  function confetti() {
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var c = document.createElement("canvas"), dpr = window.devicePixelRatio || 1, W = innerWidth, H = innerHeight; c.width = W * dpr; c.height = H * dpr;
+    c.style.cssText = "position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:300"; c.setAttribute("aria-hidden", "true"); document.body.appendChild(c);
+    var x = c.getContext("2d"); x.scale(dpr, dpr);
+    var cols = ["#F0446B", "#7A5CFA", "#2F80ED", "#0E9AA7", "#E5A100", "#D6F55F"], P = [];
+    for (var i = 0; i < 110; i++) P.push({ x: W / 2 + (Math.random() - .5) * 80, y: H * .62, vx: (Math.random() - .5) * 13, vy: -Math.random() * 15 - 5, r: Math.random() * 6 + 4, a: Math.random() * 6, va: (Math.random() - .5) * .35, c: cols[i % cols.length] });
+    var t0 = performance.now();
+    (function f(now) {
+      var t = (now - t0) / 1000; x.clearRect(0, 0, W, H);
+      P.forEach(function (p) { p.vy += .42; p.x += p.vx; p.y += p.vy; p.vx *= .99; p.a += p.va; x.save(); x.globalAlpha = Math.max(0, 1 - t / 2.2); x.translate(p.x, p.y); x.rotate(p.a); x.fillStyle = p.c; x.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); x.restore(); });
+      if (t < 2.2) requestAnimationFrame(f); else c.remove();
+    })(t0);
   }
   function streak() { var n = 0, d = today(); while (S.days.indexOf(iso(d)) >= 0) { n++; d = addDays(d, -1); } return n; }
   function homeExtras() {
@@ -1273,7 +1312,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     } else if (k === "guide") {
       S.guided = true; save(); closeFlow(); view = S.items.length ? view : "items"; render();
     } else if (k === "post") {
-      commitPost(); view = "learn"; closeFlow(); toast("Saved. Thank you!");
+      commitPost(); view = "learn"; closeFlow(); confetti(); toast("Saved. Thank you!");
     } else if (k === "check") {
       S.check = { act: d.act.slice(), saved: parseFloat(d.saved) || 0, use: d.use, at: Date.now() }; save(); closeFlow(); toast("Check-in saved");
     }
@@ -1394,7 +1433,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       calnav: function () { var d = new Date(cal.y, cal.m + Number(t.dataset.d), 1); cal.y = d.getFullYear(); cal.m = d.getMonth(); cal.sel = iso(D(cal.y, cal.m, 1)); render(); },
       calday: function () { cal.sel = t.dataset.d; render(); },
       mbar: function () { var n = Number(t.dataset.i); cal.mi = cal.mi === n ? -1 : n; render(); },
-      reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { S.revealed = true; save(); view = "home"; closeFlow(); window.scrollTo(0, 0); },
+      reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { S.revealed = true; save(); view = "home"; closeFlow(); window.scrollTo(0, 0); confetti(); },
       gateskip: leaveGate,
       gateinstall: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; } leaveGate(); },
       copylink: function () { var u = location.origin + location.pathname, ok = function () { toast("Link copied. Paste it in Safari."); }; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(ok, function () { toast(u); }); else toast(u); },
@@ -1414,7 +1453,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       calcn: function () { cd.n = +t.dataset.v; $("#calcChips").innerHTML = calcChips(); $("#calcPrev").innerHTML = calcPrev(); },
       pq: function () { pdd.q[+t.dataset.k] = +t.dataset.v; $("#pauseQs").innerHTML = pauseQs(); $("#pausePrev").innerHTML = pausePrev(); },
       pausesave: function () { if (!pdd.name.trim() || !(pdd.price > 0)) { toast("Add what it is and the price"); return; } S.pauses.push({ id: uid(), name: pdd.name.trim(), price: pdd.price, at: Date.now(), until: Date.now() + 864e5, done: null }); save(); closeSheet(); view = "home"; render(); toast("Paused. Decide tomorrow"); },
-      pskip: function () { var p = S.pauses.filter(function (q) { return q.id === t.dataset.id; })[0]; if (p) { p.done = "skipped"; save(); render(); toast("Nice. You kept " + aed(p.price)); } },
+      pskip: function () { var p = S.pauses.filter(function (q) { return q.id === t.dataset.id; })[0]; if (p) { p.done = "skipped"; save(); render(); toast("Nice. You kept " + aed(p.price)); confetti(); } },
       pbuy: function () { var p = S.pauses.filter(function (q) { return q.id === t.dataset.id; })[0]; if (p) { p.done = "bought"; save(); render(); } },
       goalsave: function () { if (!gd || !gd.name.trim() || !(gd.target > 0)) { toast("Add a name and an amount"); return; } S.goal = { name: gd.name.trim(), target: gd.target }; save(); closeSheet(); toast("Goal saved"); },
       goaldel: function () { S.goal = null; save(); closeSheet(); toast("Goal removed"); },
