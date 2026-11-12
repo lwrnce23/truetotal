@@ -232,6 +232,14 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
 .cmp .bar i { transition-duration: 1.2s; }
 .toast { position: fixed; left: 50%; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--ink); color: var(--paper); padding: 10px 18px; border-radius: 99px; font-weight: 600; font-size: 14px; opacity: 0; transition: .3s; z-index: 60; pointer-events: none; max-width: calc(100% - 32px); text-align: center; }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
+.steps .stp { display: flex; gap: 12px; align-items: flex-start; padding: 9px 0; border-top: 1px solid var(--line); }
+.steps .stp:first-of-type { border-top: 0; }
+.steps .num { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font: 700 13px var(--fm); background: var(--paper2); color: var(--ink2); }
+.steps .stp.done .num { background: var(--good); color: #fff; }
+.steps .stp.now .num { background: var(--ink); color: var(--paper); }
+.steps .stp.done b { color: var(--ink2); text-decoration: line-through; text-decoration-thickness: 1px; }
+.steps .stp p { margin: 1px 0 0; }
+@media (min-width: 900px) { #view > .steps { column-span: all; } }
 .tipcard { display: flex; gap: 12px; padding: 14px 0; border-top: 1px solid var(--line); }
 .tipcard:first-child { border-top: 0; }
 .tag { align-self: flex-start; font-family: var(--fm); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; color: var(--c); background: color-mix(in srgb, var(--c) 15%, var(--paper)); white-space: nowrap; margin-top: 2px; flex: none; min-width: 64px; text-align: center; }
@@ -669,7 +677,20 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     return '<section class="card stack"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Goal: ' + esc(g.name) + '</h3><span class="mono" style="font-weight:600">' + aed(g.target) + "</span></div>" + (m ? '<p>Switch off the costs above and you free <b>' + aed(freed) + '</b> a month. You would reach this goal in <span class="hl" style="font-weight:600">' + m + " month" + (m === 1 ? "" : "s") + "</span>.</p>" : '<p class="sm">Switch off a cost in "What if you cancelled?" to see how fast you could reach this goal.</p>') + '<button class="btn ghost sm2" data-act="goal">Edit goal</button></section>';
   }
 
-  function vHome() {
+  function stepsCard() {
+    var sent = !!(S.sentAt && S.post && S.sentAt >= S.post.at);
+    var d = [!!S.pre, !!S.revealed, !!S.post, !!S.post, sent];
+    var T = [["Do the before-quiz", "Done when you first opened TrueTotal."], ["Add what you pay for", "Add your payments, then tap Reveal my TrueTotal."], ["Use it for a few days", "Open the calendar, try the cancel switches, look at Ways to pay less."], ["Do the after-quiz", "Learn tab, then Take the after-quiz. Same questions as before."], ["Send your results", "Learn tab, then Send an update. This is how your before and after get counted."]];
+    var cur = d.indexOf(false), h = '<section class="card steps"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Your 5 steps</h3><small class="mono">' + d.filter(Boolean).length + " of 5</small></div>";
+    if (cur < 0) return h + '<p class="sm" style="margin-top:6px">All done. Thank you for taking part!</p></section>';
+    T.forEach(function (t, i) { h += '<div class="stp' + (d[i] ? " done" : i === cur ? " now" : "") + '"><span class="num">' + (d[i] ? "✓" : i + 1) + '</span><div><b style="font-weight:600">' + t[0] + "</b>" + (i === cur ? '<p class="sm">' + t[1] + "</p>" : "") + "</div></div>"; });
+    var cta = cur === 2 || cur === 3 ? ["post", "Take the after-quiz now"] : cur === 4 ? ["send", "Send my results"] : null;
+    if (cta && (cta[0] !== "send" || canSend())) h += '<button class="btn ' + (cur === 2 ? "ghost " : "hi ") + 'block" data-act="' + cta[0] + '" style="margin-top:8px">' + cta[1] + "</button>";
+    if (cur === 2) h += '<p class="sm">Best after 3 to 5 days of real use, but you can do it any time.</p>';
+    return h + "</section>";
+  }
+  function vHome() { return stepsCard() + vHome0(); }
+  function vHome0() {
     var teen = isTeen();
     if (!S.items.length) {
       return '<div class="card empty"><span class="ico lg" style="--c:var(--k-pay)">' + ic("receipt", 22) + '</span><h2 style="font-size:24px;font-weight:800">Add what you pay for</h2><p class="muted">' + (teen ? "Subscriptions, games, in-app purchases, phone top-ups. Add the day each one is paid and TrueTotal fills your calendar." : "Pay-later plans, subscriptions, rent, bills, loans. Add the day each one is paid and TrueTotal fills your calendar.") + '</p><button class="btn hi" data-act="add">' + ic("plus", 18) + 'Add a payment</button><button class="btn ghost" data-act="example">Try example numbers</button></div>';
@@ -822,7 +843,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
 
   /* ---------- LEARN ---------- */
   function vLearn() {
-    var h = '<h1 class="pg-title">Learn</h1>';
+    var h = '<h1 class="pg-title">Learn</h1>' + stepsCard();
     h += '<section class="card stack"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Your results</h3><small class="mono">' + (S.name ? esc(S.name) + " · " : "") + S.id + "</small></div>";
     var pre = S.pre ? score(S.pre.a) : null, post = S.post ? score(S.post.a) : null;
     h += '<div class="leader"><span>Before-quiz</span><span class="dots"></span><span class="amt">' + (pre == null ? "skipped" : pre + " / 6") + '</span></div><div class="leader"><span>After-quiz</span><span class="dots"></span><span class="amt">' + (post == null ? "not yet" : post + " / 6" + (pre != null ? " (" + (post - pre >= 0 ? "+" : "") + (post - pre) + ")" : "")) + "</span></div>";
