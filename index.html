@@ -157,7 +157,7 @@ input[type=range] { width: 100%; accent-color: var(--ink); height: 32px; }
 
 /* tabs */
 nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: color-mix(in srgb, var(--ground) 86%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line); padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(8px, env(safe-area-inset-right, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); }
-nav.tabs .in { max-width: 480px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
+nav.tabs .in { max-width: 480px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); }
 nav.tabs button { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 9px 0 8px; min-height: 58px; color: var(--ink2); font-size: 11.5px; font-weight: 600; }
 nav.tabs button[aria-current="page"] { color: var(--ink); }
 nav.tabs button[aria-current="page"] .pill { background: var(--hi); color: var(--hi-ink); }
@@ -244,6 +244,10 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
 .install .btn { background: var(--hi); color: var(--hi-ink); min-height: 38px; padding: 0 16px; font-size: 14px; }
 .install .icon-btn:hover { background: transparent; }
 .install svg.i { display: inline-block; vertical-align: -4px; }
+.ideas { margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.ideas li { display: flex; gap: 10px; font-size: 14px; line-height: 1.45; }
+.ideas li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ink2); margin-top: 8px; flex: none; }
+.save-off { opacity: .55; }
 .warnbar { background: color-mix(in srgb, var(--warn) 18%, var(--paper)); border-radius: 12px; padding: 10px 12px; font-size: 13px; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
@@ -288,7 +292,8 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     check: '<path d="M5 12l5 5 9-10"/>',
     share: '<path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/>',
     addsq: '<rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M12 8v8M8 12h8"/>',
-    game: '<rect x="3" y="8" width="18" height="10" rx="5"/><path d="M8 11v4M6 13h4M16 12h.01M18 14h.01"/>'
+    game: '<rect x="3" y="8" width="18" height="10" rx="5"/><path d="M8 11v4M6 13h4M16 12h.01M18 14h.01"/>',
+    tag: '<path d="M3 12V4h8l10 10-8 8L3 12Z"/><circle cx="7.5" cy="8.5" r="1.3"/>'
   };
   function ic(n, s) { s = s || 20; return '<svg class="i" width="' + s + '" height="' + s + '" viewBox="0 0 24 24" aria-hidden="true">' + IC[n] + "</svg>"; }
 
@@ -471,6 +476,8 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     if (games.length) t.push({ l: "warn", lab: "Watch out", h: "Games and apps cost " + aed(kindTotal("game") * 12) + " a year", p: "In-game coins and passes feel small when you buy them. Try a rule: wait 7 days before buying anything extra." });
     if (pays.length) t.push({ l: "warn", lab: "Watch out", h: "Pay-later is borrowing", p: "It means paying in instalments for something you already have. Talk to a parent or guardian before you use it." });
     if (S.goal) t.push({ l: "good", lab: "Goal", h: "You are saving for " + S.goal.name, p: "Switch off a cost on the Total tab to see how much faster you could reach " + aed(S.goal.target) + "." });
+    var svT = savings();
+    if (svT.monthly > 0) t.push({ l: "good", lab: "Saving", h: "You could free up " + aed(svT.monthly) + " a month", p: "Open the Save tab to see which items and cheaper options add up to that." });
     t.push({ l: "good", lab: "Habit", h: "Wait 7 days before a new subscription or purchase", p: "If you still want it after a week, it is more likely a real want. It also gives you time to save instead of borrowing." });
     t.push({ l: "good", lab: "Habit", h: "Check what renews every month", p: "Subscriptions keep charging until you cancel. Ten minutes a month keeps the total honest." });
     var o = { bad: 0, warn: 1, ok: 2, good: 3 };
@@ -504,6 +511,8 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     var hw = heaviestWeek();
     if (hw && hw.sum > 0 && hw.sum > tot * 0.35) t.push({ l: "warn", lab: "Calendar", h: "Heaviest week: " + fDate(hw.a) + " to " + fDate(hw.b), p: aed(hw.sum) + " leaves your account in those 7 days. Make sure your balance covers it before the week starts." });
 
+    var svT = savings();
+    if (svT.monthly > 0) t.push({ l: "good", lab: "Saving", h: "You could free up " + aed(svT.monthly) + " a month", p: "Open the Save tab to see which items and cheaper options add up to that." });
     t.push({ l: "good", lab: "Habit", h: "Set a reminder two days before each payment", p: "Late fees and blocked accounts are the main way pay-later gets expensive. Fees differ by provider, so read your terms once." });
     t.push({ l: "good", lab: "Habit", h: "Review this once a month", p: "Subscriptions and plans creep up. Ten minutes a month keeps the total honest." });
     var o = { bad: 0, warn: 1, ok: 2, good: 3 };
@@ -520,13 +529,15 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     if (S.post) L.push("After: quiz " + score(S.post.a) + "/6, confidence " + S.post.c.join(","));
     if (S.guess != null) L.push("Guess (" + flexLabel().toLowerCase() + "): " + aed(S.guess) + "; real: " + aed(flexible()) + (S.guess > 0 ? " (" + (flexible() >= S.guess ? "+" : "") + Math.round((flexible() - S.guess) / S.guess * 100) + "%)" : ""));
     L.push("Items tracked: " + S.items.length + "; " + (S.income > 0 ? "share of " + (isTeen() ? "pocket money" : "income") + " committed: " + pc(share(total())) : "per year: " + aed(total() * 12)));
+    var svE = savings();
+    L.push("Saving ideas: usage marked on " + S.items.filter(function (i) { return i.use; }).length + " items, cheaper options on " + S.items.filter(function (i) { return i.alt; }).length + ", possible saving " + aed(svE.monthly) + "/month");
     if (S.post) {
       L.push("Ratings: " + S.post.r.join(",") + "; helped most: " + (S.post.h || "-"));
       L.push("Will do: " + (S.post.act.join("; ") || "-"));
       if (S.post.cm) L.push("Comment: " + S.post.cm.replace(/\s+/g, " "));
     }
     if (S.check) L.push("Check-in: " + (S.check.act.join("; ") || "-") + "; saved " + (S.check.saved || 0) + " AED/mo; still using: " + (S.check.use || "-"));
-    var j = { id: S.id, pre: S.pre && { s: score(S.pre.a), c: S.pre.c }, post: S.post && { s: score(S.post.a), c: S.post.c, r: S.post.r }, g: S.guess, real: Math.round(flexible()), n: S.items.length };
+    var j = { id: S.id, pre: S.pre && { s: score(S.pre.a), c: S.pre.c }, post: S.post && { s: score(S.post.a), c: S.post.c, r: S.post.r }, g: S.guess, real: Math.round(flexible()), n: S.items.length, sv: Math.round(svE.monthly) };
     L.push("DATA " + JSON.stringify(j));
     return L.join("\n");
   }
@@ -565,7 +576,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
 
   $("#brandMark").innerHTML = ic("receipt", 17);
   $("#gearBtn").innerHTML = ic("gear", 22);
-  var TABS = [["home", "Total", "receipt"], ["items", "Items", "list"], ["cal", "Calendar", "cal"], ["learn", "Learn", "bulb"]];
+  var TABS = [["home", "Total", "receipt"], ["items", "Items", "list"], ["cal", "Calendar", "cal"], ["save", "Save", "tag"], ["learn", "Learn", "bulb"]];
   function renderTabs() {
     $("#tabs").innerHTML = TABS.map(function (t) {
       return '<button data-act="tab" data-v="' + t[0] + '"' + (view === t[0] ? ' aria-current="page"' : "") + '><span class="pill">' + ic(t[2], 21) + "</span>" + t[1] + "</button>";
@@ -574,7 +585,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
 
   function render() {
     var v = $("#view");
-    v.innerHTML = view === "home" ? vHome() : view === "items" ? vItems() : view === "cal" ? vCal() : vLearn();
+    v.innerHTML = view === "home" ? vHome() : view === "items" ? vItems() : view === "cal" ? vCal() : view === "save" ? vSave() : vLearn();
     renderTabs();
     runCounts(v);
   }
@@ -631,6 +642,8 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     h += '<section class="card"><h3 style="font-size:18px;font-weight:800">What if you cancelled?</h3><p class="sm" style="margin:2px 0 4px">Switch a cost off and watch the total, the chart and the calendar change.</p><div class="group" style="padding:0;background:none">';
     top.forEach(function (it) { h += itemRow(it, true); });
     h += "</div>" + (freed > 0 ? '<p style="margin-top:8px"><span class="hl" style="font-weight:600">Saves ' + aed(freed) + " a month · " + aed(freed * 12) + " a year</span></p>" : "") + "</section>";
+    var svH = savings();
+    h += '<button class="card row-between" data-act="gosave" style="text-align:left;width:100%"><span><span class="eyebrow">Ways to pay less</span><br><b>' + (svH.monthly > 0 ? "You could free up " + aed(svH.monthly) + " a month" : "See ideas and cheaper options") + "</b></span>" + ic("right", 20) + "</button>";
     if (teen) h += goalCard();
 
     if (S.guess != null) {
@@ -770,6 +783,99 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   function meter(label, v, goal, higher, col) {
     var good = higher ? v >= goal : v <= goal;
     return '<div><div class="row-between" style="margin-bottom:8px"><span style="font-weight:500">' + label + '</span><span class="mono" style="font-weight:600;color:' + (good ? "var(--good)" : "var(--warn)") + '">' + pc(v) + ' <small style="white-space:nowrap">goal ' + (higher ? "≥" : "≤") + " " + goal + '%</small></span></div><div class="meter" style="--c:' + (good ? "var(--good)" : "var(--warn)") + '"><i class="f" data-w="' + Math.min(100, v) + '"></i><i class="g" style="left:calc(' + goal + '% - 1px)"></i></div></div>';
+  }
+
+  /* ---------- SAVE: ideas, usage and cheaper options ---------- */
+  var USE = [["daily", "Daily", 30], ["weekly", "Weekly", 4], ["monthly", "Monthly", 1], ["rarely", "Rarely", 0.5], ["never", "Never", 0]];
+  function savings() {
+    var list = [], tot = 0;
+    counted().forEach(function (it) {
+      var m = monthly(it);
+      if (it.use === "never" || it.use === "rarely") { list.push({ it: it, type: "unused", amt: m }); tot += m; }
+      else if (it.alt && it.alt.amount > 0) { var d = m - it.alt.amount * FREQ[it.alt.freq].per; if (d > 0) { list.push({ it: it, type: "alt", amt: d }); tot += d; } }
+    });
+    return { list: list, monthly: tot };
+  }
+  function ideasFor(it) {
+    var t = isTeen(), k = it.kind;
+    if (k === "sub") return [
+      "Look for a free or cheaper plan with fewer features.",
+      it.freq === "monthly" ? "Ask about a yearly plan. It can cost less per month, but check the total first." : "Compare the yearly price with paying monthly, if you do not use it much.",
+      t ? "Ask a parent if you can share a family plan." : "Check for a family or shared plan, if the terms allow it.",
+      "Pause or cancel in the months you do not use it. You can often come back later.",
+      "Some services have student prices. Ask, with proof that you study."
+    ].slice(0, 4);
+    if (k === "game") return [
+      "Play the free version without buying extras.",
+      "Set a monthly limit for coins and passes, and stop when it is used up.",
+      "Wait 7 days before buying. Many wants fade.",
+      t ? "Ask a parent if a one-off purchase is cheaper than a subscription." : "Check if a one-off purchase is cheaper than a subscription."
+    ];
+    if (k === "bill" && /rent/i.test(it.name)) return [
+      "Before you renew, look at what similar places cost nearby.",
+      "Ask your landlord if there is room to negotiate when you renew.",
+      "Ask if sharing the cost with someone else would work for you."
+    ];
+    if (k === "bill") return [
+      "Compare your plan with the other plans from the same provider. A smaller one may cover what you really use.",
+      "Check how much data, minutes or electricity you actually use. Pay for what you use.",
+      "Ask your provider if there is a cheaper tier or a loyalty offer.",
+      "Compare prices with other providers before you renew."
+    ];
+    if (k === "loan") return [
+      "Pay more than the minimum when you can. It cuts the interest you pay.",
+      "Ask your bank if a lower rate is available.",
+      "If you have several, pay off the one with the highest interest first."
+    ];
+    if (k === "pay") return [
+      "Save up and buy it later, instead of borrowing.",
+      "Finish one plan before you start another.",
+      "If your provider allows early payment without a fee, clearing the biggest plan first frees the most cash.",
+      "Look for a cheaper version of the item."
+    ];
+    return [
+      "Ask: do I still need this?",
+      "Ask: can I get the same thing for less?",
+      "Compare it with one or two alternatives before you pay again."
+    ];
+  }
+  function saveCard(it) {
+    var m = monthly(it), canUse = it.kind === "sub" || it.kind === "game" || it.kind === "other", h = '<section class="card stack' + (it.on ? "" : " save-off") + '" style="gap:12px">';
+    h += '<div style="display:flex;gap:12px;align-items:center"><span class="ico lg" style="--c:' + kcol(it.kind) + '">' + ic(KINDS[it.kind].icon) + '</span><div style="min-width:0;flex:1"><b style="display:block;font-weight:600">' + esc(it.name) + "</b><small>" + aed(m) + " a month · " + aed(m * 12) + " a year" + (it.on ? "" : " · switched off") + "</small></div></div>";
+    if (canUse) {
+      h += '<div><div class="lbl" style="margin-bottom:8px">How often do you use it?</div><div class="chips">' + USE.map(function (u) { return '<button class="chip" data-act="use" data-id="' + it.id + '" data-v="' + u[0] + '" aria-pressed="' + (it.use === u[0]) + '">' + u[1] + "</button>"; }).join("") + "</div>";
+      var sel = USE.filter(function (x) { return x[0] === it.use; })[0];
+      if (sel && sel[2] > 0) h += '<p class="sm" style="margin-top:8px">About <b style="color:var(--ink)">' + aed(m / sel[2]) + "</b> each time you use it.</p>";
+      if (it.use === "never" || it.use === "rarely") h += '<div class="note" style="margin-top:8px">You hardly use this. Cancelling would save <b style="color:var(--ink)">' + aed(m * 12) + "</b> a year.</div>" + (it.on ? '<button class="btn ghost sm2" style="margin-top:8px" data-act="switchoff" data-id="' + it.id + '">Switch it off to see the effect</button>' : "");
+      h += "</div>";
+    }
+    h += '<div><div class="eyebrow">Ideas to try</div><ul class="ideas">' + ideasFor(it).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>";
+    if (it.alt && it.alt.amount > 0) {
+      var am = it.alt.amount * FREQ[it.alt.freq].per, d = m - am;
+      h += '<div class="preview"><b>' + esc(it.alt.name || "Cheaper option") + "</b><br><small>" + aed(it.alt.amount) + " " + FREQ[it.alt.freq].l.toLowerCase() + ", about " + aed(am) + ' a month</small><p style="margin-top:6px">' + (d > 0 ? 'Saves <span class="hl" style="font-weight:600">' + aed(d * 12) + "</span> a year" : d < 0 ? "Costs " + aed(-d * 12) + " more a year than now" : "Same cost as now") + '</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' + (d > 0 && it.left == null ? '<button class="btn hi sm2" data-act="altswitch" data-id="' + it.id + '">Switch to this</button>' : "") + '<button class="btn ghost sm2" data-act="alt" data-id="' + it.id + '">Edit</button><button class="btn ghost sm2" data-act="altclear" data-id="' + it.id + '">Remove</button></div></div>';
+    } else h += '<button class="btn ghost sm2" data-act="alt" data-id="' + it.id + '">I found a cheaper price</button>';
+    return h + "</section>";
+  }
+  function vSave() {
+    var h = '<div><h1 class="pg-title">Ways to pay less</h1><p class="sm" style="margin-top:4px">Ideas based on what you pay for and what you tell us. Prices and offers change, so check each provider. These are ideas, not advice.</p></div>';
+    if (!S.items.length) return h + '<div class="card empty"><span class="ico lg" style="--c:var(--k-pay)">' + ic("tag", 22) + '</span><p class="muted">Add what you pay for and TrueTotal will suggest ways to pay less.</p><button class="btn hi" data-act="add">' + ic("plus", 18) + 'Add a payment</button></div>';
+    var sv = savings();
+    h += '<section class="card stack"><div class="eyebrow">Possible saving</div>' + (sv.monthly > 0 ? '<div><span class="total-num"><span class="hl">' + aed(sv.monthly) + '</span></span> <small>a month</small></div><p>That is about <b>' + aed(sv.monthly * 12) + "</b> a year, from " + sv.list.length + " thing" + (sv.list.length === 1 ? "" : "s") + " you flagged below.</p>" : '<p class="muted">Tell us how often you use each item, and add a cheaper price when you find one. The saving adds up here.</p>') + '<p class="sm">How we count use: daily is 30 times a month, weekly is 4, monthly is 1, rarely is once every 2 months.</p></section>';
+    S.items.slice().sort(function (a, b) { return monthly(b) - monthly(a); }).forEach(function (it) { h += saveCard(it); });
+    return h;
+  }
+  var ad = null;
+  function altSeg() { return ["weekly", "biweekly", "monthly", "yearly"].map(function (f) { return '<button data-act="altfreq" data-f="' + f + '" aria-pressed="' + (ad.freq === f) + '">' + FREQ[f].short + "</button>"; }).join(""); }
+  function altPrev(it) {
+    if (!(ad.amount > 0)) return "<small>Enter a price to compare.</small>";
+    var am = ad.amount * FREQ[ad.freq].per, d = monthly(it) - am;
+    return '<b class="mono">' + aed(am) + "</b> <small>a month</small><br>" + (d > 0 ? 'Saves <span class="hl" style="font-weight:600">' + aed(d * 12) + "</span> a year" : d < 0 ? "Costs " + aed(-d * 12) + " more a year than now" : "Same cost as now");
+  }
+  function openAlt(id) {
+    var it = S.items.filter(function (i) { return i.id === id; })[0];
+    if (!it) return;
+    ad = { id: id, name: it.alt ? it.alt.name : "", amount: it.alt ? it.alt.amount : 0, freq: it.alt ? it.alt.freq : it.freq };
+    openSheet('<div class="stack" style="gap:14px"><div class="row-between"><h2>Cheaper option</h2><button class="icon-btn" data-act="sheetclose" aria-label="Close">' + ic("x", 22) + '</button></div><p class="sm">For <b style="color:var(--ink)">' + esc(it.name) + "</b>, now " + aed(monthly(it)) + ' a month. Enter a cheaper price you found: a free plan, a yearly plan, a shared plan or another provider.</p><div class="field"><label for="aName">What is it? <small>(optional)</small></label><input id="aName" type="text" data-in="altname" placeholder="e.g. Yearly plan, family plan" value="' + esc(ad.name) + '" autocomplete="off"></div><div class="field"><label for="aAmt">Price (AED)</label><div class="money"><span>AED</span><input id="aAmt" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="altamount" placeholder="e.g. 20" value="' + (ad.amount > 0 ? ad.amount : "") + '"></div></div><div><div class="lbl" style="margin-bottom:8px">Charged</div><div class="seg" id="altSeg">' + altSeg() + '</div></div><div class="preview" id="altPrev">' + altPrev(it) + '</div><button class="btn block" data-act="altsave">Save</button></div>', null, "alt");
   }
 
   /* ---------- sheets ---------- */
@@ -1067,6 +1173,14 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       copylink: function () { var u = location.origin + location.pathname, ok = function () { toast("Link copied. Paste it in Safari."); }; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(ok, function () { toast(u); }); else toast(u); },
       install: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; $("#installBar").hidden = true; } },
       installoff: function () { $("#installBar").hidden = true; try { localStorage.setItem("tt-install-off", "1"); } catch (er) {} },
+      gosave: function () { view = "save"; render(); window.scrollTo(0, 0); },
+      use: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it) { it.use = it.use === t.dataset.v ? undefined : t.dataset.v; save(); render(); } },
+      switchoff: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it) { it.on = false; save(); render(); toast("Switched off. Check the Total tab to see the effect"); } },
+      alt: function () { openAlt(id); },
+      altfreq: function () { ad.freq = t.dataset.f; $("#altSeg").innerHTML = altSeg(); var it = S.items.filter(function (i) { return i.id === ad.id; })[0]; if (it) $("#altPrev").innerHTML = altPrev(it); },
+      altsave: function () { var it = S.items.filter(function (i) { return i.id === ad.id; })[0]; if (!it) return; if (ad.amount > 0) it.alt = { name: (ad.name || "").trim(), amount: ad.amount, freq: ad.freq }; else it.alt = undefined; save(); closeSheet(); toast("Saved"); },
+      altclear: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it) { it.alt = undefined; save(); render(); } },
+      altswitch: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it && it.alt && it.left == null) { it.amount = it.alt.amount; it.freq = it.alt.freq; it.alt = undefined; save(); render(); toast("Switched. Your totals now use the new price"); } },
       goal: openGoal,
       goalsave: function () { if (!gd || !gd.name.trim() || !(gd.target > 0)) { toast("Add a name and an amount"); return; } S.goal = { name: gd.name.trim(), target: gd.target }; save(); closeSheet(); toast("Goal saved"); },
       goaldel: function () { S.goal = null; save(); closeSheet(); toast("Goal removed"); },
@@ -1082,7 +1196,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       saveitem: function () {
         var n = ed.name.trim();
         if (!n || !(ed.amount > 0) || !ed.anchor) { toast("Add a name, an amount and a date"); return; }
-        var it = { id: ed.id, name: n, kind: ed.kind, amount: ed.amount, freq: ed.freq, anchor: ed.anchor, left: ed.hasEnd ? ed.leftN : null, on: ed.on };
+        var it = { id: ed.id, name: n, kind: ed.kind, amount: ed.amount, freq: ed.freq, anchor: ed.anchor, left: ed.hasEnd ? ed.leftN : null, on: ed.on, use: ed.use, alt: ed.alt };
         var i = S.items.findIndex(function (x) { return x.id === ed.id; }); if (i >= 0) S.items[i] = it; else S.items.push(it);
         save(); closeSheet(); toast("Saved");
       },
@@ -1112,6 +1226,10 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       $("#dateHint").textContent = dateHint(); $("#prev").innerHTML = previewHTML();
     }
     if (sk === "settings" && k === "income") { S.income = Math.max(0, parseFloat(el.value) || 0); save(); }
+    if (sk === "alt" && ad) {
+      if (k === "altname") ad.name = el.value; else if (k === "altamount") ad.amount = parseFloat(el.value) || 0;
+      var ait = S.items.filter(function (i) { return i.id === ad.id; })[0]; if (ait) $("#altPrev").innerHTML = altPrev(ait);
+    }
     if (sk === "goal" && gd) { if (k === "goalname") gd.name = el.value; else if (k === "goaltarget") gd.target = parseFloat(el.value) || 0; }
     if (F && flowEl && flowEl.contains(el)) {
       if (/^conf\d$/.test(k)) { var i = +k.slice(4); F.d.c[i] = +el.value; $("#cl" + i).textContent = CONF_LBL[el.value - 1]; }
