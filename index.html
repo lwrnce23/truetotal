@@ -1167,6 +1167,11 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     if (F.i < F.steps.length - 1) { F.i++; drawFlow(); return; }
     finishFlow();
   }
+  function commitPost() {
+    if (!F || F.kind !== "post") return;
+    var d = F.d; if (S.post && S.post.at && F.committed) return;
+    S.post = { a: d.a.slice(), c: d.c.slice(), r: d.r.slice(), h: d.h, act: d.act.slice(), cm: d.cm, at: Date.now() }; F.committed = true; save();
+  }
   function finishFlow() {
     var k = F.kind, d = F.d;
     if (k === "onboard") {
@@ -1180,7 +1185,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     } else if (k === "guide") {
       S.guided = true; save(); closeFlow(); view = S.items.length ? view : "items"; render();
     } else if (k === "post") {
-      S.post = { a: d.a.slice(), c: d.c.slice(), r: d.r.slice(), h: d.h, act: d.act.slice(), cm: d.cm, at: Date.now() }; save(); view = "learn"; closeFlow(); toast("Saved. Thank you!");
+      commitPost(); view = "learn"; closeFlow(); toast("Saved. Thank you!");
     } else if (k === "check") {
       S.check = { act: d.act.slice(), saved: parseFloat(d.saved) || 0, use: d.use, at: Date.now() }; save(); closeFlow(); toast("Check-in saved");
     }
@@ -1226,6 +1231,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   /* ---------- results sharing ---------- */
   function canSend() { return !!(RESULTS_FORM.action && RESULTS_FORM.entry); }
   function sendResults() {
+    commitPost();
     if (!canSend()) { copyResults(); return; }
     var body = new URLSearchParams();
     body.append(RESULTS_FORM.entry, resultsText() + "\nSent: " + new Date().toISOString());
@@ -1239,6 +1245,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     return '<button class="btn hi block" data-act="send">' + (S.sentAt ? "Send an update" : "Send my results") + '</button><p class="sm">' + (S.sentAt ? "Last sent " + new Date(S.sentAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + ". " : "") + "Sends your name, tester code, quiz scores and answers, and spending figures. Not your income. You can copy them instead.</p>";
   }
   function copyResults() {
+    commitPost();
     var txt = resultsText(), done = function () { toast("Copied. Paste it where you were asked to send it."); };
     var fallback = function () {
       var ta = document.createElement("textarea"); ta.value = txt; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0"; document.body.appendChild(ta); ta.select();
