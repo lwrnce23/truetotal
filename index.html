@@ -434,6 +434,8 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { storeOK = false; $("#storeWarn").hidden = false; } }
   try { localStorage.setItem("tt-test", "1"); localStorage.removeItem("tt-test"); } catch (e) { storeOK = false; }
   if (!storeOK) $("#storeWarn").hidden = false;
+  S.pauses = S.pauses || []; S.days = S.days || [];
+  (function () { var t = iso(today()); if (S.onboarded && S.days.indexOf(t) < 0) { S.days.push(t); if (S.days.length > 90) S.days = S.days.slice(-90); save(); } })();
 
   function isTeen() { return S && S.mode === "teen"; }
   function curMode() { if (F && F.kind === "onboard") return F.d.age === "Under 18" ? "teen" : "adult"; return isTeen() ? "teen" : "adult"; }
@@ -677,19 +679,33 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     return '<section class="card stack"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Goal: ' + esc(g.name) + '</h3><span class="mono" style="font-weight:600">' + aed(g.target) + "</span></div>" + (m ? '<p>Switch off the costs above and you free <b>' + aed(freed) + '</b> a month. You would reach this goal in <span class="hl" style="font-weight:600">' + m + " month" + (m === 1 ? "" : "s") + "</span>.</p>" : '<p class="sm">Switch off a cost in "What if you cancelled?" to see how fast you could reach this goal.</p>') + '<button class="btn ghost sm2" data-act="goal">Edit goal</button></section>';
   }
 
-  function stepsCard() {
+  function stepsCard(compact) {
     var sent = !!(S.sentAt && S.post && S.sentAt >= S.post.at);
     var d = [!!S.pre, !!S.revealed, !!S.post, !!S.post, sent];
     var T = [["Do the before-quiz", "Done when you first opened TrueTotal."], ["Add what you pay for", "Add your payments, then tap Reveal my TrueTotal."], ["Use it for a few days", "Open the calendar, try the cancel switches, look at Ways to pay less."], ["Do the after-quiz", "Learn tab, then Take the after-quiz. Same questions as before."], ["Send your results", "Tap the button below (or Learn, then Send). This is how your before and after get counted."]];
-    var cur = d.indexOf(false), h = '<section class="card steps"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Your 5 steps</h3><small class="mono">' + d.filter(Boolean).length + " of 5</small></div>";
+    var cur = d.indexOf(false), h = '<section class="card steps"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (compact ? "Next step" : "Your 5 steps") + '</h3><small class="mono">Step ' + (Math.min(cur < 0 ? 5 : cur + 1, 5)) + " of 5</small></div>";
     if (cur < 0) return h + '<p class="sm" style="margin-top:6px">All done. Thank you for taking part!</p></section>';
-    T.forEach(function (t, i) { h += '<div class="stp' + (d[i] ? " done" : i === cur ? " now" : "") + '"><span class="num">' + (d[i] ? "✓" : i + 1) + '</span><div><b style="font-weight:600">' + t[0] + "</b>" + (i === cur ? '<p class="sm">' + t[1] + "</p>" : "") + "</div></div>"; });
+    var dd0 = Math.floor((Date.now() - S.startedAt) / 864e5); if (cur === 2 && dd0 >= 3) T[2][1] = "It has been " + dd0 + " days since you started. Ready for the after-quiz?";
+    T.forEach(function (t, i) { if (compact && i !== cur) return; h += '<div class="stp' + (d[i] ? " done" : i === cur ? " now" : "") + '"><span class="num">' + (d[i] ? "✓" : i + 1) + '</span><div><b style="font-weight:600">' + t[0] + "</b>" + (i === cur ? '<p class="sm">' + t[1] + "</p>" : "") + "</div></div>"; });
+    var dd = Math.floor((Date.now() - S.startedAt) / 864e5);
+    if (cur === 2 && dd >= 3) T[2][1] = "It has been " + dd + " days since you started. Ready for the after-quiz?";
     var cta = cur === 2 || cur === 3 ? ["post", "Take the after-quiz now"] : cur === 4 ? ["send", "Send my results"] : null;
     if (cta && (cta[0] !== "send" || canSend())) h += '<button class="btn ' + (cur === 2 ? "ghost " : "hi ") + 'block" data-act="' + cta[0] + '" style="margin-top:8px">' + cta[1] + "</button>";
     if (cur === 2) h += '<p class="sm">Best after 3 to 5 days of real use, but you can do it any time.</p>';
-    return h + '<button class="btn ghost block" data-act="guide" style="margin-top:8px">' + ic("bulb", 16) + "Show me how this works</button></section>";
+    return h + (compact ? '<button class="btn ghost sm2" data-act="guide" style="margin-top:8px">How this works</button>' : '<button class="btn ghost block" data-act="guide" style="margin-top:8px">' + ic("bulb", 16) + "Show me how this works</button>") + "</section>";
   }
-  function vHome() { return stepsCard() + vHome0(); }
+  function streak() { var n = 0, d = today(); while (S.days.indexOf(iso(d)) >= 0) { n++; d = addDays(d, -1); } return n; }
+  function homeExtras() {
+    if (!S.revealed) return "";
+    var h = "", st = streak();
+    S.pauses.filter(function (p) { return !p.done; }).slice(0, 2).forEach(function (p) {
+      var left = p.until - Date.now(), hrs = Math.ceil(left / 36e5);
+      h += '<section class="card stack" style="gap:8px"><div class="row-between"><span><span class="eyebrow">Thinking about it</span><br><b>' + esc(p.name) + '</b></span><span class="mono" style="font-weight:600">' + aed(p.price) + '</span></div><p class="sm">' + (left > 0 ? "You paused this. Decide in about " + hrs + " hour" + (hrs === 1 ? "" : "s") + "." : "24 hours are up. Do you still want it?") + '</p><div style="display:flex;gap:8px"><button class="btn ghost block" data-act="pskip" data-id="' + p.id + '">Skip it</button><button class="btn ghost block" data-act="pbuy" data-id="' + p.id + '">I bought it</button></div></section>';
+    });
+    h += '<div class="row-between" style="padding:0 4px"><small class="mono">' + (st >= 2 ? st + " days in a row" : "Day 1") + '</small>' + (S.guess != null ? '<button class="btn ghost sm2" data-act="sharecard">' + ic("share", 15) + "Share my result</button>" : "") + "</div>";
+    return h;
+  }
+  function vHome() { return stepsCard(true) + homeExtras() + vHome0(); }
   function vHome0() {
     var teen = isTeen();
     if (!S.items.length) {
@@ -945,7 +961,10 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   }
   function vSave() {
     var h = '<div><h1 class="pg-title">Ways to pay less</h1><p class="sm" style="margin-top:4px">Ideas based on what you pay for and what you tell us. Prices and offers change, so check each provider. These are ideas, not advice.</p></div>';
+    h += toolsCard();
     if (!S.items.length) return h + '<div class="card empty"><span class="ico lg" style="--c:var(--k-pay)">' + ic("tag", 22) + '</span><p class="muted">Add what you pay for and TrueTotal will suggest ways to pay less.</p><button class="btn hi" data-act="add">' + ic("plus", 18) + 'Add a payment</button></div>';
+    h += freeCard();
+    if (!isTeen()) h += goalCard();
     var sv = savings();
     h += '<section class="card stack"><div class="eyebrow">Possible saving</div>' + (sv.monthly > 0 ? '<div><span class="total-num"><span class="hl">' + aed(sv.monthly) + '</span></span> <small>a month</small></div><p>That is about <b>' + aed(sv.monthly * 12) + "</b> a year, from " + sv.list.length + " thing" + (sv.list.length === 1 ? "" : "s") + " you flagged below.</p>" : '<p class="muted">Tell us how often you use each item, and add a cheaper price when you find one. The saving adds up here.</p>') + '<p class="sm">How we count use: daily is 30 times a month, weekly is 4, monthly is 1, rarely is once every 2 months.</p></section>';
     S.items.slice().sort(function (a, b) { return monthly(b) - monthly(a); }).forEach(function (it) { h += saveCard(it); });
@@ -1042,6 +1061,75 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     $("#endBox").hidden = !ed.hasEnd;
     $("#endSw").setAttribute("aria-checked", ed.hasEnd);
     $("#endSw").parentNode.setAttribute("aria-checked", ed.hasEnd);
+  }
+
+  function toolsCard() {
+    var sk = S.pauses.filter(function (p) { return p.done === "skipped"; }), sum = sk.reduce(function (a, p) { return a + p.price; }, 0);
+    return '<section class="card stack"><h3 style="font-size:18px;font-weight:800">Tools</h3><div class="chips"><button class="chip" data-act="calc">' + ic("card", 15) + 'Pay-later calculator</button><button class="chip" data-act="pause">' + ic("bag", 15) + 'Should I buy this?</button><button class="chip" data-act="goal">' + ic("tag", 15) + "Savings goal</button></div>" + (sum > 0 ? '<p class="sm">Things you chose to skip: <b style="color:var(--ink)">' + aed(sum) + "</b> (" + sk.length + ").</p>" : "") + "</section>";
+  }
+  function freeCard() {
+    var pl = counted().filter(function (i) { return i.kind === "pay" && i.left != null; });
+    if (!pl.length) return "";
+    var ends = pl.map(function (i) { return { it: i, d: lastDate(i) }; }).filter(function (x) { return x.d; }).sort(function (a, b) { return a.d - b.d; });
+    if (!ends.length) return "";
+    var last = ends[ends.length - 1].d, freed = pl.reduce(function (a, i) { return a + monthly(i); }, 0);
+    return '<section class="card stack"><div class="eyebrow">Pay-later free date</div><div><span class="total-num"><span class="hl">' + fDateY(last) + '</span></span></div><p class="sm">After that, about <b style="color:var(--ink)">' + aed(freed) + "</b> a month is free again, if you take on no new plans.</p>" + ends.slice(0, 4).map(function (x) { return '<div class="leader"><span>' + esc(x.it.name) + '</span><span class="dots"></span><span class="amt">' + fDateY(x.d) + "</span></div>"; }).join("") + "</section>";
+  }
+  var cd = null;
+  function calcChips() { return [3, 4, 6, 12].map(function (n) { return '<button class="chip" data-act="calcn" data-v="' + n + '" aria-pressed="' + (cd.n === n) + '">' + n + " payments</button>"; }).join(""); }
+  function calcPrev() {
+    if (!(cd.price > 0)) return "<small>Enter a price to compare.</small>";
+    var per = cd.price / cd.n + cd.fee, tot = cd.price + cd.fee * cd.n, extra = cd.fee * cd.n, h = "";
+    h += '<div class="leader"><span>Pay now</span><span class="dots"></span><span class="amt">' + aed(cd.price) + "</span></div>";
+    h += '<div class="leader"><span>Pay later</span><span class="dots"></span><span class="amt">' + cd.n + " x " + aed(per) + "</span></div>";
+    h += '<div class="leader"><span>Total with fees</span><span class="dots"></span><span class="amt">' + aed(tot) + "</span></div>";
+    h += '<p style="margin-top:8px">' + (extra > 0 ? 'Pay later costs <span class="hl" style="font-weight:600">' + aed(extra) + "</span> more than paying now." : "No extra fees, so the real cost is the same. The risk is the habit, not the price.") + "</p>";
+    if (cd.late > 0) h += '<p class="sm">Miss one payment and it becomes ' + aed(tot + cd.late) + ".</p>";
+    h += '<p class="sm">It adds ' + aed(per) + " a month for " + cd.n + " months" + (S.income > 0 ? ", " + pc(per / S.income * 100) + " of your " + (isTeen() ? "pocket money" : "income") : "") + ". Your TrueTotal would go from " + aed(total()) + " to " + aed(total() + per) + ".</p>";
+    return h;
+  }
+  function openCalc() {
+    cd = { price: 0, n: 4, fee: 0, late: 0 };
+    openSheet('<div class="stack" style="gap:14px"><div class="row-between"><h2>Pay-later calculator</h2><button class="icon-btn" data-act="sheetclose" aria-label="Close">' + ic("x", 22) + '</button></div><p class="sm">Check what a pay-later plan really does before you say yes.</p><div class="field"><label for="cPrice">Price of the thing (AED)</label><div class="money"><span>AED</span><input id="cPrice" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="cprice" placeholder="e.g. 900"></div></div><div><div class="lbl" style="margin-bottom:8px">Split into</div><div class="chips" id="calcChips">' + calcChips() + '</div></div><div class="field"><label for="cFee">Fee on each payment (AED) <small>(optional)</small></label><div class="money"><span>AED</span><input id="cFee" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="cfee" placeholder="0"></div></div><div class="field"><label for="cLate">Late fee if you miss one (AED) <small>(optional)</small></label><div class="money"><span>AED</span><input id="cLate" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="clate" placeholder="e.g. 50"></div></div><div class="preview" id="calcPrev">' + calcPrev() + '</div><p class="sm">Fees and terms differ by provider, so check yours.</p></div>', null, "calc");
+  }
+  var pdd = null;
+  function pauseQs() {
+    var Q = ["Is it a need, not just a want?", "Could you pay the full price today?", "Will you still use it next month?"];
+    return Q.map(function (q, i) { return '<div><div class="lbl" style="margin-bottom:8px">' + q + '</div><div class="chips"><button class="chip" data-act="pq" data-k="' + i + '" data-v="1" aria-pressed="' + (pdd.q[i] === 1) + '">Yes</button><button class="chip" data-act="pq" data-k="' + i + '" data-v="0" aria-pressed="' + (pdd.q[i] === 0) + '">No</button></div></div>'; }).join("");
+  }
+  function pausePrev() {
+    if (!(pdd.price > 0)) return "<small>Enter a price to see what it means for you.</small>";
+    var yes = pdd.q.filter(function (x) { return x === 1; }).length, ans = pdd.q.every(function (x) { return x != null; }), h = '<p>' + aed(pdd.price) + ' is <b>' + pc(pdd.price / (S.income > 0 ? S.income : Math.max(total(), 1)) * 100) + "</b> of your " + (S.income > 0 ? (isTeen() ? "monthly pocket money" : "monthly income") : "monthly total") + ".</p>";
+    if (ans) h += '<p style="margin-top:6px">' + (yes === 3 ? "Looks like a sensible buy. Waiting a day costs nothing." : yes === 0 ? "Three no answers. Waiting a day will probably settle it." : "Mixed answers. Sleep on it before you decide.") + "</p>";
+    return h;
+  }
+  function openPause() {
+    pdd = { name: "", price: 0, q: [null, null, null] };
+    openSheet('<div class="stack" style="gap:14px"><div class="row-between"><h2>Should I buy this?</h2><button class="icon-btn" data-act="sheetclose" aria-label="Close">' + ic("x", 22) + '</button></div><p class="sm">Pause for 24 hours. If you still want it tomorrow, it is more likely a real want.</p><div class="field"><label for="pName2">What is it?</label><input id="pName2" type="text" data-in="pname" placeholder="e.g. Trainers" autocomplete="off"></div><div class="field"><label for="pPrice">Price (AED)</label><div class="money"><span>AED</span><input id="pPrice" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="pprice" placeholder="e.g. 450"></div></div><div class="stack" style="gap:12px" id="pauseQs">' + pauseQs() + '</div><div class="preview" id="pausePrev">' + pausePrev() + '</div><button class="btn block" data-act="pausesave">Pause for 24 hours</button></div>', null, "pause");
+  }
+  function shareCard() {
+    var real = Math.round(flexible()), g = Math.round(S.guess || 0), c = document.createElement("canvas"), W = 1080, H = 1350; c.width = W; c.height = H;
+    var x = c.getContext("2d"), F1 = "system-ui, -apple-system, Segoe UI, Roboto, sans-serif", M1 = "ui-monospace, Menlo, Consolas, monospace";
+    x.fillStyle = "#E8ECF0"; x.fillRect(0, 0, W, H);
+    x.fillStyle = "#FFFFFF"; x.beginPath(); x.roundRect ? x.roundRect(60, 60, W - 120, H - 120, 48) : x.rect(60, 60, W - 120, H - 120); x.fill();
+    var ink = "#12171E", mute = "#5B6573";
+    x.textAlign = "left"; x.fillStyle = ink; x.font = "800 52px " + F1; x.fillText("TrueTotal", 120, 170);
+    x.fillStyle = mute; x.font = "500 36px " + F1; x.fillText("per month, in AED", 120, 222);
+    x.fillText("I guessed", 120, 420); x.fillStyle = ink; x.font = "700 120px " + M1; x.fillText("AED " + nf.format(g), 120, 540);
+    x.fillStyle = mute; x.font = "500 36px " + F1; x.fillText("It was actually", 120, 680);
+    var tw = "AED " + nf.format(real); x.font = "700 120px " + M1; var w = x.measureText(tw).width;
+    x.fillStyle = "#D9F46A"; x.fillRect(110, 710, w + 24, 150); x.fillStyle = ink; x.fillText(tw, 122, 820);
+    var diff = real - g, msg = g > 0 && real > g * 1.05 ? "+" + Math.round(diff / g * 100) + "% more than I thought" : Math.abs(diff) <= Math.max(10, real * 0.05) ? "I was close. Most people are not." : "Less than I feared";
+    x.fillStyle = ink; x.font = "700 52px " + F1; x.fillText(msg, 120, 960);
+    x.fillStyle = mute; x.font = "500 38px " + F1; x.fillText("Pay-later, subscriptions, bills and loans add up.", 120, 1050);
+    x.fillText("What do you really pay for each month?", 120, 1110);
+    x.fillStyle = ink; x.font = "800 40px " + F1; x.fillText("Try TrueTotal", 120, 1210);
+    c.toBlob(function (b) {
+      if (!b) { toast("Could not make the image"); return; }
+      var f = new File([b], "my-truetotal.png", { type: "image/png" });
+      if (navigator.canShare && navigator.canShare({ files: [f] })) { navigator.share({ files: [f], title: "My TrueTotal" }).catch(function () {}); return; }
+      var a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "my-truetotal.png"; document.body.appendChild(a); a.click(); a.remove(); toast("Image saved");
+    }, "image/png");
   }
 
   var gd = null;
@@ -1322,7 +1410,12 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       altsave: function () { var it = S.items.filter(function (i) { return i.id === ad.id; })[0]; if (!it) return; if (ad.amount > 0) it.alt = { name: (ad.name || "").trim(), amount: ad.amount, freq: ad.freq }; else it.alt = undefined; save(); closeSheet(); toast("Saved"); },
       altclear: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it) { it.alt = undefined; save(); render(); } },
       altswitch: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it && it.alt && it.left == null) { it.amount = it.alt.amount; it.freq = it.alt.freq; it.alt = undefined; save(); render(); toast("Switched. Your totals now use the new price"); } },
-      goal: openGoal,
+      goal: openGoal, calc: openCalc, pause: openPause, sharecard: shareCard,
+      calcn: function () { cd.n = +t.dataset.v; $("#calcChips").innerHTML = calcChips(); $("#calcPrev").innerHTML = calcPrev(); },
+      pq: function () { pdd.q[+t.dataset.k] = +t.dataset.v; $("#pauseQs").innerHTML = pauseQs(); $("#pausePrev").innerHTML = pausePrev(); },
+      pausesave: function () { if (!pdd.name.trim() || !(pdd.price > 0)) { toast("Add what it is and the price"); return; } S.pauses.push({ id: uid(), name: pdd.name.trim(), price: pdd.price, at: Date.now(), until: Date.now() + 864e5, done: null }); save(); closeSheet(); view = "home"; render(); toast("Paused. Decide tomorrow"); },
+      pskip: function () { var p = S.pauses.filter(function (q) { return q.id === t.dataset.id; })[0]; if (p) { p.done = "skipped"; save(); render(); toast("Nice. You kept " + aed(p.price)); } },
+      pbuy: function () { var p = S.pauses.filter(function (q) { return q.id === t.dataset.id; })[0]; if (p) { p.done = "bought"; save(); render(); } },
       goalsave: function () { if (!gd || !gd.name.trim() || !(gd.target > 0)) { toast("Add a name and an amount"); return; } S.goal = { name: gd.name.trim(), target: gd.target }; save(); closeSheet(); toast("Goal saved"); },
       goaldel: function () { S.goal = null; save(); closeSheet(); toast("Goal removed"); },
       post: function () { openFlow("post"); }, guide: function () { openFlow("guide"); }, check: function () { openFlow("check"); }, copy: copyResults, ics: downloadICS,
@@ -1372,6 +1465,8 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       if (k === "altname") ad.name = el.value; else if (k === "altamount") ad.amount = parseFloat(el.value) || 0;
       var ait = S.items.filter(function (i) { return i.id === ad.id; })[0]; if (ait) $("#altPrev").innerHTML = altPrev(ait);
     }
+    if (sk === "calc" && cd) { var cv = parseFloat(el.value) || 0; if (k === "cprice") cd.price = cv; else if (k === "cfee") cd.fee = cv; else if (k === "clate") cd.late = cv; $("#calcPrev").innerHTML = calcPrev(); }
+    if (sk === "pause" && pdd) { if (k === "pname") pdd.name = el.value; else if (k === "pprice") pdd.price = parseFloat(el.value) || 0; $("#pausePrev").innerHTML = pausePrev(); }
     if (sk === "goal" && gd) { if (k === "goalname") gd.name = el.value; else if (k === "goaltarget") gd.target = parseFloat(el.value) || 0; }
     if (F && flowEl && flowEl.contains(el)) {
       if (/^conf\d$/.test(k)) { var i = +k.slice(4); F.d.c[i] = +el.value; $("#cl" + i).textContent = CONF_LBL[el.value - 1]; }
