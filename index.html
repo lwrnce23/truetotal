@@ -727,7 +727,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function stepsCard(compact) {
     var sent = !!(S.sentAt && S.post && S.sentAt >= S.post.at);
     var d = [!!S.pre, !!S.revealed, !!S.post, !!S.post, sent];
-    var T = [["Do the before-quiz", "Done when you first opened TrueTotal."], ["Add what you pay for", "Add your payments, then tap Reveal my TrueTotal."], ["Use it for a few days", "Open the calendar, try the cancel switches, look at Ways to pay less."], ["Do the after-quiz", "Learn tab, then Take the after-quiz. Same questions as before."], ["Send your results", "Tap the button below (or Learn, then Send). This is how your before and after get counted."]];
+    var T = [["Do the before-quiz", "Done when you first opened TrueTotal."], ["Add what you pay for", "Add your payments, then tap Reveal my TrueTotal."], ["Use it for a few days", "Open the calendar, try the cancel switches, look at Ways to pay less."], ["Do the after-quiz", "Learn tab, then Take the after-quiz. Same questions as before."], ["Send your results", "Sent for you automatically if you said yes. Otherwise tap the button below (or Learn, then Send)."]];
     var cur = d.indexOf(false), h = '<section class="card steps"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (compact ? "Next step" : "Your 5 steps") + '</h3><span class="seg5" role="img" aria-label="' + d.filter(Boolean).length + ' of 5 steps done">' + d.map(function (x, i) { return "<i" + (x || i === cur ? ' class="on"' : "") + "></i>"; }).join("") + "</span></div>";
     if (cur < 0) return h + '<p class="sm" style="margin-top:6px">All done. Thank you for taking part!</p></section>';
     var dd0 = Math.floor((Date.now() - S.startedAt) / 864e5); if (cur === 2 && dd0 >= 3) T[2][1] = "It has been " + dd0 + " days since you started. Ready for the after-quiz?";
@@ -1204,8 +1204,9 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       '<div class="field"><label for="sInc">' + (isTeen() ? "Pocket money per month (AED), optional" : "Monthly income after tax (AED)") + '</label><div class="money"><span>AED</span><input id="sInc" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="income" value="' + (S.income > 0 ? S.income : "") + '" placeholder="9000"></div><small>' + (isTeen() ? "Leave it empty if you do not get any. Percentages then show the share of your own total." : "Every percentage in the app is measured against this.") + '</small></div>' +
       '<div class="field"><div class="lbl">Reminder time for calendar file</div><div class="seg" id="remSeg"><button data-act="rem" data-v="0" ' + 'aria-pressed="' + (S.remind === 0) + '">On the day</button><button data-act="rem" data-v="1" aria-pressed="' + (S.remind === 1) + '">1 day before</button><button data-act="rem" data-v="2" aria-pressed="' + (S.remind === 2) + '">2 days before</button></div></div>' +
       '<div class="field"><div class="lbl">Appearance</div><div class="seg" id="themeSeg"><button data-act="theme" data-v="auto" ' + st("auto") + '>Auto</button><button data-act="theme" data-v="light" ' + st("light") + '>Light</button><button data-act="theme" data-v="dark" ' + st("dark") + ">Dark</button></div></div>" +
+      '<div class="field"><div class="lbl">Send my results automatically</div><div class="seg" id="autoSeg"><button data-act="autosend" data-v="1" aria-pressed="' + (S.autosend === true) + '">On</button><button data-act="autosend" data-v="0" aria-pressed="' + (S.autosend !== true) + '">Off</button></div><small>Sends your name, tester code, quiz scores and answers, and spending totals. Never your income.</small></div>' +
       '<div class="stack" style="gap:8px"><button class="btn ghost block" data-act="reveal">Replay the reveal</button><button class="btn ghost block" data-act="copy">Copy my results</button><button class="btn danger block" id="clearBtn" data-act="clear">Delete all my data</button></div>' +
-      '<p class="sm">Everything stays on this device unless you tap Send my results. Your tester code is <span class="mono">' + S.id + "</span>.</p></div>", null, "settings");
+      '<p class="sm">Everything stays on this device unless you turn on automatic sending or tap Send my results. Your tester code is <span class="mono">' + S.id + "</span>.</p></div>", null, "settings");
   }
 
   /* ---------- flows ---------- */
@@ -1249,6 +1250,10 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
         var teen = curMode() === "teen";
         var grp = function (key, label, opts) { return '<div><div class="lbl" style="margin-bottom:8px">' + label + '</div><div class="chips">' + opts.map(function (o) { return '<button class="chip" data-act="fchip" data-k="' + key + '" data-v="' + o + '" aria-pressed="' + (F.d[key] === o) + '">' + o + "</button>"; }).join("") + "</div></div>"; };
         return '<h2>A little about you</h2><p class="muted">Optional. It helps the project see who tested the app.</p>' + (teen ? grp("stat", "Do you get pocket money?", ["Yes, regularly", "Sometimes", "No"]) + grp("pl", "Do you pay for apps, games or subscriptions?", ["Yes", "My parents pay", "Both", "No"]) : grp("stat", "You are", ["Student", "Working", "Both", "Other"]) + grp("pl", "Do you use pay-later (Tabby, Tamara, Postpay)?", ["Yes", "No", "Not sure"]));
+      } });
+      steps.push({ need: function () { return F.d.share != null; }, html: function () {
+        var teen = F.d.age === "Under 18", on = F.d.share === "yes";
+        return '<p class="eyebrow">Your results</p><h2>Share your results with the project?</h2><p class="muted">If you say yes, TrueTotal sends your results by itself when you finish each part, so you never have to tap Send. It sends your name or nickname, tester code, quiz scores and answers, and spending totals. <b>Never your income.</b></p>' + (teen ? '<div class="note">You are under 18, so ask a parent or guardian before you say yes.</div>' : "") + '<div class="stack" style="gap:10px"><button class="opt" data-act="fshare" data-v="yes" aria-pressed="' + on + '"><span class="k">&#10003;</span>Yes, send automatically</button><button class="opt" data-act="fshare" data-v="no" aria-pressed="' + (F.d.share === "no") + '"><span class="k">&ndash;</span>No, keep it private on my phone</button></div><p class="sm">You can change this any time in Settings.</p>';
       } });
       steps.push({ need: function () { return true; }, next: "Start the quiz", skip: "Skip the quiz", html: function () { return '<p class="eyebrow">Before you start</p><h2>Six quick questions</h2><p class="muted">First, how confident do you feel about your own money? Then six short questions. This shows how much you learn from using the app.</p>'; } });
       steps.push(confStep());
@@ -1328,13 +1333,13 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       if (d.a.every(function (x) { return x != null; })) S.pre = { a: d.a.slice(), c: d.c.slice(), at: Date.now() };
       S.guess = parseFloat(d.guess); if (isNaN(S.guess)) S.guess = null;
       S.income = parseFloat(d.income) || 0;
-      S.onboarded = true; S.guided = true; save(); view = "home"; closeFlow(); startTour();
+      S.autosend = d.share === "yes"; S.onboarded = true; S.guided = true; save(); view = "home"; closeFlow(); startTour();
     } else if (k === "guide") {
       S.guided = true; save(); closeFlow(); view = S.items.length ? view : "items"; render();
     } else if (k === "post") {
-      commitPost(); view = "learn"; closeFlow(); confetti(); toast("Saved. Thank you!");
+      commitPost(); view = "learn"; closeFlow(); confetti(); toast("Saved. Thank you!"); autoSend(true);
     } else if (k === "check") {
-      S.check = { act: d.act.slice(), saved: parseFloat(d.saved) || 0, use: d.use, at: Date.now() }; save(); closeFlow(); toast("Check-in saved");
+      S.check = { act: d.act.slice(), saved: parseFloat(d.saved) || 0, use: d.use, at: Date.now() }; save(); closeFlow(); toast("Check-in saved"); autoSend(true);
     }
   }
 
@@ -1350,7 +1355,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     { view: "cal", sel: ["nav.tabs button[data-v=\"cal\"]"], title: "Calendar", text: "Every payment lands on its pay day. Check this over a few days to see when money leaves your account." },
     { view: "save", sel: ["nav.tabs button[data-v=\"save\"]"], title: "Save tab", text: "Ways to pay less, a pay-later calculator, a 'Should I buy this?' pause button and a savings goal all live here." },
     { view: "learn", sel: ["#view section.card:not(.steps) [data-act=\"post\"]", "#view [data-act=\"post\"]"], title: "After-quiz", text: "After 3 to 5 days of using the app, tap this. Same six questions as the start, so we can see what changed." },
-    { view: "learn", sel: ["#view [data-act=\"send\"]", "#view [data-act=\"copy\"]"], title: "Then tap Send", text: "This is the step people forget. After the after-quiz, tap Send my results so your before and after are counted together." },
+    { view: "learn", sel: ["#view [data-act=\"send\"]", "#view [data-act=\"copy\"]"], title: "Your results", text: "If you allowed it, your results are sent for you when you finish. Otherwise tap Send my results here after the after-quiz, so your before and after are counted together." },
     { view: "home", sel: ["#gearBtn"], title: "Settings", text: "Change your name, switch light or dark, or delete your data here. You can replay this tour any time from the Total tab." },
     { view: "items", title: "Your turn", text: "Start by adding your first payment, or tap Try example numbers. Good luck!", last: true }
   ];
@@ -1462,15 +1467,34 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function sendResults() {
     commitPost();
     if (!canSend()) { copyResults(); return; }
-    var body = new URLSearchParams();
-    body.append(RESULTS_FORM.entry, resultsText() + "\nSent: " + new Date().toISOString());
+    var txt = resultsText(), body = new URLSearchParams();
+    body.append(RESULTS_FORM.entry, txt + "\nSent: " + new Date().toISOString());
     toast("Sending…");
     fetch(RESULTS_FORM.action, { method: "POST", mode: "no-cors", body: body }).then(function () {
-      S.sentAt = Date.now(); save(); toast("Sent. Thank you!");
+      S.sentAt = Date.now(); S.sentTxt = txt; S.pending = false; save(); toast("Sent. Thank you!");
       if (view === "learn" && !flowEl) render();
     }, function () { toast("Could not send. Use Copy my results instead."); });
   }
+  /* automatic send: runs after the reveal, the after-quiz and the check-in. If it fails (offline) it retries later. */
+  var autoBusy = false;
+  function autoSend(mark) {
+    if (S.autosend !== true || !canSend() || !S.revealed) return;
+    if (mark) { S.pending = true; save(); }
+    if (!S.pending || autoBusy || navigator.onLine === false) return;
+    var txt = resultsText();
+    if (txt === S.sentTxt) { S.pending = false; save(); return; }
+    var body = new URLSearchParams(); body.append(RESULTS_FORM.entry, txt + "\nSent: " + new Date().toISOString());
+    autoBusy = true;
+    fetch(RESULTS_FORM.action, { method: "POST", mode: "no-cors", body: body }).then(function () {
+      autoBusy = false; S.sentAt = Date.now(); S.sentTxt = txt; S.pending = false; save();
+      if (!flowEl && !sheet) render();
+      toast("Results sent. Thank you!");
+    }, function () { autoBusy = false; });
+  }
+  window.addEventListener("online", function () { autoSend(); });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) autoSend(); });
   function sendBlock() {
+    if (S.autosend === true) return '<p class="sm"><b>' + (S.pending ? "Sending your results…" : S.sentAt ? "Your results were sent automatically." : "Your results will be sent automatically.") + "</b>" + (S.sentAt ? " Last sent " + new Date(S.sentAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + "." : "") + ' Nothing to tap. Sent: name, tester code, quiz scores and answers, spending totals. Not your income.</p><button class="btn ghost block" data-act="send">Send again</button>';
     return '<button class="btn hi block" data-act="send">' + (S.sentAt ? "Send an update" : "Send my results") + '</button><p class="sm">' + (S.sentAt ? "Last sent " + new Date(S.sentAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + ". " : "") + "Sends your name, tester code, quiz scores and answers, and spending figures. Not your income. You can copy them instead.</p>";
   }
   function copyResults() {
@@ -1535,7 +1559,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       calnav: function () { var d = new Date(cal.y, cal.m + Number(t.dataset.d), 1); cal.y = d.getFullYear(); cal.m = d.getMonth(); cal.sel = iso(D(cal.y, cal.m, 1)); render(); },
       calday: function () { cal.sel = t.dataset.d; render(); },
       mbar: function () { var n = Number(t.dataset.i); cal.mi = cal.mi === n ? -1 : n; render(); },
-      reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { S.revealed = true; save(); view = "home"; closeFlow(); window.scrollTo(0, 0); confetti(); },
+      reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { S.revealed = true; save(); view = "home"; closeFlow(); window.scrollTo(0, 0); confetti(); autoSend(true); },
       gateskip: leaveGate,
       gateinstall: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; } leaveGate(); },
       copylink: function () { var u = location.origin + location.pathname, ok = function () { toast("Link copied. Paste it in Safari."); }; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(ok, function () { toast(u); }); else toast(u); },
@@ -1578,6 +1602,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       delitem: function () { S.items = S.items.filter(function (x) { return x.id !== ed.id; }); save(); closeSheet(); toast("Deleted"); },
       /* settings */
       theme: function () { S.theme = t.dataset.v; applyTheme(); save(); $$("#themeSeg button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.v === S.theme); }); },
+      autosend: function () { S.autosend = t.dataset.v === "1"; save(); $$("#autoSeg button").forEach(function (b) { b.setAttribute("aria-pressed", (b.dataset.v === "1") === S.autosend); }); if (S.autosend && S.revealed) autoSend(true); },
       rem: function () { S.remind = Number(t.dataset.v); save(); $$("#remSeg button").forEach(function (b) { b.setAttribute("aria-pressed", Number(b.dataset.v) === S.remind); }); },
       clear: function () {
         if (t.dataset.armed) { try { localStorage.removeItem(KEY); } catch (er) {} S = fresh(); view = "home"; closeSheet(true); render(); openFlow("onboard"); return; }
@@ -1587,6 +1612,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       fnext: fnext, fback: function () { if (F.i > 0) { F.i--; drawFlow(); } }, fclose: function () { if (F && F.kind === "onboard" && !S.onboarded) { S.onboarded = true; save(); } closeFlow(); },
       fskip: function () { F.i = F.steps.length - 2; drawFlow(); },
       fopt: function () { F.d.a[F.steps[F.i].quiz] = Number(t.dataset.o); drawFlow(); },
+      fshare: function () { F.d.share = t.dataset.v; drawFlow(); },
       fchip: function () { F.d[t.dataset.k] = F.d[t.dataset.k] === t.dataset.v ? null : t.dataset.v; drawFlow(); },
       fmulti: function () { var i = F.d.act.indexOf(t.dataset.v); if (i >= 0) F.d.act.splice(i, 1); else F.d.act.push(t.dataset.v); drawFlow(); }
     };
@@ -1671,6 +1697,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function applyTheme() { if (S.theme === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", S.theme); }
   applyTheme();
   render();
+  autoSend();
   if (!S.onboarded) { if (shouldGate()) openGate(); else openFlow("onboard"); }
 })();
 </script>
