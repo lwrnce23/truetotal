@@ -317,7 +317,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   //   action: the form's address ending in /formResponse
   //   entry:  the question's field name, like entry.1234567890
   // While either is empty, the Send button stays hidden and testers use Copy my results instead.
-  var RESULTS_FORM = { action: "", entry: "" };
+  var RESULTS_FORM = { action: "https://docs.google.com/forms/d/e/1FAIpQLSfByYiFM5L3RHzclSOUOC0D4tFcE6jJvfx2q4HjxIxDC25_qQ/formResponse", entry: "entry.687923644" };
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
