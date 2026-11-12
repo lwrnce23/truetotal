@@ -436,6 +436,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   function kname(k) { return (isTeen() && TEEN_NAMES[k]) || KINDS[k].name; }
   function baseWord() { return S.income > 0 ? (isTeen() ? "of pocket money" : "of income") : "of your total"; }
   function flexLabel() { return isTeen() ? "Subscriptions, games and pay-later" : "Pay later + subscriptions"; }
+  function cleanName(v) { return String(v || "").replace(/["\\<>\n\r\t]/g, " ").replace(/\s+/g, " ").trim().slice(0, 30); }
   var uid = function () { return "i" + Math.random().toString(36).slice(2, 9); };
 
   /* ---------- maths ---------- */
@@ -573,7 +574,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   /* ---------- scoring + export ---------- */
   var score = function (a) { return a ? a.reduce(function (s, v, i) { return s + (v === quiz()[i].c ? 1 : 0); }, 0) : 0; };
   function resultsText() {
-    var L = ["TRUETOTAL RESULTS", "Code: " + S.id, "Track: " + (isTeen() ? "under 18" : "18+")];
+    var L = ["TRUETOTAL RESULTS", "Name: " + (S.name || "-"), "Code: " + S.id, "Track: " + (isTeen() ? "under 18" : "18+")];
     if (S.about) L.push("About: age " + (S.about.age || "-") + (isTeen() ? ", pocket money: " + (S.about.stat || "-") + ", pays for apps/games: " : ", " + (S.about.stat || "-") + ", pay-later use: ") + (S.about.pl || "-"));
     if (S.pre) L.push("Before: quiz " + score(S.pre.a) + "/6, confidence " + S.pre.c.join(","));
     if (S.post) L.push("After: quiz " + score(S.post.a) + "/6, confidence " + S.post.c.join(","));
@@ -587,7 +588,8 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       if (S.post.cm) L.push("Comment: " + S.post.cm.replace(/\s+/g, " "));
     }
     if (S.check) L.push("Check-in: " + (S.check.act.join("; ") || "-") + "; saved " + (S.check.saved || 0) + " AED/mo; still using: " + (S.check.use || "-"));
-    var j = { id: S.id, pre: S.pre && { s: score(S.pre.a), c: S.pre.c }, post: S.post && { s: score(S.post.a), c: S.post.c, r: S.post.r }, g: S.guess, real: Math.round(flexible()), n: S.items.length, sv: Math.round(svE.monthly) };
+    var cavg = function (c) { return c ? (c[0] + c[1]) / 2 : null; };
+    var j = { id: S.id, nm: S.name || "", tr: isTeen() ? "teen" : "adult", age: (S.about && S.about.age) || "", qb: S.pre ? score(S.pre.a) : null, cb: S.pre ? cavg(S.pre.c) : null, qa: S.post ? score(S.post.a) : null, ca: S.post ? cavg(S.post.c) : null, g: S.guess, real: Math.round(flexible()), n: S.items.length, sv: Math.round(svE.monthly), ra: S.post ? Math.round((S.post.r[0] + S.post.r[1] + S.post.r[2]) / 3 * 10) / 10 : null, hm: S.post ? (S.post.h || "") : "", ck: S.check ? S.check.act.join("; ") : "", cs: S.check ? (S.check.saved || 0) : null, su: S.check ? (S.check.use || "") : "" };
     L.push("DATA " + JSON.stringify(j));
     return L.join("\n");
   }
@@ -821,7 +823,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   /* ---------- LEARN ---------- */
   function vLearn() {
     var h = '<h1 class="pg-title">Learn</h1>';
-    h += '<section class="card stack"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Your results</h3><small class="mono">' + S.id + "</small></div>";
+    h += '<section class="card stack"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Your results</h3><small class="mono">' + (S.name ? esc(S.name) + " · " : "") + S.id + "</small></div>";
     var pre = S.pre ? score(S.pre.a) : null, post = S.post ? score(S.post.a) : null;
     h += '<div class="leader"><span>Before-quiz</span><span class="dots"></span><span class="amt">' + (pre == null ? "skipped" : pre + " / 6") + '</span></div><div class="leader"><span>After-quiz</span><span class="dots"></span><span class="amt">' + (post == null ? "not yet" : post + " / 6" + (pre != null ? " (" + (post - pre >= 0 ? "+" : "") + (post - pre) + ")" : "")) + "</span></div>";
     if (S.pre && S.post) h += '<div class="leader"><span>Confidence</span><span class="dots"></span><span class="amt">' + (S.pre.c[0] + S.pre.c[1]) / 2 + " → " + (S.post.c[0] + S.post.c[1]) / 2 + " of 5</span></div>";
@@ -1030,6 +1032,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   function openSettings() {
     var st = function (k) { return 'aria-pressed="' + (S.theme === k) + '"'; };
     openSheet('<div class="stack" style="gap:16px"><div class="row-between"><h2>Settings</h2><button class="icon-btn" data-act="sheetclose" aria-label="Close">' + ic("x", 22) + '</button></div>' +
+      '<div class="field"><label for="sName">Your name or nickname</label><input id="sName" type="text" data-in="pname" maxlength="30" autocomplete="given-name" value="' + esc(S.name || "") + '"><small>Shown next to your results if you choose to send them.</small></div>' +
       '<div class="field"><label for="sInc">' + (isTeen() ? "Pocket money per month (AED), optional" : "Monthly income after tax (AED)") + '</label><div class="money"><span>AED</span><input id="sInc" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="income" value="' + (S.income > 0 ? S.income : "") + '" placeholder="9000"></div><small>' + (isTeen() ? "Leave it empty if you do not get any. Percentages then show the share of your own total." : "Every percentage in the app is measured against this.") + '</small></div>' +
       '<div class="field"><div class="lbl">Reminder time for calendar file</div><div class="seg" id="remSeg"><button data-act="rem" data-v="0" ' + 'aria-pressed="' + (S.remind === 0) + '">On the day</button><button data-act="rem" data-v="1" aria-pressed="' + (S.remind === 1) + '">1 day before</button><button data-act="rem" data-v="2" aria-pressed="' + (S.remind === 2) + '">2 days before</button></div></div>' +
       '<div class="field"><div class="lbl">Appearance</div><div class="seg" id="themeSeg"><button data-act="theme" data-v="auto" ' + st("auto") + '>Auto</button><button data-act="theme" data-v="light" ' + st("light") + '>Light</button><button data-act="theme" data-v="dark" ' + st("dark") + ">Dark</button></div></div>" +
@@ -1063,12 +1066,16 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     } };
   }
   function buildFlow(kind) {
-    var d = { a: [null, null, null, null, null, null], c: [3, 3], r: [3, 3, 3], h: null, act: [], cm: "", saved: "", use: null, age: null, stat: null, pl: null, guess: "", income: S.income > 0 ? String(S.income) : "" }, steps = [];
+    var d = { a: [null, null, null, null, null, null], c: [3, 3], r: [3, 3, 3], h: null, act: [], cm: "", saved: "", use: null, age: null, stat: null, pl: null, guess: "", name: S.name || "", income: S.income > 0 ? String(S.income) : "" }, steps = [];
     if (kind === "onboard") {
-      steps.push({ need: function () { return true; }, next: "Let's go", html: function () { return '<div style="padding-top:18px" class="stack"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>What do you <span class="hl">really</span> pay for each month?</h1><p class="muted" style="font-size:16px">Add every pay-later plan, subscription, bill and loan. TrueTotal prints them as one receipt, shows what share of your income each takes, and puts every pay day on a calendar.</p></div><div class="note">This is part of a student financial literacy project. Your answers are anonymous, stay on this phone unless you choose to send your results, and you can skip any question. It takes about 4 minutes.</div>'; } });
+      steps.push({ need: function () { return true; }, next: "Let's go", html: function () { return '<div style="padding-top:18px" class="stack"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>What do you <span class="hl">really</span> pay for each month?</h1><p class="muted" style="font-size:16px">Add every pay-later plan, subscription, bill and loan. TrueTotal prints them as one receipt, shows what share of your income each takes, and puts every pay day on a calendar.</p></div><div class="note">This is part of a student financial literacy project. Your answers stay on this phone unless you choose to send your results. If you do, your first name or nickname goes with them. You can skip any question except your name. It takes about 4 minutes.</div>'; } });
       steps.push({ need: function () { return F.d.age != null; }, html: function () {
         var teen = F.d.age === "Under 18";
         return '<p class="eyebrow">First question</p><h2>How old are you?</h2><div class="chips">' + ["Under 18", "18-22", "23-30", "31+"].map(function (o) { return '<button class="chip" data-act="fchip" data-k="age" data-v="' + o + '" aria-pressed="' + (F.d.age === o) + '">' + o + "</button>"; }).join("") + "</div>" + (teen ? '<div class="note">Under 18? You get a version made for you, with no income questions. If you are not sure it is OK to take part, ask a parent or guardian first.</div>' : '<p class="sm">If you are under 18 you get a different version of the quiz and the app.</p>');
+      } });
+      steps.push({ need: function () { return cleanName(F.d.name).length > 0; }, html: function () {
+        var teen = curMode() === "teen";
+        return '<p class="eyebrow">Your profile</p><h2>What should we call you?</h2><p class="muted">A first name or a nickname is fine. It shows next to your results if you choose to send them. Nothing else about you is asked for.</p><div class="field"><label for="pName">First name or nickname</label><input id="pName" type="text" data-in="name" maxlength="30" autocomplete="given-name" placeholder="e.g. Sam" value="' + esc(F.d.name) + '"></div>' + (teen ? '<div class="note">Under 18? A nickname is fine. Please check with a parent or guardian that it is OK to take part.</div>' : "");
       } });
       steps.push({ need: function () { return true; }, html: function () {
         var teen = curMode() === "teen";
@@ -1130,6 +1137,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     var k = F.kind, d = F.d;
     if (k === "onboard") {
       S.about = { age: d.age, stat: d.stat, pl: d.pl };
+      S.name = cleanName(d.name);
       S.mode = d.age === "Under 18" ? "teen" : "adult";
       if (d.a.every(function (x) { return x != null; })) S.pre = { a: d.a.slice(), c: d.c.slice(), at: Date.now() };
       S.guess = parseFloat(d.guess); if (isNaN(S.guess)) S.guess = null;
@@ -1192,7 +1200,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     }, function () { toast("Could not send. Use Copy my results instead."); });
   }
   function sendBlock() {
-    return '<button class="btn hi block" data-act="send">' + (S.sentAt ? "Send an update" : "Send my results") + '</button><p class="sm">' + (S.sentAt ? "Last sent " + new Date(S.sentAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + ". " : "") + "Sends your tester code, quiz scores and answers. No name and no income. You can copy them instead.</p>";
+    return '<button class="btn hi block" data-act="send">' + (S.sentAt ? "Send an update" : "Send my results") + '</button><p class="sm">' + (S.sentAt ? "Last sent " + new Date(S.sentAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + ". " : "") + "Sends your name, tester code, quiz scores and answers, and spending figures. Not your income. You can copy them instead.</p>";
   }
   function copyResults() {
     var txt = resultsText(), done = function () { toast("Copied. Paste it where you were asked to send it."); };
@@ -1315,6 +1323,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       if (k === "name") ed.name = el.value; else if (k === "amount") ed.amount = parseFloat(el.value) || 0; else if (k === "anchor") ed.anchor = el.value;
       $("#dateHint").textContent = dateHint(); $("#prev").innerHTML = previewHTML();
     }
+    if (sk === "settings" && k === "pname") { S.name = cleanName(el.value); save(); }
     if (sk === "settings" && k === "income") { S.income = Math.max(0, parseFloat(el.value) || 0); save(); }
     if (sk === "alt" && ad) {
       if (k === "altname") ad.name = el.value; else if (k === "altamount") ad.amount = parseFloat(el.value) || 0;
