@@ -687,7 +687,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     var cta = cur === 2 || cur === 3 ? ["post", "Take the after-quiz now"] : cur === 4 ? ["send", "Send my results"] : null;
     if (cta && (cta[0] !== "send" || canSend())) h += '<button class="btn ' + (cur === 2 ? "ghost " : "hi ") + 'block" data-act="' + cta[0] + '" style="margin-top:8px">' + cta[1] + "</button>";
     if (cur === 2) h += '<p class="sm">Best after 3 to 5 days of real use, but you can do it any time.</p>';
-    return h + "</section>";
+    return h + '<button class="btn ghost block" data-act="guide" style="margin-top:8px">' + ic("bulb", 16) + "Show me how this works</button></section>";
   }
   function vHome() { return stepsCard() + vHome0(); }
   function vHome0() {
@@ -1108,6 +1108,19 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       quizSteps().forEach(function (s) { steps.push(s); });
       steps.push({ need: function () { return parseFloat(F.d.guess) >= 0 && F.d.guess !== ""; }, html: function () { var teen = curMode() === "teen"; return '<p class="eyebrow">Before we look</p><h2>Take a guess</h2><p class="muted">About how much do you spend each month on ' + (teen ? "<b>subscriptions, games, in-app purchases and pay-later</b> together?" : "<b>pay-later plus subscriptions</b> together?") + '</p><div class="money"><span>AED</span><input class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="guess" placeholder="e.g. 500" value="' + esc(F.d.guess) + '"></div><p class="sm">No peeking at your bank app or your phone. We\'ll compare it with the real number later.</p>'; } });
       steps.push({ need: function () { return curMode() === "teen" || parseFloat(F.d.income) > 0; }, next: "Add my payments", html: function () { var teen = curMode() === "teen"; return teen ? '<p class="eyebrow">Last setup step</p><h2>Do you get pocket money?</h2><p class="muted">Enter how much you get each month in AED, or leave it empty if you do not get any. It never leaves your phone.</p><div class="money"><span>AED</span><input class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="income" placeholder="e.g. 200" value="' + esc(F.d.income) + '"></div>' : '<p class="eyebrow">Last setup step</p><h2>What is your monthly income?</h2><p class="muted">After tax, in AED. Every percentage is measured against this. It never leaves your phone.</p><div class="money"><span>AED</span><input class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="income" placeholder="e.g. 9000" value="' + esc(F.d.income) + '"></div>'; } });
+    } else if (kind === "guide") {
+      var G = [
+        ["Do the before-quiz", "Where: the first screens you just did.", "This is your starting point. Later we compare it with the after-quiz to see what changed. There is nothing to do here, you are already past it.", "check"],
+        ["Add what you pay for", "Where: Items tab, then Add a payment. Or tap Try example numbers.", "Add pay-later plans, subscriptions, bills and loans, with the day each is paid. Then tap Reveal my TrueTotal to see the real total against your guess.", "plus"],
+        ["Use it for a few days", "Where: Calendar, Save and the switches on the Total tab.", "Look at your pay days in the Calendar. Switch a cost off to see what cancelling would do. Open Save for cheaper options. 3 to 5 days of real use works best.", "cal"],
+        ["Do the after-quiz", "Where: Learn tab, then Take the after-quiz.", "Same six questions as the start, plus a few ratings. It takes about 4 minutes. Do it after you have used the app.", "learn"],
+        ["Send your results", "Where: the button at the end of the after-quiz, or Learn, then Send.", "This is the step people forget. Tap Send my results after the after-quiz, so your before and after are counted together. Not your income.", "share"]
+      ];
+      var mini = function (cur) { return '<div class="steps" style="margin:14px 0 0">' + G.map(function (g, i) { return '<div class="stp' + (i < cur ? " done" : i === cur ? " now" : "") + '"><span class="num">' + (i < cur ? "✓" : i + 1) + '</span><div><b style="font-weight:600">' + g[0] + "</b></div></div>"; }).join("") + "</div>"; };
+      steps.push({ need: function () { return true; }, next: "Show me", html: function () { return '<p class="eyebrow">Quick tutorial</p><h1>5 steps. Before and after.</h1><p class="muted" style="font-size:16px">The project measures what changes after you use TrueTotal, so it needs both a before and an after from you. Here is the whole path.</p>' + mini(-1).replace('class="steps"', 'class="steps card"'); } });
+      G.forEach(function (g, i) {
+        steps.push({ need: function () { return true; }, next: i === 4 ? "Got it, let's start" : "Next", html: function () { return '<p class="eyebrow">Step ' + (i + 1) + " of 5" + (i === 0 ? " · done" : i === 1 ? " · do this now" : "") + '</p><div style="display:flex;gap:14px;align-items:center;margin:6px 0 2px"><span class="ico lg" style="--c:var(--k-pay);width:56px;height:56px;border-radius:16px">' + ic(g[3] === "learn" ? "bulb" : g[3], 28) + "</span><h1 style=\"margin:0\">" + g[0] + '</h1></div><p class="sm" style="font-weight:600;margin-top:12px">' + g[1] + '</p><p class="muted" style="font-size:16px">' + g[2] + "</p>" + mini(i); } });
+      });
     } else if (kind === "pre") {
       /* not used */
     } else if (kind === "post") {
@@ -1163,7 +1176,9 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       if (d.a.every(function (x) { return x != null; })) S.pre = { a: d.a.slice(), c: d.c.slice(), at: Date.now() };
       S.guess = parseFloat(d.guess); if (isNaN(S.guess)) S.guess = null;
       S.income = parseFloat(d.income) || 0;
-      S.onboarded = true; save(); view = "items"; closeFlow(); toast("Now add what you pay for");
+      S.onboarded = true; S.guided = true; save(); view = "items"; closeFlow(); openFlow("guide");
+    } else if (k === "guide") {
+      S.guided = true; save(); closeFlow(); view = S.items.length ? view : "items"; render();
     } else if (k === "post") {
       S.post = { a: d.a.slice(), c: d.c.slice(), r: d.r.slice(), h: d.h, act: d.act.slice(), cm: d.cm, at: Date.now() }; save(); view = "learn"; closeFlow(); toast("Saved. Thank you!");
     } else if (k === "check") {
@@ -1303,7 +1318,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       goal: openGoal,
       goalsave: function () { if (!gd || !gd.name.trim() || !(gd.target > 0)) { toast("Add a name and an amount"); return; } S.goal = { name: gd.name.trim(), target: gd.target }; save(); closeSheet(); toast("Goal saved"); },
       goaldel: function () { S.goal = null; save(); closeSheet(); toast("Goal removed"); },
-      post: function () { openFlow("post"); }, check: function () { openFlow("check"); }, copy: copyResults, ics: downloadICS,
+      post: function () { openFlow("post"); }, guide: function () { openFlow("guide"); }, check: function () { openFlow("check"); }, copy: copyResults, ics: downloadICS,
       sheetclose: function () { closeSheet(); },
       /* item sheet */
       preset: function () { var p = presets()[+t.dataset.i]; ed.name = p[0]; ed.kind = p[1]; if (p[1] === "pay") { ed.hasEnd = true; } $("#fName").value = ed.name; refreshItemSheet(); },
