@@ -281,6 +281,26 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
 @keyframes pop { 0% { transform: scale(.6); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
 .chip[aria-pressed="true"], .opt[aria-pressed="true"] { animation: pop .25s ease-out; }
 @media (hover: hover) { .btn:hover { transform: translateY(-1px); } button.card:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -16px color-mix(in srgb, var(--ink) 45%, transparent); } }
+/* spotlight tour */
+.tour { position: fixed; inset: 0; z-index: 70; }
+.tour .t-block { position: absolute; inset: 0; }
+.tour .t-hole { position: absolute; border-radius: 16px; box-shadow: 0 0 0 9999px rgba(8, 10, 13, .7); pointer-events: none; transition: left .35s cubic-bezier(.2,.9,.2,1), top .35s cubic-bezier(.2,.9,.2,1), width .35s cubic-bezier(.2,.9,.2,1), height .35s cubic-bezier(.2,.9,.2,1), opacity .2s; }
+.tour .t-hole::after { content: ""; position: absolute; inset: -4px; border-radius: 20px; border: 3px solid var(--hi); animation: tourpulse 1.6s ease-out infinite; }
+@keyframes tourpulse { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.08); } }
+.tour .t-card { position: absolute; background: var(--paper); color: var(--ink); border-radius: 22px; padding: 18px 18px 14px; box-shadow: 0 24px 60px -12px rgba(0,0,0,.55); transition: opacity .2s, left .35s cubic-bezier(.2,.9,.2,1), top .35s cubic-bezier(.2,.9,.2,1); }
+.tour .t-card.mv, .tour .t-hole.mv { opacity: 0; }
+.tour .t-card h2 { font-family: var(--fd); font-size: 21px; font-weight: 800; line-height: 1.15; margin: 4px 0 6px; }
+.tour .t-card p { font-size: 15px; line-height: 1.45; color: var(--ink2); }
+.tour .t-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.tour .t-dots { display: inline-flex; gap: 4px; }
+.tour .t-dots i { width: 14px; height: 5px; border-radius: 99px; background: var(--line); }
+.tour .t-dots i.on { background: var(--k-sub); }
+.tour .t-dots i.cur { background: var(--hi); box-shadow: inset 0 0 0 1px var(--ink); }
+.tour .t-btns { display: flex; gap: 8px; margin-top: 14px; }
+.tour .t-btns .btn { flex: 1; }
+.tour .t-skip { font-size: 13px; font-weight: 600; color: var(--ink2); padding: 6px 4px; }
+@media (prefers-reduced-motion: reduce) { .tour .t-hole::after { animation: none; } }
+
 /* hover + keyboard polish */
 .skip { position: absolute; left: -9999px; top: 8px; background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 10px; z-index: 100; font-weight: 600; }
 .skip:focus { left: 16px; }
@@ -677,7 +697,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   }
   function refocus(sig) { if (!sig) return; var n = document.querySelector(sig); if (n && n.focus) n.focus({ preventScroll: true }); }
   function syncBg() {
-    var lock = !!(sheet || flowEl);
+    var lock = !!(sheet || flowEl || tourEl);
     [".shell", "nav.tabs", ".skip"].forEach(function (sel) { var e = $(sel); if (e) e.inert = lock; });
   }
   var lastSig = null, lastView = null;
@@ -1308,7 +1328,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       if (d.a.every(function (x) { return x != null; })) S.pre = { a: d.a.slice(), c: d.c.slice(), at: Date.now() };
       S.guess = parseFloat(d.guess); if (isNaN(S.guess)) S.guess = null;
       S.income = parseFloat(d.income) || 0;
-      S.onboarded = true; S.guided = true; save(); view = "items"; closeFlow(); openFlow("guide");
+      S.onboarded = true; S.guided = true; save(); view = "home"; closeFlow(); startTour();
     } else if (k === "guide") {
       S.guided = true; save(); closeFlow(); view = S.items.length ? view : "items"; render();
     } else if (k === "post") {
@@ -1317,6 +1337,88 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       S.check = { act: d.act.slice(), saved: parseFloat(d.saved) || 0, use: d.use, at: Date.now() }; save(); closeFlow(); toast("Check-in saved");
     }
   }
+
+  /* ---------- spotlight tour ---------- */
+  var tourEl = null, T = null, tourTimer = null;
+  var TOUR = [
+    { view: "home", title: "Quick tour", text: "I will point at each thing you need. It takes about 30 seconds. Tap Next to follow along." },
+    { view: "home", sel: ["#view .steps"], title: "Your 5 steps", text: "This card always shows what to do next. The dots fill in as you go: before-quiz, add payments, use it, after-quiz, send." },
+    { view: "home", sel: ["nav.tabs button[data-v=\"items\"]"], title: "Items tab", text: "This is where everything you pay for lives. Tap it to open the list." },
+    { view: "items", sel: ["#view [data-act=\"add\"]"], title: "Add a payment", text: "Tap Add. Type what it is, the price, and the day it is paid. Pay-later plans, subscriptions, bills and loans all count." },
+    { view: "items", sel: ["#view [data-act=\"example\"]"], opt: true, title: "No time? Use examples", text: "This fills in sample numbers so you can see how the app works. You can delete them and add your own after." },
+    { view: "home", sel: ["#view [data-act=\"reveal\"]", "#view .card.empty"], title: "Reveal your TrueTotal", text: "Once you have added your payments, tap Reveal here. You will see the real monthly total next to the guess you made." },
+    { view: "cal", sel: ["nav.tabs button[data-v=\"cal\"]"], title: "Calendar", text: "Every payment lands on its pay day. Check this over a few days to see when money leaves your account." },
+    { view: "save", sel: ["nav.tabs button[data-v=\"save\"]"], title: "Save tab", text: "Ways to pay less, a pay-later calculator, a 'Should I buy this?' pause button and a savings goal all live here." },
+    { view: "learn", sel: ["#view section.card:not(.steps) [data-act=\"post\"]", "#view [data-act=\"post\"]"], title: "After-quiz", text: "After 3 to 5 days of using the app, tap this. Same six questions as the start, so we can see what changed." },
+    { view: "learn", sel: ["#view [data-act=\"send\"]", "#view [data-act=\"copy\"]"], title: "Then tap Send", text: "This is the step people forget. After the after-quiz, tap Send my results so your before and after are counted together." },
+    { view: "home", sel: ["#gearBtn"], title: "Settings", text: "Change your name, switch light or dark, or delete your data here. You can replay this tour any time from the Total tab." },
+    { view: "items", title: "Your turn", text: "Start by adding your first payment, or tap Try example numbers. Good luck!", last: true }
+  ];
+  function tourFind(sels) { if (!sels) return null; for (var i = 0; i < sels.length; i++) { var e = document.querySelector(sels[i]); if (e && e.offsetParent !== null || (e && getComputedStyle(e).position === "fixed")) return e; } return null; }
+  function startTour() {
+    closeSheet(true); if (flowEl) closeFlow();
+    if (tourEl) tourEl.remove();
+    T = { i: 0, dir: 1 };
+    tourEl = document.createElement("div"); tourEl.className = "tour"; tourEl.setAttribute("role", "dialog"); tourEl.setAttribute("aria-modal", "true"); tourEl.setAttribute("aria-label", "App tour"); tourEl.setAttribute("tabindex", "-1");
+    document.body.appendChild(tourEl); syncBg();
+    drawTour();
+  }
+  function endTour() {
+    clearTimeout(tourTimer);
+    if (tourEl) { tourEl.remove(); tourEl = null; }
+    T = null; S.guided = true; save(); syncBg();
+    if (!S.items.length) view = "items";
+    render();
+  }
+  function tourGo(d) {
+    var n = T.i + d;
+    if (n < 0) return;
+    if (n >= TOUR.length) { endTour(); return; }
+    T.i = n; T.dir = d; drawTour();
+  }
+  function drawTour() {
+    var st = TOUR[T.i];
+    if (view !== st.view) { view = st.view; render(); }
+    var wasHole = tourEl.querySelector(".t-hole");
+    tourEl.innerHTML = '<div class="t-block"></div><div class="t-hole mv"></div><div class="t-card mv" role="document"><div class="t-top"><span class="t-dots" aria-hidden="true">' + TOUR.map(function (x, i) { return "<i" + (i === T.i ? ' class="cur"' : i < T.i ? ' class="on"' : "") + "></i>"; }).join("") + '</span><button class="t-skip" data-act="tourend">Skip tour</button></div><h2>' + st.title + "</h2><p>" + st.text + '</p><div class="t-btns">' + (T.i > 0 ? '<button class="btn ghost" data-act="tourback">Back</button>' : "") + '<button class="btn hi" data-act="tournext" id="tourNext">' + (st.last ? "Got it" : T.i === 0 ? "Show me" : "Next") + "</button></div></div>";
+    clearTimeout(tourTimer);
+    tourTimer = setTimeout(placeTour, 120);
+  }
+  function placeTour() {
+    if (!tourEl || !T) return;
+    var st = TOUR[T.i], tgt = tourFind(st.sel);
+    if (st.sel && !tgt && st.opt) { tourGo(T.dir); return; }
+    var hole = tourEl.querySelector(".t-hole"), card = tourEl.querySelector(".t-card");
+    var W = innerWidth, H = innerHeight, cw = Math.min(340, W - 32);
+    card.style.width = cw + "px";
+    if (tgt) {
+      tgt.scrollIntoView({ block: "center", inline: "nearest" });
+      var r = tgt.getBoundingClientRect(), pad = 6;
+      hole.style.display = "";
+      hole.style.left = (r.left - pad) + "px"; hole.style.top = (r.top - pad) + "px"; hole.style.width = (r.width + pad * 2) + "px"; hole.style.height = (r.height + pad * 2) + "px";
+      var ch = card.offsetHeight, x, y, g = 16;
+      if (W >= 900 && r.right + g + cw <= W - 16) { x = r.right + g + pad; y = Math.min(Math.max(16, r.top + r.height / 2 - ch / 2), H - ch - 16); }
+      else if (r.bottom + g + ch + pad <= H - 12) { x = r.left + r.width / 2 - cw / 2; y = r.bottom + g + pad; }
+      else if (r.top - g - ch - pad >= 12) { x = r.left + r.width / 2 - cw / 2; y = r.top - g - ch - pad; }
+      else { x = (W - cw) / 2; y = H - ch - 16; }
+      x = Math.min(Math.max(16, x), W - cw - 16);
+      card.style.left = x + "px"; card.style.top = y + "px";
+    } else {
+      hole.style.display = "none";
+      var ch2 = card.offsetHeight;
+      card.style.left = ((W - cw) / 2) + "px"; card.style.top = Math.max(16, (H - ch2) / 2) + "px";
+      tourEl.querySelector(".t-block").style.background = "rgba(8,10,13,.7)";
+    }
+    hole.classList.remove("mv"); card.classList.remove("mv");
+    var nb = $("#tourNext", tourEl); if (nb) nb.focus({ preventScroll: true });
+  }
+  window.addEventListener("resize", function () { if (tourEl && T) placeTour(); });
+  document.addEventListener("keydown", function (e) {
+    if (!tourEl) return;
+    if (e.key === "Escape") { e.preventDefault(); endTour(); }
+    else if (e.key === "ArrowRight") { e.preventDefault(); tourGo(1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); tourGo(-1); }
+  });
 
   /* ---------- reveal ---------- */
   var rvTimers = [];
@@ -1457,7 +1559,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       pbuy: function () { var p = S.pauses.filter(function (q) { return q.id === t.dataset.id; })[0]; if (p) { p.done = "bought"; save(); render(); } },
       goalsave: function () { if (!gd || !gd.name.trim() || !(gd.target > 0)) { toast("Add a name and an amount"); return; } S.goal = { name: gd.name.trim(), target: gd.target }; save(); closeSheet(); toast("Goal saved"); },
       goaldel: function () { S.goal = null; save(); closeSheet(); toast("Goal removed"); },
-      post: function () { openFlow("post"); }, guide: function () { openFlow("guide"); }, check: function () { openFlow("check"); }, copy: copyResults, ics: downloadICS,
+      post: function () { openFlow("post"); }, guide: function () { startTour(); }, tourend: function () { endTour(); }, tournext: function () { tourGo(1); }, tourback: function () { tourGo(-1); }, check: function () { openFlow("check"); }, copy: copyResults, ics: downloadICS,
       sheetclose: function () { closeSheet(); },
       /* item sheet */
       preset: function () { var p = presets()[+t.dataset.i]; ed.name = p[0]; ed.kind = p[1]; if (p[1] === "pay") { ed.hasEnd = true; } $("#fName").value = ed.name; refreshItemSheet(); },
