@@ -305,13 +305,19 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   <div id="storeWarn" class="warnbar" hidden style="margin-bottom:12px">This browser can't save your data, so it will be lost when you close the page. Copy your results before you leave.</div>
   <main id="view" tabindex="-1"></main>
 </div>
-<nav class="tabs" aria-label="Main"><div class="in" id="tabs"></div><p class="nav-note">TrueTotal is a learning tool, not financial advice. Everything stays on this device.</p></nav>
+<nav class="tabs" aria-label="Main"><div class="in" id="tabs"></div><p class="nav-note">TrueTotal is a learning tool, not financial advice. Everything stays on this device unless you send your results.</p></nav>
 <div id="layer"></div>
 <div id="toast" class="toast" role="status"></div>
 
 <script>
 (function () {
   "use strict";
+
+  // Automatic results: paste your Google Form details here (see the setup steps), then rebuild and publish.
+  //   action: the form's address ending in /formResponse
+  //   entry:  the question's field name, like entry.1234567890
+  // While either is empty, the Send button stays hidden and testers use Copy my results instead.
+  var RESULTS_FORM = { action: "", entry: "" };
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
@@ -822,7 +828,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     if (S.guess != null && S.items.length) h += '<div class="leader"><span>Your guess</span><span class="dots"></span><span class="amt">' + aed(S.guess) + " → " + aed(flexible()) + "</span></div>";
     h += "<p class=\"sm\">" + (S.post ? "Thanks for taking part." : "Take the after-quiz once you have used TrueTotal for a few days.") + "</p>";
     h += '<button class="btn ' + (S.post ? "ghost" : "hi") + ' block" data-act="post">' + (S.post ? "Retake the after-quiz" : "Take the after-quiz") + "</button>";
-    h += '<button class="btn ghost block" data-act="check">' + (S.check ? "Update your check-in" : "5-day check-in") + '</button><button class="btn block" data-act="copy">Copy my results</button></section>';
+    h += '<button class="btn ghost block" data-act="check">' + (S.check ? "Update your check-in" : "5-day check-in") + '</button>' + (canSend() ? sendBlock() : "") + '<button class="btn ' + (canSend() ? "ghost " : "") + 'block" data-act="copy">Copy my results</button></section>';
 
     if (counted().length) {
       if (!isTeen() && S.income > 0) {
@@ -1028,7 +1034,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       '<div class="field"><div class="lbl">Reminder time for calendar file</div><div class="seg" id="remSeg"><button data-act="rem" data-v="0" ' + 'aria-pressed="' + (S.remind === 0) + '">On the day</button><button data-act="rem" data-v="1" aria-pressed="' + (S.remind === 1) + '">1 day before</button><button data-act="rem" data-v="2" aria-pressed="' + (S.remind === 2) + '">2 days before</button></div></div>' +
       '<div class="field"><div class="lbl">Appearance</div><div class="seg" id="themeSeg"><button data-act="theme" data-v="auto" ' + st("auto") + '>Auto</button><button data-act="theme" data-v="light" ' + st("light") + '>Light</button><button data-act="theme" data-v="dark" ' + st("dark") + ">Dark</button></div></div>" +
       '<div class="stack" style="gap:8px"><button class="btn ghost block" data-act="reveal">Replay the reveal</button><button class="btn ghost block" data-act="copy">Copy my results</button><button class="btn danger block" id="clearBtn" data-act="clear">Delete all my data</button></div>' +
-      '<p class="sm">Everything is stored only on this device. Your tester code is <span class="mono">' + S.id + "</span>.</p></div>", null, "settings");
+      '<p class="sm">Everything stays on this device unless you tap Send my results. Your tester code is <span class="mono">' + S.id + "</span>.</p></div>", null, "settings");
   }
 
   /* ---------- flows ---------- */
@@ -1059,7 +1065,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   function buildFlow(kind) {
     var d = { a: [null, null, null, null, null, null], c: [3, 3], r: [3, 3, 3], h: null, act: [], cm: "", saved: "", use: null, age: null, stat: null, pl: null, guess: "", income: S.income > 0 ? String(S.income) : "" }, steps = [];
     if (kind === "onboard") {
-      steps.push({ need: function () { return true; }, next: "Let's go", html: function () { return '<div style="padding-top:18px" class="stack"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>What do you <span class="hl">really</span> pay for each month?</h1><p class="muted" style="font-size:16px">Add every pay-later plan, subscription, bill and loan. TrueTotal prints them as one receipt, shows what share of your income each takes, and puts every pay day on a calendar.</p></div><div class="note">This is part of a student financial literacy project. Your answers are anonymous, stay on this phone, and you can skip any question. It takes about 4 minutes.</div>'; } });
+      steps.push({ need: function () { return true; }, next: "Let's go", html: function () { return '<div style="padding-top:18px" class="stack"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>What do you <span class="hl">really</span> pay for each month?</h1><p class="muted" style="font-size:16px">Add every pay-later plan, subscription, bill and loan. TrueTotal prints them as one receipt, shows what share of your income each takes, and puts every pay day on a calendar.</p></div><div class="note">This is part of a student financial literacy project. Your answers are anonymous, stay on this phone unless you choose to send your results, and you can skip any question. It takes about 4 minutes.</div>'; } });
       steps.push({ need: function () { return F.d.age != null; }, html: function () {
         var teen = F.d.age === "Under 18";
         return '<p class="eyebrow">First question</p><h2>How old are you?</h2><div class="chips">' + ["Under 18", "18-22", "23-30", "31+"].map(function (o) { return '<button class="chip" data-act="fchip" data-k="age" data-v="' + o + '" aria-pressed="' + (F.d.age === o) + '">' + o + "</button>"; }).join("") + "</div>" + (teen ? '<div class="note">Under 18? You get a version made for you, with no income questions. If you are not sure it is OK to take part, ask a parent or guardian first.</div>' : '<p class="sm">If you are under 18 you get a different version of the quiz and the app.</p>');
@@ -1094,6 +1100,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     var post = score(F.d.a), pre = S.pre ? score(S.pre.a) : null;
     var h = '<p class="eyebrow">Your result</p><h1>' + post + " out of 6" + (pre != null ? ' <span class="hl">' + (post - pre >= 0 ? "+" : "") + (post - pre) + "</span>" : "") + "</h1>" + (pre != null ? '<p class="muted">Before you started: ' + pre + " out of 6.</p>" : "");
     h += quiz().map(function (q, i) { var ok = F.d.a[i] === q.c; return '<div class="card stack" style="gap:6px"><div class="row-between"><b style="font-weight:600;font-size:14px">' + esc(q.q) + '</b><span class="tag" style="--c:' + (ok ? "var(--good)" : "var(--bad)") + '">' + (ok ? "Right" : "Not quite") + '</span></div><p class="sm">' + (ok ? "" : "Answer: " + esc(q.o[q.c]) + ". ") + esc(q.e) + "</p></div>"; }).join("");
+    if (canSend()) h += '<div class="card stack" style="gap:8px"><b style="font-family:var(--fd);font-size:17px">Send your results</b>' + sendBlock() + "</div>";
     return h;
   }
   function openFlow(kind) {
@@ -1173,6 +1180,20 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   }
 
   /* ---------- results sharing ---------- */
+  function canSend() { return !!(RESULTS_FORM.action && RESULTS_FORM.entry); }
+  function sendResults() {
+    if (!canSend()) { copyResults(); return; }
+    var body = new URLSearchParams();
+    body.append(RESULTS_FORM.entry, resultsText() + "\nSent: " + new Date().toISOString());
+    toast("Sending…");
+    fetch(RESULTS_FORM.action, { method: "POST", mode: "no-cors", body: body }).then(function () {
+      S.sentAt = Date.now(); save(); toast("Sent. Thank you!");
+      if (view === "learn" && !flowEl) render();
+    }, function () { toast("Could not send. Use Copy my results instead."); });
+  }
+  function sendBlock() {
+    return '<button class="btn hi block" data-act="send">' + (S.sentAt ? "Send an update" : "Send my results") + '</button><p class="sm">' + (S.sentAt ? "Last sent " + new Date(S.sentAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + ". " : "") + "Sends your tester code, quiz scores and answers. No name and no income. You can copy them instead.</p>";
+  }
   function copyResults() {
     var txt = resultsText(), done = function () { toast("Copied. Paste it where you were asked to send it."); };
     var fallback = function () {
@@ -1241,6 +1262,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       install: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; $("#installBar").hidden = true; } },
       installoff: function () { $("#installBar").hidden = true; try { localStorage.setItem("tt-install-off", "1"); } catch (er) {} },
       skip: function () { $("#view").focus(); },
+      send: sendResults,
       gosave: function () { view = "save"; render(); window.scrollTo(0, 0); },
       use: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it) { it.use = it.use === t.dataset.v ? undefined : t.dataset.v; save(); render(); } },
       switchoff: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it) { it.on = false; save(); render(); toast("Switched off. Check the Total tab to see the effect"); } },
