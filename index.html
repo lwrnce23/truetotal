@@ -249,9 +249,53 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
 .ideas li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ink2); margin-top: 8px; flex: none; }
 .save-off { opacity: .55; }
 .warnbar { background: color-mix(in srgb, var(--warn) 18%, var(--paper)); border-radius: 12px; padding: 10px 12px; font-size: 13px; }
+/* hover + keyboard polish */
+.skip { position: absolute; left: -9999px; top: 8px; background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 10px; z-index: 100; font-weight: 600; }
+.skip:focus { left: 16px; }
+.nav-note { display: none; }
+#view:focus, .sheet:focus, .flow:focus { outline: none; }
+@media (hover: hover) {
+  .btn:hover { filter: brightness(1.07); }
+  .btn.ghost:hover { box-shadow: inset 0 0 0 1.5px var(--ink2); filter: none; }
+  .chip:hover { box-shadow: inset 0 0 0 1.5px var(--ink2); }
+  .chip[aria-pressed="true"]:hover { box-shadow: none; }
+  .opt:hover { box-shadow: inset 0 0 0 1.5px var(--ink2); }
+  .opt[aria-pressed="true"]:hover { box-shadow: none; }
+  .item .main:hover .tx b { text-decoration: underline; }
+  .day:hover { filter: brightness(.96); }
+  .lg:hover { background: var(--paper2); }
+  .seg button:hover { color: var(--ink); }
+  .icon-btn:hover { background: var(--paper); }
+}
+
+/* laptop and desktop: sidebar, two columns, centred dialogs */
+@media (min-width: 900px) {
+  body { font-size: 16px; padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
+  .shell { max-width: 1160px; padding-left: 260px; padding-bottom: 56px; position: relative; }
+  header.top { margin-left: -260px; padding: 22px 0 18px; }
+  nav.tabs { top: 96px; bottom: auto; left: max(24px, calc((100vw - 1160px) / 2)); right: auto; width: 228px; background: none; border: 0; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; }
+  nav.tabs .in { max-width: none; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+  nav.tabs button { flex-direction: row; justify-content: flex-start; gap: 12px; padding: 6px 14px 6px 8px; min-height: 52px; border-radius: 14px; font-size: 15px; }
+  nav.tabs button:hover { background: color-mix(in srgb, var(--paper) 70%, transparent); color: var(--ink); }
+  nav.tabs button[aria-current="page"] { background: var(--paper); color: var(--ink); }
+  nav.tabs .pill { width: 40px; height: 34px; }
+  .nav-note { display: block; margin-top: 18px; padding: 0 8px; font-size: 12.5px; color: var(--ink2); line-height: 1.45; }
+  #view { display: block; column-count: 2; column-gap: 20px; }
+  #view > * { break-inside: avoid; margin-bottom: 16px; }
+  #view > .card.empty { column-span: all; }
+  #view.v-items > :first-child, #view.v-items > .btn, #view.v-cal > :nth-child(-n+2), #view.v-save > :first-child, #view.v-learn > :first-child { column-span: all; }
+  .pg-title { font-size: 32px; }
+  .sheet { left: 50%; top: 50%; bottom: auto; max-width: 540px; max-height: 88vh; border-radius: 24px; padding: 24px; transform: translate(-50%, -47%) scale(.98); opacity: 0; transition: transform .28s cubic-bezier(.2,.9,.2,1), opacity .2s; }
+  .sheet.on { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  .grab { display: none; }
+  .sheet .sticky { bottom: -24px; padding: 10px 0 24px; margin-bottom: -24px; }
+  .flow .in { max-width: 600px; padding-top: 40px; }
+  .toast { bottom: 32px; }
+}
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
 
+<button class="skip" data-act="skip">Skip to content</button>
 <div class="shell">
   <header class="top">
     <div class="brand"><span class="brand-mark" id="brandMark"></span>TrueTotal</div>
@@ -259,9 +303,9 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   </header>
   <div id="installBar" class="install" hidden></div>
   <div id="storeWarn" class="warnbar" hidden style="margin-bottom:12px">This browser can't save your data, so it will be lost when you close the page. Copy your results before you leave.</div>
-  <main id="view"></main>
+  <main id="view" tabindex="-1"></main>
 </div>
-<nav class="tabs" aria-label="Main"><div class="in" id="tabs"></div></nav>
+<nav class="tabs" aria-label="Main"><div class="in" id="tabs"></div><p class="nav-note">TrueTotal is a learning tool, not financial advice. Everything stays on this device.</p></nav>
 <div id="layer"></div>
 <div id="toast" class="toast" role="status"></div>
 
@@ -583,11 +627,25 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     }).join("");
   }
 
+  function sigOf(a) {
+    if (!a || !a.dataset || !a.dataset.act) return null;
+    var q = '[data-act="' + a.dataset.act + '"]';
+    ["id", "o", "v", "k", "f", "d", "i"].forEach(function (k) { if (a.dataset[k] != null) q += "[data-" + k + '="' + String(a.dataset[k]).replace(/"/g, '\\"') + '"]'; });
+    return q;
+  }
+  function refocus(sig) { if (!sig) return; var n = document.querySelector(sig); if (n && n.focus) n.focus({ preventScroll: true }); }
+  function syncBg() {
+    var lock = !!(sheet || flowEl);
+    [".shell", "nav.tabs", ".skip"].forEach(function (sel) { var e = $(sel); if (e) e.inert = lock; });
+  }
+  var lastSig = null;
   function render() {
-    var v = $("#view");
+    var v = $("#view"), sig = sigOf(document.activeElement);
     v.innerHTML = view === "home" ? vHome() : view === "items" ? vItems() : view === "cal" ? vCal() : view === "save" ? vSave() : vLearn();
+    v.className = "v-" + view;
     renderTabs();
     runCounts(v);
+    if (sig && (document.activeElement === document.body || !document.activeElement)) refocus(sig);
   }
 
   /* ---------- HOME ---------- */
@@ -884,17 +942,23 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   function openSheet(html, init, kind) {
     closeSheet(true);
     layer.insertAdjacentHTML("beforeend", '<div class="scrim" id="scrim" data-act="sheetclose"></div><div class="sheet" id="sheet" role="dialog" aria-modal="true"><div class="grab"></div>' + html + "</div>");
+    lastSig = lastSig || sigOf(document.activeElement);
     sheet = $("#sheet"); sheet.dataset.kind = kind || "";
+    sheet.setAttribute("tabindex", "-1");
+    var hh = sheet.querySelector("h2"); if (hh) { hh.id = "sheetTitle"; sheet.setAttribute("aria-labelledby", "sheetTitle"); }
+    syncBg();
+    setTimeout(function () { if (sheet && !sheet.contains(document.activeElement)) sheet.focus({ preventScroll: true }); }, 60);
     requestAnimationFrame(function () { requestAnimationFrame(function () { $("#scrim").classList.add("on"); sheet.classList.add("on"); }); });
     if (init) init(sheet);
   }
   function closeSheet(now) {
     var s = $("#sheet"), c = $("#scrim");
     if (!s) return;
-    if (now) { s.remove(); c.remove(); sheet = null; return; }
+    if (now) { s.remove(); c.remove(); sheet = null; syncBg(); return; }
     s.classList.remove("on"); c.classList.remove("on");
     setTimeout(function () { if (s.parentNode) s.remove(); if (c.parentNode) c.remove(); }, 350);
-    sheet = null; render();
+    sheet = null; syncBg(); render();
+    var back = lastSig; lastSig = null; refocus(back);
   }
 
   var ed = null; // item being edited
@@ -1035,16 +1099,19 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   function openFlow(kind) {
     closeSheet(true);
     F = buildFlow(kind);
-    if (!flowEl) { flowEl = document.createElement("div"); flowEl.className = "flow"; flowEl.setAttribute("role", "dialog"); flowEl.setAttribute("aria-modal", "true"); document.body.appendChild(flowEl); }
+    if (!flowEl) { flowEl = document.createElement("div"); flowEl.className = "flow"; flowEl.setAttribute("role", "dialog"); flowEl.setAttribute("aria-modal", "true"); flowEl.setAttribute("aria-label", "TrueTotal"); flowEl.setAttribute("tabindex", "-1"); document.body.appendChild(flowEl); }
     document.documentElement.style.overflow = "hidden";
     drawFlow();
   }
-  function closeFlow() { if (flowEl) { flowEl.remove(); flowEl = null; } F = null; document.documentElement.style.overflow = ""; render(); }
+  function closeFlow() { if (flowEl) { flowEl.remove(); flowEl = null; } F = null; document.documentElement.style.overflow = ""; syncBg(); render(); }
   function drawFlow() {
+    var fsig = flowEl && flowEl.contains(document.activeElement) ? sigOf(document.activeElement) : null;
     var st = F.steps[F.i], pct = Math.round(F.i / (F.steps.length - 1) * 100), last = F.i === F.steps.length - 1;
     flowEl.innerHTML = '<div class="in"><div class="prog">' + (F.i > 0 && !(st.result) ? '<button class="icon-btn" data-act="fback" aria-label="Back">' + ic("left", 22) + "</button>" : '<span style="width:44px"></span>') + '<div class="track"><i style="width:' + pct + '%"></i></div><button class="icon-btn" data-act="fclose" aria-label="Close">' + ic("x", 22) + '</button></div><div class="body">' + st.html() + '</div><div class="foot"><button class="btn ' + (last ? "hi" : "") + ' block" id="fnext" data-act="fnext"' + (st.need() ? "" : " disabled") + ">" + (st.next || (last ? "Done" : "Next")) + "</button>" + (st.skip ? '<button class="btn ghost block" data-act="fskip">' + st.skip + "</button>" : "") + "</div></div>";
     flowEl.scrollTop = 0;
     runCounts(flowEl);
+    syncBg();
+    if (fsig) refocus(fsig); else if (!flowEl.contains(document.activeElement)) flowEl.focus({ preventScroll: true });
   }
   function fnext() {
     var st = F.steps[F.i];
@@ -1073,7 +1140,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
   function openReveal() {
     closeSheet(true);
     F = { kind: "reveal" };
-    if (!flowEl) { flowEl = document.createElement("div"); flowEl.className = "flow"; flowEl.setAttribute("role", "dialog"); flowEl.setAttribute("aria-modal", "true"); document.body.appendChild(flowEl); }
+    if (!flowEl) { flowEl = document.createElement("div"); flowEl.className = "flow"; flowEl.setAttribute("role", "dialog"); flowEl.setAttribute("aria-modal", "true"); flowEl.setAttribute("aria-label", "TrueTotal"); flowEl.setAttribute("tabindex", "-1"); document.body.appendChild(flowEl); }
     document.documentElement.style.overflow = "hidden";
     var items = S.items.filter(function (i) { return i.on; }).sort(function (a, b) { return monthly(b) - monthly(a); }), shown = items.slice(0, 7), more = items.length - shown.length, tot = total(), real = flexible(), g = S.guess;
     var h = '<div class="in"><div class="prog"><span style="width:44px"></span><div class="track" style="visibility:hidden"></div><button class="icon-btn" data-act="fclose" aria-label="Close">' + ic("x", 22) + '</button></div><div class="body rv">';
@@ -1085,7 +1152,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     h += '<div class="fade" id="rvCmp">' + (g != null ? '<div class="cmp"><div><div class="row-between"><small>Your guess</small><b class="mono">' + aed(g) + '</b></div><div class="bar" style="--c:var(--k-other)"><i id="rvB1" data-w="0"></i></div></div><div><div class="row-between"><small>Real: ' + flexLabel().toLowerCase() + '</small><b class="mono">' + aed(real) + '</b></div><div class="bar" style="--c:var(--k-pay)"><i id="rvB2" data-w="0"></i></div></div></div>' : "") + "</div>";
     var diff = real - (g || 0), msg = g == null ? "Here is what you pay for, all in one place." : Math.abs(diff) < Math.max(10, real * 0.05) ? "You were close. Most people aren't." : diff > 0 ? aed(diff) + " more than you thought" + (g > 0 ? " (" + Math.round(diff / g * 100) + "% higher)" : "") + ". Small payments add up." : aed(-diff) + " less than you feared.";
     h += '<div class="fade" id="rvMsg"><h2>' + msg + '</h2>' + (S.income > 0 ? '<p class="muted" style="margin-top:6px">Everything you pay for takes <b>' + pc(share(tot)) + "</b> " + baseWord() + ".</p>" : '<p class="muted" style="margin-top:6px">Everything you pay for adds up to about <b>' + aed(tot * 12) + "</b> a year.</p>") + '</div></div><div class="foot fade" id="rvFoot"><button class="btn hi block" data-act="rvdone">See my breakdown</button></div></div>';
-    flowEl.innerHTML = h;
+    flowEl.innerHTML = h; syncBg(); flowEl.focus({ preventScroll: true });
     var lines = $$(".line", flowEl), totEl = $("#rvTot"), run = 0, end;
     var finish = function () {
       rvTimers.forEach(clearTimeout); rvTimers = [];
@@ -1173,6 +1240,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
       copylink: function () { var u = location.origin + location.pathname, ok = function () { toast("Link copied. Paste it in Safari."); }; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(ok, function () { toast(u); }); else toast(u); },
       install: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; $("#installBar").hidden = true; } },
       installoff: function () { $("#installBar").hidden = true; try { localStorage.setItem("tt-install-off", "1"); } catch (er) {} },
+      skip: function () { $("#view").focus(); },
       gosave: function () { view = "save"; render(); window.scrollTo(0, 0); },
       use: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it) { it.use = it.use === t.dataset.v ? undefined : t.dataset.v; save(); render(); } },
       switchoff: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it) { it.on = false; save(); render(); toast("Switched off. Check the Total tab to see the effect"); } },
@@ -1284,9 +1352,9 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
     if (e.inapp) h += '<div class="warnbar"><b>You are in an app\'s built-in browser.</b> Installing does not work here. Tap the compass or ⋯ button and choose ' + b("Open in Safari") + ", or copy the link below and paste it into Safari.</div>";
     h += steps.map(function (s, i) { return '<div class="card" style="display:flex;gap:14px;align-items:center"><span class="ico lg" style="--c:var(--ink)">' + ic(s[0], 22) + '</span><div><b style="font-family:var(--fd);font-size:16px">' + (i + 1) + ". " + s[1] + '</b><p class="sm" style="margin-top:2px">' + s[2] + "</p></div></div>"; }).join("");
     h += '</div><div class="foot">' + (deferredInstall && !e.ios ? '<button class="btn hi block" data-act="gateinstall">Install TrueTotal</button>' : "") + '<button class="btn ghost block" data-act="copylink">Copy the link</button><button class="btn ghost block" data-act="gateskip">Skip, use it in the browser</button></div></div>';
-    if (!flowEl) { flowEl = document.createElement("div"); flowEl.className = "flow"; flowEl.setAttribute("role", "dialog"); flowEl.setAttribute("aria-modal", "true"); document.body.appendChild(flowEl); }
+    if (!flowEl) { flowEl = document.createElement("div"); flowEl.className = "flow"; flowEl.setAttribute("role", "dialog"); flowEl.setAttribute("aria-modal", "true"); flowEl.setAttribute("aria-label", "TrueTotal"); flowEl.setAttribute("tabindex", "-1"); document.body.appendChild(flowEl); }
     document.documentElement.style.overflow = "hidden";
-    flowEl.innerHTML = h; gateOpen = true; flowEl.scrollTop = 0;
+    flowEl.innerHTML = h; gateOpen = true; flowEl.scrollTop = 0; syncBg(); flowEl.focus({ preventScroll: true });
   }
   function leaveGate() { gateOpen = false; try { localStorage.setItem("tt-gate-seen", "1"); } catch (x) {} closeFlow(); openFlow("onboard"); }
 
