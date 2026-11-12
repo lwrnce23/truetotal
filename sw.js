@@ -1,7 +1,7 @@
 // TrueTotal service worker: lets the app open offline once it has been loaded.
 // Pages and files: network first (so updates arrive), cache as the fallback.
 // Google Fonts: cache first.
-var CACHE = "truetotal-v1";
+var CACHE = "truetotal-v2";
 var SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", function (e) {
@@ -35,7 +35,7 @@ self.addEventListener("fetch", function (e) {
   }
   if (url.origin !== self.location.origin) return;
   e.respondWith(
-    fetch(req).then(function (res) {
+    fetch(req, { cache: "no-cache" }).then(function (res) {
       var copy = res.clone();
       caches.open(CACHE).then(function (c) { c.put(req, copy); });
       return res;
