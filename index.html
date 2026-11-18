@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1794998647"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1795015894"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -355,8 +355,27 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   .sheet.on { transform: translate(-50%, -50%) scale(1); opacity: 1; }
   .grab { display: none; }
   .sheet .sticky { bottom: -24px; padding: 10px 0 24px; margin-bottom: -24px; }
-  .flow .in { max-width: 600px; padding-top: 40px; }
+  .flow { display: flex; background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--k-sub) 14%, var(--ground)), var(--ground) 65%); }
+  .flow .in { width: 100%; max-width: 680px; margin: auto; min-height: 0; padding: 36px 44px 0; gap: 22px; background: var(--paper); border-radius: 28px; box-shadow: 0 24px 70px rgba(0,0,0,.22); }
+  .flow .body { flex: none; gap: 18px; }
+  .flow .foot { margin-top: 8px; padding: 18px 0 32px; background: none; }
+  .flow h1 { font-size: 40px; }
+  .flow h2 { font-size: 30px; }
+  .flow .body p { font-size: 17px; }
   .toast { bottom: 32px; }
+}
+/* small phones and short screens: everything fits without scrolling where it can */
+@media (max-width: 899px) { .flow { height: 100vh; height: 100dvh; } }
+@media (max-width: 899px) and (max-height: 720px) {
+  .flow .in { gap: 12px; padding-top: 8px; }
+  .flow .body { gap: 10px; }
+  .flow h1 { font-size: 26px; }
+  .flow h2 { font-size: 21px; }
+}
+@media (max-width: 360px) { .flow h1 { font-size: 26px; } .flow h2 { font-size: 21px; } }
+@media (min-width: 900px) and (max-height: 760px) {
+  .flow .in { padding-top: 22px; gap: 14px; }
+  .flow h1 { font-size: 32px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
