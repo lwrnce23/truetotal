@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1794994086"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1794997952"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -375,6 +375,26 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
 <div id="layer"></div>
 <div id="toast" class="toast" role="status"></div>
 
+<script>
+/* error banner: if something breaks, say what and where, so it can be fixed */
+(function () {
+  var shown = 0;
+  function show(msg) {
+    if (shown >= 2) return; shown++;
+    try {
+      var d = document.createElement("div");
+      d.setAttribute("role", "alert");
+      d.style.cssText = "position:fixed;left:8px;right:8px;top:8px;z-index:99999;background:#B00020;color:#fff;font:13px/1.35 -apple-system,Helvetica,Arial,sans-serif;padding:10px 12px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.35)";
+      d.innerHTML = "<b>Something went wrong.</b> Please send this to Lawrence:<br><span style=\"font-family:ui-monospace,Menlo,monospace;font-size:11px;word-break:break-all\"></span> <button style=\"margin-top:6px;margin-left:0;background:#fff;color:#B00020;border-radius:8px;padding:4px 10px;font-weight:700\">Close</button>";
+      d.querySelector("span").textContent = msg;
+      d.querySelector("button").onclick = function () { d.remove(); };
+      (document.body || document.documentElement).appendChild(d);
+    } catch (e) {}
+  }
+  window.addEventListener("error", function (e) { show((e.message || "error") + " @" + (e.lineno || "?") + ":" + (e.colno || "?") + " " + (navigator.userAgent.match(/(Chrome|Safari|Version)\/[\d.]+/g) || []).join(" ")); });
+  window.addEventListener("unhandledrejection", function (e) { show("promise: " + (e.reason && e.reason.message || e.reason)); });
+})();
+</script>
 <script>
 (function () {
   "use strict";
