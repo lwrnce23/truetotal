@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1794998563"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1794998647"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -502,7 +502,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   var KEY = "truetotal-v2";
   var storeOK = true;
   function fresh() {
-    return { v: 2, id: "TT-" + String(1000 + Math.floor(Math.random() * 9000)), startedAt: Date.now(), income: 0, guess: null, items: [], onboarded: false, revealed: false, about: null, pre: null, post: null, check: null, theme: "auto", remind: 1, mode: "adult", goal: null };
+    return { v: 2, id: "TT-" + String(1000 + Math.floor(Math.random() * 9000)), startedAt: Date.now(), income: 0, guess: null, items: [], onboarded: false, revealed: false, about: null, pre: null, post: null, check: null, theme: "auto", remind: 1, mode: "adult", goal: null, days: [], pauses: [] };
   }
   function load() {
     try { var r = localStorage.getItem(KEY); if (r) { var o = JSON.parse(r); if (o && o.v === 2) return o; } } catch (e) { storeOK = false; }
@@ -831,14 +831,14 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       if (t < 2.2) requestAnimationFrame(f); else c.remove();
     })(t0);
   }
-  function streak() { var n = 0, d = today(); while (S.days.indexOf(iso(d)) >= 0) { n++; d = addDays(d, -1); } return n; }
+  function streak() { var n = 0, d = today(); S.days = S.days || []; while (S.days.indexOf(iso(d)) >= 0) { n++; d = addDays(d, -1); } return n; }
   function homeExtras() {
     if (!S.revealed) return "";
     var h = "", st = streak();
     if (NATIVE && S.notify === undefined && !S.notifyAsked) {
       h += '<section class="card stack" style="gap:8px"><b style="font-family:var(--fd);font-size:18px">Want reminders?</b><p class="sm">TrueTotal can nudge you before pay days and remind you to give your review. You can also add the TrueTotal widget to your home screen.</p><div style="display:flex;gap:8px"><button class="btn ghost block" data-act="notifyno">Not now</button><button class="btn hi block" data-act="notifyon">Turn on</button></div></section>';
     }
-    S.pauses.filter(function (p) { return !p.done; }).slice(0, 2).forEach(function (p) {
+    (S.pauses || []).filter(function (p) { return !p.done; }).slice(0, 2).forEach(function (p) {
       var left = p.until - Date.now(), hrs = Math.ceil(left / 36e5);
       h += '<section class="card stack" style="gap:8px"><div class="row-between"><span><span class="eyebrow">Thinking about it</span><br><b>' + esc(p.name) + '</b></span><span class="mono" style="font-weight:600">' + aed(p.price) + '</span></div><p class="sm">' + (left > 0 ? "You paused this. Decide in about " + hrs + " hour" + (hrs === 1 ? "" : "s") + "." : "24 hours are up. Do you still want it?") + '</p><div style="display:flex;gap:8px"><button class="btn ghost block" data-act="pskip" data-id="' + p.id + '">Skip it</button><button class="btn ghost block" data-act="pbuy" data-id="' + p.id + '">I bought it</button></div></section>';
     });
