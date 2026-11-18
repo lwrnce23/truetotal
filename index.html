@@ -1433,6 +1433,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function openReveal() {
     closeSheet(true);
     F = { kind: "reveal" };
+    if (!S.revealed) { S.revealed = true; save(); F.firstTime = true; }
     if (!flowEl) { flowEl = document.createElement("div"); flowEl.className = "flow"; flowEl.setAttribute("role", "dialog"); flowEl.setAttribute("aria-modal", "true"); flowEl.setAttribute("aria-label", "TrueTotal"); flowEl.setAttribute("tabindex", "-1"); document.body.appendChild(flowEl); }
     document.documentElement.style.overflow = "hidden";
     var items = S.items.filter(function (i) { return i.on; }).sort(function (a, b) { return monthly(b) - monthly(a); }), shown = items.slice(0, 7), more = items.length - shown.length, tot = total(), real = flexible(), g = S.guess;
@@ -1639,7 +1640,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
         t.dataset.armed = "1"; t.textContent = "Tap again to delete everything"; setTimeout(function () { if (t.isConnected) { delete t.dataset.armed; t.textContent = "Delete all my data"; } }, 4000);
       },
       /* flows */
-      fnext: fnext, fback: function () { if (F.i > 0) { F.i--; drawFlow(); } }, fclose: function () { if (F && F.kind === "onboard" && !S.onboarded) { S.onboarded = true; save(); } closeFlow(); },
+      fnext: fnext, fback: function () { if (F.i > 0) { F.i--; drawFlow(); } }, fclose: function () { if (F && F.kind === "onboard" && !S.onboarded) { S.onboarded = true; save(); } var ft = F && F.kind === "reveal" && F.firstTime; if (F && F.kind === "reveal") rvTimers.forEach(clearTimeout); closeFlow(); if (ft) { window.scrollTo(0, 0); autoSend(true); } },
       fskip: function () { F.i = F.steps.length - 2; drawFlow(); },
       fopt: function () { F.d.a[F.steps[F.i].quiz] = Number(t.dataset.o); drawFlow(); },
       frand: function () { F.d.rand = randomData(curMode() === "teen"); drawFlow(); },
