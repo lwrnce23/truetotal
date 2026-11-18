@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1794997952"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1794998563"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1134,15 +1134,15 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     var hh = sheet.querySelector("h2"); if (hh) { hh.id = "sheetTitle"; sheet.setAttribute("aria-labelledby", "sheetTitle"); }
     syncBg();
     setTimeout(function () { if (sheet && !sheet.contains(document.activeElement)) sheet.focus({ preventScroll: true }); }, 60);
-    requestAnimationFrame(function () { requestAnimationFrame(function () { $("#scrim").classList.add("on"); sheet.classList.add("on"); }); });
+    requestAnimationFrame(function () { requestAnimationFrame(function () { var sc = $("#scrim"); if (sc && sheet) { sc.classList.add("on"); sheet.classList.add("on"); } }); });
     if (init) init(sheet);
   }
   function closeSheet(now) {
     var s = $("#sheet"), c = $("#scrim");
     if (!s) return;
-    if (now) { s.remove(); c.remove(); sheet = null; syncBg(); return; }
-    s.classList.remove("on"); c.classList.remove("on");
-    setTimeout(function () { if (s.parentNode) s.remove(); if (c.parentNode) c.remove(); }, 350);
+    if (now) { s.remove(); if (c) c.remove(); sheet = null; syncBg(); return; }
+    s.classList.remove("on"); if (c) c.classList.remove("on");
+    setTimeout(function () { if (s.parentNode) s.remove(); if (c && c.parentNode) c.remove(); }, 350);
     sheet = null; syncBg(); render();
     var back = lastSig; lastSig = null; refocus(back);
   }
