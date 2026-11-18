@@ -281,6 +281,10 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
 @keyframes pop { 0% { transform: scale(.6); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
 .chip[aria-pressed="true"], .opt[aria-pressed="true"] { animation: pop .25s ease-out; }
 @media (hover: hover) { .btn:hover { transform: translateY(-1px); } button.card:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -16px color-mix(in srgb, var(--ink) 45%, transparent); } }
+.rate5 { display: flex; gap: 8px; }
+.rate5 button { flex: 1; min-height: 48px; border-radius: 14px; background: var(--paper2); color: var(--ink); font-family: var(--fd); font-weight: 700; font-size: 18px; transition: transform .12s, background .15s; }
+.rate5 button[aria-pressed="true"] { background: var(--hi); color: var(--hi-ink); transform: scale(1.06); box-shadow: 0 6px 14px -8px #6CC24A; }
+@media (hover: hover) { .rate5 button:hover { box-shadow: inset 0 0 0 1.5px var(--ink2); } .rate5 button[aria-pressed="true"]:hover { box-shadow: 0 6px 14px -8px #6CC24A; } }
 .demo-pill { margin-left: 10px; font-family: var(--fb); font-size: 11.5px; font-weight: 700; letter-spacing: .02em; padding: 4px 10px; border-radius: 99px; background: var(--hi); color: var(--hi-ink); white-space: nowrap; }
 .demo-pill:empty { display: none; }
 /* spotlight tour */
@@ -440,7 +444,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   ];
   var CONF_T = ["I know how much I spend on subscriptions, games and apps each month.", "I could list every subscription and in-app payment I have right now."];
   var CONF_LBL = ["Not at all", "A little", "Somewhat", "Quite well", "Completely"];
-  var RATE = ["TrueTotal made it clear where the money goes.", "Seeing the share of income made each payment feel more real.", "I would use this with my own money, and recommend it to a friend."];
+  var RATE = ["TrueTotal made it clear where the money goes.", "Seeing the share of income made each payment feel more real.", "I would use TrueTotal with my own money.", "I would recommend TrueTotal to a friend."];
   var ACTIONS = ["Cancel a subscription", "Avoid a new pay-later plan", "Pay one off early", "Make a budget", "Nothing", "Other"];
   var HELPED = ["The reveal", "The breakdown", "The calendar", "The what-if switches", "The tips", "Nothing"];
 
@@ -492,6 +496,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function kname(k) { return (isTeen() && TEEN_NAMES[k]) || KINDS[k].name; }
   function baseWord() { return S.income > 0 ? (isTeen() ? "of pocket money" : "of income") : "of your total"; }
   function flexLabel() { return isTeen() ? "Subscriptions, games and pay-later" : "Pay later + subscriptions"; }
+  function cleanText(v, n) { return String(v || "").replace(/["\\<>\n\r\t]/g, " ").replace(/\s+/g, " ").trim().slice(0, n || 300); }
   function cleanName(v) { return String(v || "").replace(/["\\<>\n\r\t]/g, " ").replace(/\s+/g, " ").trim().slice(0, 30); }
   var uid = function () { return "i" + Math.random().toString(36).slice(2, 9); };
 
@@ -630,10 +635,8 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   /* ---------- scoring + export ---------- */
   var score = function (a) { return a ? a.reduce(function (s, v, i) { return s + (v === quiz()[i].c ? 1 : 0); }, 0) : 0; };
   function resultsText() {
-    var L = ["TRUETOTAL RESULTS", "Name: " + (S.name || "-"), "Code: " + S.id, "Track: " + (isTeen() ? "under 18" : "18+")];
+    var L = ["TRUETOTAL REVIEW", "Name: " + (S.name || "-"), "Code: " + S.id, "Track: " + (isTeen() ? "under 18" : "18+")];
     if (S.about) L.push("About: age " + (S.about.age || "-") + (isTeen() ? ", pocket money: " + (S.about.stat || "-") + ", pays for apps/games: " : ", " + (S.about.stat || "-") + ", pay-later use: ") + (S.about.pl || "-"));
-    if (S.pre) L.push("Before: quiz " + score(S.pre.a) + "/6, confidence " + S.pre.c.join(","));
-    if (S.post) L.push("After: quiz " + score(S.post.a) + "/6, confidence " + S.post.c.join(","));
     if (S.guess != null) L.push("Guess (" + flexLabel().toLowerCase() + "): " + aed(S.guess) + "; real: " + aed(flexible()) + (S.guess > 0 ? " (" + (flexible() >= S.guess ? "+" : "") + Math.round((flexible() - S.guess) / S.guess * 100) + "%)" : ""));
     L.push("Items tracked: " + S.items.length + "; " + (S.income > 0 ? "share of " + (isTeen() ? "pocket money" : "income") + " committed: " + pc(share(total())) : "per year: " + aed(total() * 12)));
     var svE = savings();
@@ -645,7 +648,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     }
     if (S.check) L.push("Check-in: " + (S.check.act.join("; ") || "-") + "; saved " + (S.check.saved || 0) + " AED/mo; still using: " + (S.check.use || "-"));
     var cavg = function (c) { return c ? (c[0] + c[1]) / 2 : null; };
-    var j = { id: S.id, nm: S.name || "", tr: isTeen() ? "teen" : "adult", age: (S.about && S.about.age) || "", qb: S.pre ? score(S.pre.a) : null, cb: S.pre ? cavg(S.pre.c) : null, qa: S.post ? score(S.post.a) : null, ca: S.post ? cavg(S.post.c) : null, g: S.guess, real: Math.round(flexible()), n: S.items.length, sv: Math.round(svE.monthly), ra: S.post ? Math.round((S.post.r[0] + S.post.r[1] + S.post.r[2]) / 3 * 10) / 10 : null, hm: S.post ? (S.post.h || "") : "", ck: S.check ? S.check.act.join("; ") : "", cs: S.check ? (S.check.saved || 0) : null, su: S.check ? (S.check.use || "") : "" };
+    var j = { id: S.id, nm: S.name || "", tr: isTeen() ? "teen" : "adult", age: (S.about && S.about.age) || "", qb: S.pre ? score(S.pre.a) : null, cb: S.pre ? cavg(S.pre.c) : null, qa: null, ca: null, g: S.guess, real: Math.round(flexible()), n: S.items.length, sv: Math.round(svE.monthly), ra: S.post ? Math.round((S.post.r[0] + S.post.r[1] + S.post.r[2] + (S.post.r[3] || 0)) / (S.post.r[3] ? 4 : 3) * 10) / 10 : null, hm: S.post ? (S.post.h || "") : "", r1: S.post ? S.post.r[0] : null, r2: S.post ? S.post.r[1] : null, r3: S.post ? S.post.r[2] : null, r4: S.post ? (S.post.r[3] == null ? null : S.post.r[3]) : null, ac: S.post ? cleanText(S.post.act.join("; "), 200) : "", cm: S.post ? cleanText(S.post.cm, 300) : "", ck: S.check ? S.check.act.join("; ") : "", cs: S.check ? (S.check.saved || 0) : null, su: S.check ? (S.check.use || "") : "" };
     L.push("DATA " + JSON.stringify(j));
     return L.join("\n");
   }
@@ -728,14 +731,14 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   }
 
   function stepsCard(compact) {
-    var sent = !!(S.sentAt && S.post && S.sentAt >= S.post.at);
-    var d = [!!S.pre, !!S.revealed, !!S.post, !!S.post, sent];
-    var T = [["Do the before-quiz", "Done when you first opened TrueTotal."], ["Guess, then reveal the total", "Guess the example total, then tap Reveal."], ["Explore the app", "Open the calendar, try the cancel switches, look at Ways to pay less. A few minutes is enough."], ["Do the after-quiz and review", "Learn tab, then Take the after-quiz. Same questions as before, plus your review."], ["Results sent", "Sent for you automatically if you said yes. Otherwise tap the button below."]];
-    var cur = d.indexOf(false), h = '<section class="card steps"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (compact ? "Next step" : "Your 5 steps") + '</h3><span class="seg5" role="img" aria-label="' + d.filter(Boolean).length + ' of 5 steps done">' + d.map(function (x, i) { return "<i" + (x || i === cur ? ' class="on"' : "") + "></i>"; }).join("") + "</span></div>";
-    if (cur < 0) return h + '<p class="sm" style="margin-top:6px">All done. Thank you for taking part!</p></section>';
+    var sent = !!(S.autosend === true ? S.post : (S.sentAt && S.post && S.sentAt >= S.post.at));
+    var d = [S.guess != null, !!S.revealed, !!S.post, !!S.post];
+    var T = [["Guess the total", "You made your guess."], ["Show the total", "Tap Show the total to see how close you were."], ["Explore the app", "Open the calendar, try the cancel switches, look at Ways to pay less. A few minutes is enough."], ["Give your review", "Learn tab, then Give my review. It takes about a minute."]];
+    var cur = d.indexOf(false), h = '<section class="card steps"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (compact ? "Next step" : "Your steps") + '</h3><span class="seg5" role="img" aria-label="' + d.filter(Boolean).length + ' of 4 steps done">' + d.map(function (x, i) { return "<i" + (x || i === cur ? ' class="on"' : "") + "></i>"; }).join("") + "</span></div>";
+    if (cur < 0) return h + '<p class="sm" style="margin-top:6px">All done. Thank you for your review!</p>' + (!sent && canSend() ? '<button class="btn hi block" data-act="send" style="margin-top:8px">Send my review</button>' : "") + (compact ? "" : '<button class="btn ghost block" data-act="guide" style="margin-top:8px">' + ic("bulb", 16) + "Show me how this works</button>") + "</section>";
     T.forEach(function (t, i) { if (compact && i !== cur) return; h += '<div class="stp' + (d[i] ? " done" : i === cur ? " now" : "") + '"><span class="num">' + (d[i] ? "✓" : i + 1) + '</span><div><b style="font-weight:600">' + t[0] + "</b>" + (i === cur ? '<p class="sm">' + t[1] + "</p>" : "") + "</div></div>"; });
-    var cta = cur === 2 || cur === 3 ? ["post", "I have explored it. Take the after-quiz"] : cur === 4 ? ["send", "Send my results"] : null;
-    if (cta && (cta[0] !== "send" || canSend())) h += '<button class="btn ' + (cur === 2 ? "ghost " : "hi ") + 'block" data-act="' + cta[0] + '" style="margin-top:8px">' + cta[1] + "</button>";
+    var cta = cur === 1 ? ["reveal", "Show the total"] : cur === 2 ? ["post", "I have explored it. Give my review"] : cur === 3 ? ["post", "Give my review"] : null;
+    if (cta) h += '<button class="btn ' + (cur === 2 ? "ghost " : "hi ") + 'block" data-act="' + cta[0] + '" style="margin-top:8px">' + cta[1] + "</button>";
     return h + (compact ? '<button class="btn ghost sm2" data-act="guide" style="margin-top:8px">How this works</button>' : '<button class="btn ghost block" data-act="guide" style="margin-top:8px">' + ic("bulb", 16) + "Show me how this works</button>") + "</section>";
   }
   function confetti() {
@@ -919,12 +922,10 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function vLearn() {
     var h = '<h1 class="pg-title">Learn</h1>' + stepsCard();
     h += '<section class="card stack"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Your results</h3><small class="mono">' + (S.name ? esc(S.name) + " · " : "") + S.id + "</small></div>";
-    var pre = S.pre ? score(S.pre.a) : null, post = S.post ? score(S.post.a) : null;
-    h += '<div class="leader"><span>Before-quiz</span><span class="dots"></span><span class="amt">' + (pre == null ? "skipped" : pre + " / 6") + '</span></div><div class="leader"><span>After-quiz</span><span class="dots"></span><span class="amt">' + (post == null ? "not yet" : post + " / 6" + (pre != null ? " (" + (post - pre >= 0 ? "+" : "") + (post - pre) + ")" : "")) + "</span></div>";
-    if (S.pre && S.post) h += '<div class="leader"><span>Confidence</span><span class="dots"></span><span class="amt">' + (S.pre.c[0] + S.pre.c[1]) / 2 + " → " + (S.post.c[0] + S.post.c[1]) / 2 + " of 5</span></div>";
     if (S.guess != null && S.items.length && S.revealed) h += '<div class="leader"><span>Your guess</span><span class="dots"></span><span class="amt">' + aed(S.guess) + " → " + aed(flexible()) + "</span></div>";
-    h += "<p class=\"sm\">" + (S.post ? "Thanks for taking part." : "Take the after-quiz once you have had a good look around the app.") + "</p>";
-    h += '<button class="btn ' + (S.post ? "ghost" : "hi") + ' block" data-act="post">' + (S.post ? "Retake the after-quiz" : "Take the after-quiz") + "</button>";
+    h += '<div class="leader"><span>Your review</span><span class="dots"></span><span class="amt">' + (S.post ? "done" : "not yet") + "</span></div>";
+    h += "<p class=\"sm\">" + (S.post ? "Thanks for taking part." : "Give your review once you have had a good look around the app. It takes about a minute.") + "</p>";
+    h += '<button class="btn ' + (S.post ? "ghost" : "hi") + ' block" data-act="post">' + (S.post ? "Edit my review" : "Give my review") + "</button>";
     h += (canSend() ? sendBlock() : "") + '<button class="btn ' + (canSend() ? "ghost " : "") + 'block" data-act="copy">Copy my results</button></section>';
 
     if (counted().length) {
@@ -1233,29 +1234,17 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     } };
   }
   function buildFlow(kind) {
-    var d = { a: [null, null, null, null, null, null], c: [3, 3], r: [3, 3, 3], h: null, act: [], cm: "", saved: "", use: null, age: null, stat: null, pl: null, guess: "", name: S.name || "", income: S.income > 0 ? String(S.income) : "" }, steps = [];
+    var d = { a: [null, null, null, null, null, null], c: [3, 3], r: [null, null, null, null], h: null, act: [], cm: "", saved: "", use: null, age: null, stat: null, pl: null, guess: "", name: S.name || "", income: S.income > 0 ? String(S.income) : "" }, steps = [];
     if (kind === "onboard") {
-      steps.push({ need: function () { return true; }, next: "Let's go", html: function () { return '<div style="padding-top:18px" class="stack"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>What do small payments <span class="hl">really</span> add up to?</h1><p class="muted" style="font-size:16px">Try TrueTotal on an example person with made-up numbers. You will take a quick quiz, fill the app with random made-up values, guess their total, take a quick tutorial, then see the real total and tell us what you thought.</p></div><div class="note">This is a student financial literacy project. <b>You never type in your real income or bills.</b> It takes about 6 minutes.</div>'; } });
+      steps.push({ need: function () { return true; }, next: "Let's go", html: function () { return '<div style="padding-top:18px" class="stack"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>What do small payments <span class="hl">really</span> add up to?</h1><p class="muted" style="font-size:16px">Try TrueTotal on an example person with made-up numbers. You will fill the app with random made-up values, guess their total, take a quick tutorial, see the real total, then tell us what you thought.</p></div><div class="note">This is a student financial literacy project. <b>You never type in your real income or bills.</b> It takes about 4 minutes.</div>'; } });
       steps.push({ need: function () { return F.d.age != null; }, html: function () {
         var teen = F.d.age === "Under 18";
-        return '<p class="eyebrow">First question</p><h2>How old are you?</h2><div class="chips">' + ["Under 18", "18-22", "23-30", "31+"].map(function (o) { return '<button class="chip" data-act="fchip" data-k="age" data-v="' + o + '" aria-pressed="' + (F.d.age === o) + '">' + o + "</button>"; }).join("") + "</div>" + (teen ? '<div class="note">Under 18? You get a version made for you, with no income questions. If you are not sure it is OK to take part, ask a parent or guardian first.</div>' : '<p class="sm">If you are under 18 you get a different version of the quiz and the app.</p>');
-      } });
-      steps.push({ need: function () { return true; }, html: function () {
-        var teen = curMode() === "teen";
-        return '<p class="eyebrow">Optional</p><h2>What should we call you?</h2><p class="muted">A first name or a nickname is fine, or leave it blank to stay anonymous. It shows next to your results if you choose to share them.</p><div class="field"><label for="pName">First name or nickname</label><input id="pName" type="text" data-in="name" maxlength="30" autocomplete="given-name" placeholder="Leave blank to stay anonymous" value="' + esc(F.d.name) + '"></div>' + (teen ? '<div class="note">Under 18? A nickname is fine. Please check with a parent or guardian that it is OK to take part.</div>' : "");
-      } });
-      steps.push({ need: function () { return true; }, html: function () {
-        var teen = curMode() === "teen";
-        var grp = function (key, label, opts) { return '<div><div class="lbl" style="margin-bottom:8px">' + label + '</div><div class="chips">' + opts.map(function (o) { return '<button class="chip" data-act="fchip" data-k="' + key + '" data-v="' + o + '" aria-pressed="' + (F.d[key] === o) + '">' + o + "</button>"; }).join("") + "</div></div>"; };
-        return '<h2>A little about you</h2><p class="muted">Optional. It helps the project see who tested the app.</p>' + (teen ? grp("stat", "Do you get pocket money?", ["Yes, regularly", "Sometimes", "No"]) + grp("pl", "Do you pay for apps, games or subscriptions?", ["Yes", "My parents pay", "Both", "No"]) : grp("stat", "You are", ["Student", "Working", "Both", "Other"]) + grp("pl", "Do you use pay-later (Tabby, Tamara, Postpay)?", ["Yes", "No", "Not sure"]));
+        return '<p class="eyebrow">First question</p><h2>How old are you?</h2><div class="chips">' + ["Under 18", "18-22", "23-30", "31+"].map(function (o) { return '<button class="chip" data-act="fchip" data-k="age" data-v="' + o + '" aria-pressed="' + (F.d.age === o) + '">' + o + "</button>"; }).join("") + "</div>" + (teen ? '<div class="note">Under 18? You get a version made for you, with no income questions. If you are not sure it is OK to take part, ask a parent or guardian first.</div>' : '<p class="sm">If you are under 18 you get a version made for you.</p>');
       } });
       steps.push({ need: function () { return F.d.share != null; }, html: function () {
         var teen = F.d.age === "Under 18", on = F.d.share === "yes";
-        return '<p class="eyebrow">Your results</p><h2>Share your results with the project?</h2><p class="muted">If you say yes, TrueTotal sends your results by itself when you finish each part, so you never have to tap Send. It sends your nickname (if you gave one), tester code, quiz scores and answers, your guess, and your review. <b>No real money details, because you never enter any.</b></p>' + (teen ? '<div class="note">You are under 18, so ask a parent or guardian before you say yes.</div>' : "") + '<div class="stack" style="gap:10px"><button class="opt" data-act="fshare" data-v="yes" aria-pressed="' + on + '"><span class="k">&#10003;</span>Yes, send automatically</button><button class="opt" data-act="fshare" data-v="no" aria-pressed="' + (F.d.share === "no") + '"><span class="k">&ndash;</span>No, keep it private on my phone</button></div><p class="sm">You can change this any time in Settings.</p>';
+        return '<p class="eyebrow">Your results</p><h2>Share your results with the project?</h2><p class="muted">If you say yes, TrueTotal sends your results by itself when you finish each part, so you never have to tap Send. It sends your age group, a tester code, your guess and your review. <b>No real money details, because you never enter any.</b></p>' + (teen ? '<div class="note">You are under 18, so ask a parent or guardian before you say yes.</div>' : "") + '<div class="stack" style="gap:10px"><button class="opt" data-act="fshare" data-v="yes" aria-pressed="' + on + '"><span class="k">&#10003;</span>Yes, send automatically</button><button class="opt" data-act="fshare" data-v="no" aria-pressed="' + (F.d.share === "no") + '"><span class="k">&ndash;</span>No, keep it private on my phone</button></div><p class="sm">You can change this any time in Settings.</p>';
       } });
-      steps.push({ need: function () { return true; }, next: "Start the quiz", skip: "Skip the quiz", html: function () { return '<p class="eyebrow">Before you start</p><h2>Six quick questions</h2><p class="muted">First, how confident do you feel about your own money? Then six short questions. This shows how much you learn from using the app.</p>'; } });
-      steps.push(confStep());
-      quizSteps().forEach(function (s) { steps.push(s); });
       steps.push({ need: function () { return !!F.d.rand; }, next: "Next", html: function () {
         var teen = curMode() === "teen";
         if (F.d.rand && F.d.rand.teen !== teen) F.d.rand = null;
@@ -1283,24 +1272,20 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     } else if (kind === "pre") {
       /* not used */
     } else if (kind === "post") {
-      steps.push({ need: function () { return true; }, next: "Start", html: function () { return '<p class="eyebrow">After-quiz</p><h1>How did it go?</h1><p class="muted">Same six questions, a few ratings and what you plan to do. It takes about 4 minutes.</p><div class="note">Answers are checked at the end, with the reasons.</div>'; } });
-      steps.push(confStep());
-      quizSteps().forEach(function (s) { steps.push(s); });
-      steps.push({ need: function () { return true; }, html: function () {
-        return '<p class="eyebrow">Your review</p><h2>What did you think?</h2>' + RATE.map(function (c, i) { return '<div class="card stack" style="gap:6px"><p style="font-weight:500">' + c + '</p><input type="range" min="1" max="5" step="1" value="' + F.d.r[i] + '" data-in="rate' + i + '" aria-label="' + esc(c) + '"><div class="range-lbl"><span>Disagree</span><b id="rl' + i + '" style="color:var(--ink)">' + F.d.r[i] + " of 5</b><span>Agree</span></div></div>"; }).join("") + '<div><div class="lbl" style="margin-bottom:8px">Which part helped most?</div><div class="chips">' + HELPED.map(function (o) { return '<button class="chip" data-act="fchip" data-k="h" data-v="' + o + '" aria-pressed="' + (F.d.h === o) + '">' + o + "</button>"; }).join("") + "</div></div>";
+      steps.push({ need: function () { return F.d.r.every(function (x) { return x != null; }); }, next: "Next", html: function () {
+        return '<p class="eyebrow">Your review · 1 of 2</p><h2>How was it?</h2><p class="muted">Tap a number for each. 1 is disagree, 5 is agree.</p>' + RATE.map(function (c, i) { return '<div class="card stack" style="gap:10px"><p style="font-weight:500">' + c + '</p><div class="rate5" role="group" aria-label="' + esc(c) + '">' + [1, 2, 3, 4, 5].map(function (n) { return '<button data-act="frate" data-i="' + i + '" data-v="' + n + '" aria-pressed="' + (F.d.r[i] === n) + '">' + n + "</button>"; }).join("") + '</div><div class="range-lbl"><span>Disagree</span><span>Agree</span></div></div>'; }).join("") + '<div><div class="lbl" style="margin-bottom:8px">Which part helped most?</div><div class="chips">' + HELPED.map(function (o) { return '<button class="chip" data-act="fchip" data-k="h" data-v="' + o + '" aria-pressed="' + (F.d.h === o) + '">' + o + "</button>"; }).join("") + "</div></div>";
       } });
-      steps.push({ need: function () { return F.d.act.length > 0; }, html: function () { return '<h2>In real life, what would you do differently?</h2><p class="muted">Pick all that apply.</p><div class="chips">' + ACTIONS.map(function (o) { return '<button class="chip" data-act="fmulti" data-v="' + o + '" aria-pressed="' + (F.d.act.indexOf(o) >= 0) + '">' + o + "</button>"; }).join("") + '</div><div class="field"><label for="cm">Your review in a sentence or two <small>(optional)</small></label><textarea id="cm" data-in="cm" placeholder="What worked? What was confusing or missing?">' + esc(F.d.cm) + "</textarea></div>"; } });
-      steps.push({ need: function () { return true; }, next: "Done", result: true, html: function () { return resultHTML(); } });
+      steps.push({ need: function () { return F.d.act.length > 0; }, next: "Done", html: function () { return '<p class="eyebrow">Your review · 2 of 2</p><h2>In real life, what would you do differently?</h2><p class="muted">Pick all that apply.</p><div class="chips">' + ACTIONS.map(function (o) { return '<button class="chip" data-act="fmulti" data-v="' + o + '" aria-pressed="' + (F.d.act.indexOf(o) >= 0) + '">' + o + "</button>"; }).join("") + '</div><div class="field"><label for="cm">Your review in a sentence or two <small>(optional)</small></label><textarea id="cm" data-in="cm" placeholder="What worked? What was confusing or missing?">' + esc(F.d.cm) + "</textarea></div>"; } });
+      steps.push({ need: function () { return true; }, next: "Close", result: true, html: function () { return resultHTML(); } });
     } else if (kind === "check") {
       steps.push({ need: function () { return F.d.act.length > 0 && F.d.use; }, next: "Save", html: function () { return '<p class="eyebrow">5-day check-in</p><h2>Since using TrueTotal, did you change anything?</h2><div class="chips">' + ["Cancelled a subscription", "Delayed a pay-later purchase", "Paid something off early", "Set a budget", "No change"].map(function (o) { return '<button class="chip" data-act="fmulti" data-v="' + o + '" aria-pressed="' + (F.d.act.indexOf(o) >= 0) + '">' + o + "</button>"; }).join("") + '</div><div class="field"><label for="sv">If you cancelled something, how much does that save a month? (AED, optional)</label><input id="sv" type="number" inputmode="decimal" min="0" data-in="saved" value="' + esc(F.d.saved) + '"></div><div><div class="lbl" style="margin-bottom:8px">Are you still using the app?</div><div class="chips">' + ["Yes, weekly", "Once or twice", "No"].map(function (o) { return '<button class="chip" data-act="fchip" data-k="use" data-v="' + o + '" aria-pressed="' + (F.d.use === o) + '">' + o + "</button>"; }).join("") + "</div></div>"; } });
     }
     return { kind: kind, steps: steps, i: 0, d: d };
   }
   function resultHTML() {
-    var post = score(F.d.a), pre = S.pre ? score(S.pre.a) : null;
-    var h = '<p class="eyebrow">Your result</p><h1>' + post + " out of 6" + (pre != null ? ' <span class="hl">' + (post - pre >= 0 ? "+" : "") + (post - pre) + "</span>" : "") + "</h1>" + (pre != null ? '<p class="muted">Before you started: ' + pre + " out of 6.</p>" : "");
-    h += quiz().map(function (q, i) { var ok = F.d.a[i] === q.c; return '<div class="card stack" style="gap:6px"><div class="row-between"><b style="font-weight:600;font-size:14px">' + esc(q.q) + '</b><span class="tag" style="--c:' + (ok ? "var(--good)" : "var(--bad)") + '">' + (ok ? "Right" : "Not quite") + '</span></div><p class="sm">' + (ok ? "" : "Answer: " + esc(q.o[q.c]) + ". ") + esc(q.e) + "</p></div>"; }).join("");
-    if (canSend()) h += '<div class="card stack" style="gap:8px"><b style="font-family:var(--fd);font-size:17px">Send your results</b>' + sendBlock() + "</div>";
+    var g = S.guess, h = '<p class="eyebrow">Thank you</p><h1>Review saved</h1><p class="muted">Your answers help show whether TrueTotal makes small payments easier to understand.</p>';
+    if (g != null && S.revealed) h += '<div class="card stack" style="gap:4px"><b style="font-family:var(--fd);font-size:17px">Your guess vs the real total</b>' + ldr("Your guess", aed(g)) + ldr("Real total", aed(flexible())) + "</div>";
+    h += S.autosend === true ? '<p class="sm">Your results are sent automatically. Nothing more to do.</p>' : (canSend() ? '<div class="card stack" style="gap:8px"><b style="font-family:var(--fd);font-size:17px">Send your review</b>' + sendBlock() + "</div>" : "");
     return h;
   }
   function openFlow(kind) {
@@ -1355,12 +1340,12 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   var tourEl = null, T = null, tourTimer = null;
   var TOUR = [
     { view: "home", title: "Quick tutorial", text: "The random values are in. Here is a 30 second look at where everything is. At the end you will see the real total." },
-    { view: "home", sel: ["#view .steps"], title: "Your 5 steps", text: "This card always shows what to do next. The dots fill in as you go." },
+    { view: "home", sel: ["#view .steps"], title: "Your steps", text: "This card always shows what to do next. The dots fill in as you go." },
     { view: "items", sel: ["#view .group"], title: "The payments list", text: "Everything in the app is listed here, grouped by type. Tap any payment to open it. Each one has a switch: turn it off to see what cancelling would do." },
     { view: "items", sel: ["#view [data-act=\"add\"]"], title: "Add your own", text: "Want to test it more? Tap Add and put in a made-up payment. Any numbers you like." },
     { view: "cal", sel: ["nav.tabs button[data-v=\"cal\"]"], title: "Calendar", text: "Every payment lands on its pay day, so you can see when money leaves the account." },
     { view: "save", sel: ["nav.tabs button[data-v=\"save\"]"], title: "Save tab", text: "Ways to pay less, a pay-later calculator, a 'Should I buy this?' pause button and a savings goal all live here." },
-    { view: "learn", sel: ["#view section.card:not(.steps) [data-act=\"post\"]", "#view [data-act=\"post\"]"], title: "After-quiz and review", text: "Later, after you have explored, tap this for the after-quiz and your review." },
+    { view: "learn", sel: ["#view section.card:not(.steps) [data-act=\"post\"]", "#view [data-act=\"post\"]"], title: "Your review", text: "When you have explored, tap this to give your review. It takes about a minute." },
     { view: "home", sel: ["#view [data-act=\"reveal\"]"], title: "Last step: show the total", text: "Ready? Tap Show the total to see what those payments really add up to, compared with your guess.", last: true }
   ];
   function tourFind(sels) { if (!sels) return null; for (var i = 0; i < sels.length; i++) { var e = document.querySelector(sels[i]); if (e && e.offsetParent !== null || (e && getComputedStyle(e).position === "fixed")) return e; } return null; }
@@ -1644,6 +1629,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       fskip: function () { F.i = F.steps.length - 2; drawFlow(); },
       fopt: function () { F.d.a[F.steps[F.i].quiz] = Number(t.dataset.o); drawFlow(); },
       frand: function () { F.d.rand = randomData(curMode() === "teen"); drawFlow(); },
+      frate: function () { F.d.r[+t.dataset.i] = +t.dataset.v; drawFlow(); },
       fshare: function () { F.d.share = t.dataset.v; drawFlow(); },
       fchip: function () { F.d[t.dataset.k] = F.d[t.dataset.k] === t.dataset.v ? null : t.dataset.v; drawFlow(); },
       fmulti: function () { var i = F.d.act.indexOf(t.dataset.v); if (i >= 0) F.d.act.splice(i, 1); else F.d.act.push(t.dataset.v); drawFlow(); }
