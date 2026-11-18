@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1795022060"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1795023126"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -210,7 +210,7 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
 .flow .prog .track { flex: 1; height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
 .flow .prog .track i { display: block; height: 100%; background: var(--ink); border-radius: 99px; transition: width .4s; }
 .flow .body { flex: 1; display: flex; flex-direction: column; gap: 16px; }
-.flow .foot { display: flex; flex-direction: column; gap: 8px; position: sticky; bottom: 0; z-index: 3; margin-top: auto; padding: 22px 0 calc(14px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(to top, var(--ground) 72%, transparent); }
+.flow .foot { display: flex; flex-direction: column; gap: 8px; position: sticky; bottom: 0; z-index: 3; margin-top: auto; padding: 22px 0 calc(14px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(to top, var(--ground) 90%, transparent); }
 .flow .in { padding-bottom: 0; }
 button, [data-act], input, textarea, select { touch-action: manipulation; }
 .flow h1 { font-size: 32px; font-weight: 800; line-height: 1.08; }
@@ -334,6 +334,11 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   .icon-btn:hover { background: var(--paper); }
 }
 
+.flow .prog .trackwrap { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.flow .prog .progtxt { font-family: var(--fm); font-size: 11.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink2); }
+.exlist .exrow { align-items: center; gap: 12px; }
+.exlist .exa { text-align: right; flex: none; }
+details.how.card { padding: 4px 16px; }
 .badge { flex: none; align-self: center; font-family: var(--fm); font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 5px 9px; border-radius: 6px; color: var(--ink2); background: var(--paper2); white-space: nowrap; margin-left: 4px; }
 .st-chip { font-family: var(--fm); font-size: 10.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; background: var(--paper2); color: var(--ink2); vertical-align: middle; }
 .steps .stp.skip .num { background: var(--warn); color: #fff; }
@@ -494,12 +499,12 @@ details.how .stack p, details.how p { font-size: 14.5px; line-height: 1.5; }
     A: { who: "Maya", qs: [
       { s: "combine", q: "Maya pays AED 45 a month for streaming, AED 25 a month for music and AED 150 a month on a pay-later plan. What do these three payments come to each month?", o: ["AED 170", "AED 195", "AED 220", "AED 240"], c: 2, e: "45 + 25 + 150 = AED 220 a month. Separate small payments still add into one monthly total." },
       { s: "overlap", q: "Maya also has a second pay-later plan of AED 100 a month. Her AED 150 plan has 4 payments left and her AED 100 plan has 2 payments left. All are monthly and start this month. How much does she pay on these two plans over the next 3 months?", o: ["AED 450", "AED 650", "AED 750", "AED 800"], c: 1, e: "Months 1 and 2: 150 + 100 = 250 each, so 500. Month 3: the AED 100 plan has ended, so only 150. The total is AED 650. A plan stops counting after its last payment." },
-      { s: "obligation", q: "Maya sees a AED 600 jacket. She could buy it on a new plan of 4 payments of AED 150. Which statement is true?", o: ["If she skips the jacket, her two existing plans stop too", "If she skips the jacket, she avoids a new AED 150 monthly payment, but her existing plans are still due", "The new plan would replace her existing plans", "Her existing plans do not count because she already agreed to them"], c: 1, e: "Existing instalments are promises already made and are still due. Only the new purchase is a choice she can still make." }
+      { s: "obligation", q: "Maya sees a AED 600 jacket. She could buy it on a new plan of 4 payments of AED 150. Which statement is true?", o: ["If she skips the jacket, her two existing pay-later plans are cancelled as well", "Skipping the jacket avoids a new AED 150 payment, but her existing plans are still due", "If she buys the jacket, the new plan would replace her two existing pay-later plans", "Her existing plans do not count towards her monthly total because she already agreed to them"], c: 1, e: "Existing instalments are promises already made and are still due. Only the new purchase is a choice she can still make." }
     ] },
     B: { who: "Leo", qs: [
       { s: "combine", q: "Leo pays AED 35 a month for streaming, AED 20 a month for an app and AED 120 a month on a pay-later plan. What do these three payments come to each month?", o: ["AED 155", "AED 175", "AED 165", "AED 195"], c: 1, e: "35 + 20 + 120 = AED 175 a month. Separate small payments still add into one monthly total." },
       { s: "overlap", q: "Leo also has a second pay-later plan of AED 80 a month. His AED 120 plan has 4 payments left and his AED 80 plan has 1 payment left. All are monthly and start this month. How much does he pay on these two plans over the next 3 months?", o: ["AED 360", "AED 440", "AED 560", "AED 600"], c: 1, e: "Month 1: 120 + 80 = 200. Months 2 and 3: the AED 80 plan has ended, so only 120 each. 200 + 120 + 120 = AED 440. A plan stops counting after its last payment." },
-      { s: "obligation", q: "Leo sees AED 480 sneakers. He could buy them on a new plan of 3 payments of AED 160. Which statement is true?", o: ["The new plan would replace his existing plans", "If he skips the sneakers, he avoids a new AED 160 monthly payment, but his existing plans are still due", "If he skips the sneakers, his existing plans stop too", "His existing plans do not count because he already agreed to them"], c: 1, e: "Existing instalments are promises already made and are still due. Only the new purchase is a choice he can still make." }
+      { s: "obligation", q: "Leo sees AED 480 sneakers. He could buy them on a new plan of 3 payments of AED 160. Which statement is true?", o: ["If he skips the sneakers, his two existing pay-later plans are cancelled as well", "Skipping the sneakers avoids a new AED 160 payment, but his existing plans are still due", "If he buys the sneakers, the new plan would replace his two existing pay-later plans", "His existing plans do not count towards his monthly total because he already agreed to them"], c: 1, e: "Existing instalments are promises already made and are still due. Only the new purchase is a choice he can still make." }
     ] }
   };
   var CONF_Q = "How confident are you at working out what several payments add up to?";
@@ -864,8 +869,8 @@ function flexLabel() { return "Pay later + subscriptions"; }
     var subs = S.items.filter(function (i) { return i.kind === "sub"; }), pays = S.items.filter(function (i) { return i.kind === "pay"; });
     var conv = function (i) { return i.freq === "monthly" ? "" : " (" + aed2(i.amount) + " " + FREQ[i.freq].l.toLowerCase() + (i.freq === "yearly" ? ", ÷ 12" : i.freq === "biweekly" ? ", × 26 ÷ 12" : ", × 52 ÷ 12") + ")"; };
     var part = function (arr) { return arr.length ? arr.map(function (i) { return esc(i.name) + " " + aed2(monthly(i)) + conv(i); }).join(" + ") : "none"; };
-    var h = '<div class="stack" style="gap:10px"><p><b>What it measures.</b> The average cost per month of the pay-later plans and subscriptions together, while they are all running.</p>';
-    h += '<p><b>How it adds up.</b><br>Subscriptions: ' + part(subs) + " = <b>" + aed2(sumOf(subs)) + "</b>.<br>Pay-later: " + part(pays) + " = <b>" + aed2(sumOf(pays)) + "</b>.<br>Together: <b>" + aed2(sumOf(subs) + sumOf(pays)) + "</b> a month.</p>";
+    var h = '<div class="stack" style="gap:10px"><p><b>What it measures.</b> The average cost per month of the pay-later plans and subscriptions together, assuming they are all running. The actual scheduled payments stop at the end date of each plan.</p>';
+    h += '<p><b>Turning each payment into a monthly average.</b> Monthly payments stay as they are. A yearly payment is divided by 12. An every-2-weeks (fortnightly) payment is multiplied by 26 and divided by 12.</p><p><b>How it adds up.</b><br>Subscriptions: ' + part(subs) + " = <b>" + aed2(sumOf(subs)) + "</b>.<br>Pay-later: " + part(pays) + " = <b>" + aed2(sumOf(pays)) + "</b>.<br>Together: <b>" + aed2(sumOf(subs) + sumOf(pays)) + "</b> a month.</p>";
     var ends = S.items.filter(function (i) { return i.left != null; }).sort(function (a, b) { return lastDate(a) - lastDate(b); });
     if (ends.length) {
       h += '<p><b>Plans with an end date.</b> These stop after their last payment, so they are not an ongoing yearly cost.</p><div>' + ends.map(function (i) { return '<div class="leader"><span>' + esc(i.name) + ": " + i.left + " × " + aed2(i.amount) + '</span><span class="dots"></span><span class="amt">' + aed2(remaining(i)) + " left</span></div>"; }).join("") + "</div>";
@@ -887,20 +892,20 @@ function flexLabel() { return "Pay later + subscriptions"; }
     var T = S.t, ex = T.ex, exDone = ex.cal && (ex.sim || ex.dec);
     var of = function (x) { return x ? (x.st === "done" ? "done" : "skipped") : "todo"; };
     return [
-      { k: "pre", name: "Starter quiz", st: of(T.pre), hint: "3 short questions before you see anything. About 1 minute." },
+      { k: "pre", name: "Starter quiz", st: of(T.pre), hint: "3 short questions before you see anything. About 3 minutes." },
       { k: "guess", name: "Guess Sam's total", st: S.guess != null ? "done" : "todo", hint: "Add up Sam's pay-later plans and subscriptions in your head." },
       { k: "reveal", name: "See the real total", st: S.revealed ? "done" : "todo", hint: "Tap Show the total to see the worked answer." },
       { k: "explore", name: "Explore the app", st: exDone ? "done" : ex.skipped ? "skipped" : "todo", hint: "Look at the Calendar, then try one change or the pay-later calculator. About 3 minutes." },
-      { k: "post", name: "Follow-up quiz", st: of(T.post), hint: "3 new questions with different numbers. About 1 minute." },
-      { k: "fb", name: "Feedback", st: of(T.fb), hint: "A few quick ratings and optional comments. About 1 minute." }
+      { k: "post", name: "Follow-up quiz", st: of(T.post), hint: "3 new questions with different numbers, plus one short written one. About 3 minutes." },
+      { k: "fb", name: "Feedback", st: of(T.fb), hint: "A few quick ratings and optional comments. About 2 minutes." }
     ];
   }
   function stepsCard(compact) {
     var st = stages(), cur = -1, i, ex = S.t.ex;
     for (i = 0; i < st.length; i++) if (st[i].st === "todo") { cur = i; break; }
     var nd = st.filter(function (x) { return x.st === "done"; }).length, ns = st.filter(function (x) { return x.st === "skipped"; }).length;
-    var h = '<section class="card steps"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (compact ? "Next step" : "Your steps") + '</h3><span class="seg5" role="img" aria-label="' + nd + " of " + st.length + " steps done" + (ns ? ", " + ns + " skipped" : "") + '">' + st.map(function (x) { return "<i" + (x.st === "done" ? ' class="on"' : "") + "></i>"; }).join("") + "</span></div>";
-    if (!compact) h += '<p class="sm" style="margin-top:4px">The whole test takes about 8 to 10 minutes. Steps are only ticked when you have done them.</p>';
+    var h = '<section class="card steps"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (compact ? "Next step" : "Your steps") + ' <small style="font-weight:500">· ' + st.filter(function (x) { return x.st === "done"; }).length + " of " + st.length + ' done</small></h3><span class="seg5" role="img" aria-label="Test progress: ' + nd + " of " + st.length + " steps done" + (ns ? ", " + ns + " skipped" : "") + '">' + st.map(function (x) { return "<i" + (x.st === "done" ? ' class="on"' : "") + "></i>"; }).join("") + "</span></div>";
+    if (!compact) h += '<p class="sm" style="margin-top:4px">The whole test takes about 15 minutes. Steps are only ticked when you have done them.</p>';
     var redo = function (x) {
       if (x.st !== "skipped") return "";
       if (x.k === "pre") return S.revealed ? '<p class="sm">No starting score was recorded, so no change in score will be worked out.</p>' : '<button class="btn ghost sm2" data-act="redopre" style="margin-top:6px">Take it now</button>';
@@ -926,7 +931,7 @@ function flexLabel() { return "Pay later + subscriptions"; }
   }
   function resumeCard() {
     var d = S.draft && S.draft.i > 0 ? S.draft : null;
-    return '<div class="card empty"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h2 style="font-size:24px;font-weight:800">' + (d ? "Pick up where you left off" : "Start the test") + '</h2><p class="muted">Try TrueTotal on a made-up person called Sam. It takes about 8 to 10 minutes, and you never enter real money details.</p><button class="btn hi" data-act="resume">' + (d ? "Continue" : "Start") + "</button>" + (d ? '<button class="btn ghost" data-act="newtest">Start again from the beginning</button>' : "") + "</div>";
+    return '<div class="card empty"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h2 style="font-size:24px;font-weight:800">' + (d ? "Pick up where you left off" : "Start the test") + '</h2><p class="muted">Try TrueTotal on a made-up person called Sam. It takes about 15 minutes, and you never enter real money details.</p><button class="btn hi" data-act="resume">' + (d ? "Continue" : "Start") + "</button>" + (d ? '<button class="btn ghost" data-act="newtest">Start again from the beginning</button>' : "") + "</div>";
   }
   function confetti() {
     if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -1030,10 +1035,10 @@ function flexLabel() { return "Pay later + subscriptions"; }
 
   /* ---------- ITEMS ---------- */
   function itemRow(it, compact) {
-    var sh = share(monthly(it)), eq = it.freq !== "monthly" ? " · about " + aed(monthly(it)) + "/mo" : "", g = groupOf(it);
+    var sh = share(monthly(it)), eq = S.revealed && it.freq !== "monthly" ? " · about " + aed(monthly(it)) + "/mo" : "", g = groupOf(it);
     var end = it.left != null ? " · " + it.left + " left, ends " + fDateY(lastDate(it)) + " · " + aed(remaining(it)) + " still to pay" : "";
-    var ctl = cancellable(it) ? '<button class="tapzone" data-act="toggle" data-id="' + it.id + '" role="switch" aria-checked="' + it.on + '" aria-label="Include ' + esc(it.name) + ' in the simulation. This does not cancel it."><span class="sw" aria-hidden="true"></span></button>' : '<span class="badge">' + (g === "repay" ? "Still due" : "Essential") + "</span>";
-    return '<div class="item' + (it.on ? "" : " off") + '"><button class="main" data-act="edit" data-id="' + it.id + '"><span class="ico lg" style="--c:' + kcol(it.kind) + '">' + ic(KINDS[it.kind].icon) + '</span><span class="tx"><b>' + esc(it.name) + "</b><small>" + aed(it.amount) + " " + FREQ[it.freq].l.toLowerCase() + eq + end + "</small>" + (compact ? "" : "<small>" + payText(it) + "</small>") + '</span><span class="rt"><b class="mono" style="color:' + kcol(it.kind) + '">' + pc(sh) + '</b><small>' + baseWord() + "</small></span></button>" + ctl + "</div>";
+    var ctl = cancellable(it) ? '<button class="tapzone" data-act="toggle" data-id="' + it.id + '" role="switch" aria-checked="' + it.on + '" aria-label="Include ' + esc(it.name) + ' in the simulation. This does not cancel it."><span class="sw" aria-hidden="true" aria-checked="' + it.on + '"></span></button>' : '<span class="badge">' + (g === "repay" ? "Still due" : "Essential") + "</span>";
+    return '<div class="item' + (it.on ? "" : " off") + '"><button class="main" data-act="edit" data-id="' + it.id + '"><span class="ico lg" style="--c:' + kcol(it.kind) + '">' + ic(KINDS[it.kind].icon) + '</span><span class="tx"><b>' + esc(it.name) + "</b><small>" + aed(it.amount) + " " + FREQ[it.freq].l.toLowerCase() + eq + end + "</small>" + (compact ? "" : "<small>" + payText(it) + "</small>") + '</span><span class="rt">' + (S.revealed ? '<b class="mono" style="color:' + kcol(it.kind) + '">' + pc(sh) + "</b><small>" + baseWord() + "</small>" : "") + "</span></button>" + ctl + "</div>";
   }
   function vItems() {
     var h = '<div class="row-between"><div><h1 class="pg-title">Everything you pay for</h1><small>' + S.items.length + " item" + (S.items.length === 1 ? "" : "s") + (S.revealed ? " · " + aed(total()) + " a month" : "") + "</small></div><button class=\"btn hi sm2\" data-act=\"add\">" + ic("plus", 16) + "Add</button></div>";
@@ -1133,16 +1138,21 @@ function flexLabel() { return "Pay later + subscriptions"; }
     var inc = S.income, c = { need: 0, want: 0, save: 0 }, un = 0;
     counted().forEach(function (i) { if (c[i.cls] != null) c[i.cls] += monthly(i); else un++; });
     var bar = function (label, v, ref, col) { var p = v / inc * 100; return '<div><div class="row-between" style="margin-bottom:8px"><span style="font-weight:500">' + label + '</span><span class="mono" style="font-weight:600">' + pc(p) + ' <small style="white-space:nowrap">guide about ' + ref + '%</small></span></div><div class="meter" style="--c:' + col + '"><i class="f" data-w="' + Math.min(100, p) + '"></i><i class="g" style="left:calc(' + ref + '% - 1px)"></i></div></div>'; };
-    var h = '<section class="card stack"><h3 style="font-size:18px;font-weight:800">50/30/20 (optional rule of thumb)</h3><p class="sm">A common rough guide is about 50% of income on needs, 30% on wants and 20% on saving and paying down debt. It is a starting point, not a pass or fail test.</p>';
+    var h = '<section class="card"><details class="how"><summary>50/30/20 guide (optional)</summary><div class="stack" style="gap:12px"><p class="sm">A common rough guide is about 50% of income on needs, 30% on wants and 20% on saving and paying down debt. It is a starting point, not a pass or fail test.</p>';
     if (un === counted().length) h += '<p class="sm">Tap a payment on the Items tab and choose Need, Want or Saving or debt repayment to see the split.</p>';
     else h += bar("Needs", c.need, 50, "var(--k-bill)") + bar("Wants", c.want, 30, "var(--k-pay)") + bar("Saving and debt repayment", c.save, 20, "var(--k-sub)") + (un ? '<p class="sm">' + un + " payment" + (un === 1 ? " is" : "s are") + " not classified yet, so " + (un === 1 ? "it is" : "they are") + " not counted above.</p>" : "");
-    return h + '<details class="how"><summary>What this does not tell you</summary><p class="sm">It only uses the payments listed, so food, transport and other costs are missing. Whether something is a need or a want is your own call: a pay-later plan can be for something essential, and a subscription can be a need for one person and a want for another. An income share below or above a guide does not show whether something is affordable.</p></details></section>';
+    return h + '<p class="sm"><b style="color:var(--ink)">What this does not tell you.</b> It only uses the payments listed, so food, transport and other costs are missing. Whether something is a need or a want is your own call: a pay-later plan can be for something essential, and a subscription can be a need for one person and a want for another. An income share below or above a guide does not show whether something is affordable.</p></div></details></section>';
   }
   function vLearn() {
-    var h = '<h1 class="pg-title">Learn</h1>' + stepsCard() + resultsCard() + budgetCard();
+    var h = '<h1 class="pg-title">Learn</h1>';
+    h += '<section class="card stack" style="gap:10px"><h3 style="font-size:18px;font-weight:800">Three things to take away</h3>' + [["bag", "pay", "Small payments add up", "Several small payments each month combine into one bigger monthly total."], ["receipt", "bill", "Existing instalments are still owed", "A plan ends after its last payment, but every remaining payment is still due until then."], ["card", "loan", "Money remaining must cover other living costs", "What is left after listed payments still has to pay for food, transport and anything not listed."]].map(function (x) { return '<div class="tipcard"><span class="ico lg" style="--c:' + kcol(x[1]) + '">' + ic(x[0], 20) + '</span><div><b style="font-weight:600">' + x[2] + '</b><p class="sm" style="margin-top:2px">' + x[3] + "</p></div></div>"; }).join("") + "</section>";
+    h += stepsCard() + resultsCard();
+    if (!S.revealed) return h + '<p class="sm">The detailed explanations open after you have seen the total.</p>';
+    h += '<section class="card"><details class="how"><summary>How the total is calculated</summary>' + workedHTML() + "</details></section>";
     var ts = tips();
-    if (ts.length) h += '<section class="card"><h3 style="font-size:18px;font-weight:800;margin-bottom:6px">Worth knowing</h3>' + ts.map(function (x) { return '<div class="tipcard"><span class="tag" style="--c:' + LV[x.l] + '">' + x.lab + '</span><div><b style="font-weight:600">' + esc(x.h) + '</b><p class="sm" style="margin-top:2px">' + esc(x.p) + "</p></div></div>"; }).join("") + "</section>";
-    h += '<section class="card"><h3 style="font-size:18px;font-weight:800;margin-bottom:6px">Good to know</h3>' + [["bag", "pay", "Pay later is still a commitment", "Splitting a purchase into instalments makes each payment look small, but each plan is a promise to pay the full amount over time. Several plans at once overlap and add into one monthly total. Terms and fees differ by provider, so read yours."], ["repeat", "sub", "Optional recurring payments add up", "AED 50 a month is AED 600 over 12 months if it carries on. Checking each one now and then keeps the total honest. Check any notice period before you cancel."], ["receipt", "bill", "A share of income gives context", "AED 300 means little on its own. As a share of income it shows how much of a month's income it takes. It only tells part of the story, because costs you have not listed matter too."]].map(function (x) { return '<div class="tipcard"><span class="ico lg" style="--c:' + kcol(x[1]) + '">' + ic(x[0], 20) + '</span><div><b style="font-weight:600">' + x[2] + '</b><p class="sm" style="margin-top:2px">' + x[3] + "</p></div></div>"; }).join("") + '</section><p class="sm" style="padding-bottom:8px">TrueTotal is a learning tool, not financial advice. Terms, fees and prices differ by provider, so check your own.</p>';
+    if (ts.length) h += '<section class="card"><details class="how"><summary>Notes and assumptions about these payments</summary>' + ts.map(function (x) { return '<div class="tipcard"><span class="tag" style="--c:' + LV[x.l] + '">' + x.lab + '</span><div><b style="font-weight:600">' + esc(x.h) + '</b><p class="sm" style="margin-top:2px">' + esc(x.p) + "</p></div></div>"; }).join("") + "</details></section>";
+    h += budgetCard();
+    h += '<section class="card"><details class="how"><summary>Good to know</summary>' + [["bag", "pay", "Pay later is still a commitment", "Splitting a purchase into instalments makes each payment look small, but each plan is a promise to pay the full amount over time. Several plans at once overlap and add into one monthly total. Terms and fees differ by provider, so read yours."], ["repeat", "sub", "Optional recurring payments add up", "AED 50 a month is AED 600 over 12 months if it carries on. Checking each one now and then keeps the total honest. Check any notice period before you cancel."], ["receipt", "bill", "A share of income gives context", "AED 300 means little on its own. As a share of income it shows how much of a month's income it takes. It only tells part of the story, because costs you have not listed matter too."]].map(function (x) { return '<div class="tipcard"><span class="ico lg" style="--c:' + kcol(x[1]) + '">' + ic(x[0], 20) + '</span><div><b style="font-weight:600">' + x[2] + '</b><p class="sm" style="margin-top:2px">' + x[3] + "</p></div></div>"; }).join("") + '</details></section><p class="sm" style="padding-bottom:8px">TrueTotal is a learning tool, not financial advice. Terms, fees and prices differ by provider, so check your own.</p>';
     return h;
   }
 
@@ -1272,7 +1282,9 @@ function flexLabel() { return "Pay later + subscriptions"; }
     } else h += '<button class="btn ghost sm2" data-act="alt" data-id="' + it.id + '">I found a cheaper price</button>';
     return h + "</section>";
   }
+  function lockCard(what) { return '<div class="card empty"><h2 style="font-size:22px;font-weight:800">Show the total first</h2><p class="muted">' + what + ' uses the total, so it opens after you have seen the answer to the guess.</p><button class="btn hi" data-act="reveal">Show the total</button></div>'; }
   function vSave() {
+    if (!S.revealed) return '<h1 class="pg-title">Ways to pay less</h1>' + lockCard("This page");
     var h = '<div><h1 class="pg-title">Ways to pay less</h1><p class="sm" style="margin-top:4px">Ideas for lowering future costs. Existing repayments stay due, and switching something off here only changes the simulation. Prices and offers change, so check each provider. These are ideas, not advice.</p></div>';
     h += toolsCard();
     if (!S.items.length) return h + '<div class="card empty"><span class="ico lg" style="--c:var(--k-pay)">' + ic("tag", 22) + '</span><p class="muted">Add what you pay for and TrueTotal will suggest ways to pay less.</p><button class="btn hi" data-act="add">' + ic("plus", 18) + 'Add a payment</button></div>';
@@ -1515,29 +1527,29 @@ function flexLabel() { return "Pay later + subscriptions"; }
     var introStep = function (eyebrow, title, body, startLabel, skipLabel, skipAct) { return { need: function () { return true; }, next: startLabel, skip: skipLabel, skipAct: skipAct, html: function () { return '<p class="eyebrow">' + eyebrow + "</p><h2>" + title + '</h2><p class="muted">' + body + "</p>"; } }; };
     if (kind === "onboard") {
       d = { age: null, a: [null, null, null], c: null, preSkip: false, guess: "", scen: null };
-      steps.push({ need: function () { return true; }, next: "Let's go", html: function () { return '<div style="padding-top:18px" class="stack"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>What do small payments <span class="hl">really</span> add up to?</h1><p class="muted" style="font-size:16px">You will meet a made-up person called Sam, guess what their payments add up to, see the worked answer, explore the app and give feedback. It takes about 8 to 10 minutes.</p></div><div class="note">This is a student financial literacy project. <b>You never type in your real income, bills or accounts.</b> Taking part is voluntary. Nothing is sent unless you choose to send your results at the end, after you have seen exactly what would be sent.</div>'; } });
+      steps.push({ need: function () { return true; }, next: "Let's go", html: function () { return '<div style="padding-top:18px" class="stack"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>What do small payments <span class="hl">really</span> add up to?</h1><p class="muted" style="font-size:16px">You will meet a made-up person called Sam, guess what their payments add up to, see the worked answer, explore the app and give feedback. It takes about 15 minutes.</p></div><div class="note">This is a student financial literacy project. <b>You never type in your real income, bills or accounts.</b> Taking part is voluntary. Nothing is sent unless you choose to send your results at the end, after you have seen exactly what would be sent.</div>'; } });
       steps.push({ needMsg: "Choose an age group to continue.", need: function () { return F.d.age != null; }, html: function () {
         var teen = F.d.age === "Under 18";
         return '<p class="eyebrow">About you</p><h2>How old are you?</h2><div class="chips" role="group" aria-label="Age group">' + AGES.map(function (o) { return '<button class="chip" data-act="fchip" data-k="age" data-v="' + o + '" aria-pressed="' + (F.d.age === o) + '">' + o + "</button>"; }).join("") + "</div>" + (teen ? '<div class="note">Under 18? Please check with a parent or guardian that it is OK for you to take part. Everything uses made-up figures.</div>' : '<p class="sm">Only your age group is recorded. No name or email is needed.</p>');
       } });
-      steps.push({ need: function () { return true; }, next: "Start the quiz", skip: "Skip the starter quiz", skipAct: "fskipquiz", leave: function () { F.d.preSkip = false; }, html: function () { return '<p class="eyebrow">Starter quiz</p><h2>Three quick questions first</h2><p class="muted">They show where you are starting from, so we can see what changes later. The answers are shown at the end, not now. It takes about a minute.</p><div class="note">You can skip this. If you do, we cannot measure what changed, and your results are marked as incomplete.</div>'; } });
+      steps.push({ need: function () { return true; }, next: "Start the quiz", skip: "Skip the starter quiz", skipAct: "fskipquiz", leave: function () { F.d.preSkip = false; }, html: function () { return '<p class="eyebrow">Starter quiz</p><h2>Three quick questions first</h2><p class="muted">They show where you are starting from, so we can see what changes later. The answers are shown at the end, not now. It takes about 3 minutes.</p><div class="note">You can skip this. If you do, we cannot measure what changed, and your results are marked as incomplete.</div>'; } });
       [0, 1, 2].forEach(function (qi) { steps.push(quizStep("A", qi)); });
       steps.push(confStep());
       steps.push({ need: function () { return true; }, next: "Next", back: function () { return F.d.preSkip ? 2 : 6; }, html: function () {
         if (!F.d.scen) F.d.scen = scenItems();
-        return '<p class="eyebrow">The scenario</p><h2>Meet Sam</h2><p class="muted">Sam is made up. Sam earns AED 9,000 a month and says: "They are all small payments, so I am fine." These are Sam\'s payments. Do not add them up yet.</p>' + exList({ items: F.d.scen }) + '<p class="sm">Every-2-weeks and yearly payments are listed as they are paid.</p>';
+        return '<p class="eyebrow">The scenario</p><h2>Meet Sam</h2><p class="muted">Sam is made up and earns AED 9,000 a month. Sam says: "They are all small payments, so I am fine." Here are the subscriptions and pay-later plans you will be asked about, shown as Sam pays them. Do not add them up yet.</p>' + exList({ items: F.d.scen });
       } });
-      steps.push({ needMsg: "Enter a number, 0 or more, to continue.", next: "Start the tutorial", need: function () { return F.d.guess !== "" && parseFloat(F.d.guess) >= 0; }, err: function () { return F.d.guess !== "" && !(parseFloat(F.d.guess) >= 0) ? "Enter a number that is 0 or more." : ""; }, html: function () {
-        return '<p class="eyebrow">Your guess</p><h2>Take a guess</h2><p class="muted">About how much does Sam spend each month on <b>pay-later plans and subscriptions together</b>? Think of an average month while all of them are running. Add it up in your head. A rough guess is fine.</p><div class="field"><label for="gIn" class="vh">Your guess in AED a month</label><div class="money"><span>AED</span><input id="gIn" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="guess" placeholder="e.g. 500" value="' + esc(F.d.guess) + '"></div></div><p class="errmsg" id="flowErr" role="alert">' + esc(F.steps[F.i].err()) + "</p>" + exList({ items: F.d.scen || [] });
+      steps.push({ needMsg: "Enter a number, 0 or more, to continue.", next: "Finish setup", need: function () { return F.d.guess !== "" && parseFloat(F.d.guess) >= 0; }, err: function () { return F.d.guess !== "" && !(parseFloat(F.d.guess) >= 0) ? "Enter a number that is 0 or more." : ""; }, html: function () {
+        return '<p class="eyebrow">Your guess</p><h2>Take a guess</h2><p class="muted">No need to calculate it exactly. What do you think these payments add up to in an average month?</p><div class="field"><label for="gIn" class="vh">Your guess in AED for an average month</label><div class="money"><span>AED</span><input id="gIn" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="guess" placeholder="e.g. 500" value="' + esc(F.d.guess) + '"></div></div><p class="errmsg" id="flowErr" role="alert">' + esc(F.steps[F.i].err()) + '</p><p class="sm">Think of an average month while all these plans are running. Some plans end after a set number of payments, so the actual payments stop at their end dates. Only the subscriptions and pay-later plans count here.</p>' + exList({ items: F.d.scen || [] }) + '<div class="note">That finishes setup. Next is a quick tour, then you will see the answer. The whole test has 6 steps.</div>';
       } });
     } else if (kind === "pre") {
       d = { a: [null, null, null], c: null };
-      steps.push(introStep("Starter quiz", "Three quick questions", "Take this before you show the total. It takes about a minute, and the answers are shown at the end of the test.", "Start the quiz"));
+      steps.push(introStep("Starter quiz", "Three quick questions", "Take this before you show the total. It takes about 3 minutes, and the answers are shown at the end of the test.", "Start the quiz"));
       [0, 1, 2].forEach(function (qi) { steps.push(quizStep("A", qi)); });
       steps.push(confStep());
     } else if (kind === "after") {
       d = { a: [null, null, null], why: "", c: null };
-      steps.push(introStep("Follow-up quiz", "Three new questions", "These are about someone else, with different numbers. Then there is one short written question. The answers are shown after you finish, not during. It takes about a minute.", "Start the quiz", "Skip the follow-up quiz", "fskipafter"));
+      steps.push(introStep("Follow-up quiz", "Three new questions", "These are about someone else, with different numbers. Then there is one short written question. The answers are shown after you finish, not during. It takes about 3 minutes.", "Start the quiz", "Skip the follow-up quiz", "fskipafter"));
       [0, 1, 2].forEach(function (qi) { steps.push(quizStep("B", qi)); });
       steps.push({ need: function () { return true; }, next: "Next", html: function () { return '<p class="eyebrow">Short written question · optional</p><h2>' + WHY_Q + '</h2><p class="muted">A sentence or two is plenty, or leave it blank. Some reasons are shown after you finish.</p><div class="field"><label for="why" class="vh">Your answer</label><textarea id="why" data-in="why" maxlength="300" placeholder="Type here (optional)">' + esc(F.d.why) + "</textarea></div>"; } });
       var cs = confStep(); cs.commit = function () { S.t.post = { st: "done", ver: "B", a: F.d.a.slice(), s: qScore(F.d.a, "B"), c: F.d.c, why: cleanText(F.d.why, 300), at: Date.now() }; S.draft = null; F.committed = true; save(); };
@@ -1568,10 +1580,12 @@ function flexLabel() { return "Pay later + subscriptions"; }
   }
   function closeFlow() { if (flowEl) { flowEl.remove(); flowEl = null; } F = null; document.documentElement.style.overflow = ""; syncBg(); render(); window.scrollTo(0, 0); }
   function persistDraft() { if (F && PERSIST.test(F.kind) && !F.committed) { S.draft = { kind: F.kind, i: F.i, d: F.d }; save(); } }
+  var FLOW_LABEL = { onboard: "Setup progress", pre: "Starter quiz progress", after: "Follow-up quiz progress", fb: "Feedback progress" };
   function drawFlow() {
     var fsig = flowEl && flowEl.contains(document.activeElement) ? sigOf(document.activeElement) : null;
-    var st = F.steps[F.i], pct = Math.round(F.i / Math.max(1, F.steps.length - 1) * 100), last = F.i === F.steps.length - 1, canBack = F.i > 0 && !st.result, ok = st.need();
-    flowEl.innerHTML = '<div class="in"><div class="prog">' + (canBack ? '<button class="icon-btn" data-act="fback" aria-label="Back">' + ic("left", 22) + "</button>" : '<span style="width:44px"></span>') + '<div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '" aria-label="Progress"><i style="width:' + pct + '%"></i></div><button class="icon-btn" data-act="fclose" aria-label="Close. Your progress is saved">' + ic("x", 22) + '</button></div><div class="body">' + st.html() + '</div><div class="foot">' + (!ok && st.needMsg ? '<p class="sm" id="needHint" style="text-align:center">' + st.needMsg + "</p>" : '<p class="sm" id="needHint" style="text-align:center"></p>') + '<button class="btn ' + (last ? "hi" : "") + ' block" id="fnext" data-act="fnext"' + (ok ? "" : " disabled") + ">" + (st.next || (last ? "Done" : "Next")) + "</button>" + (st.skip ? '<button class="btn ghost block" data-act="' + (st.skipAct || "fskip") + '">' + st.skip + "</button>" : "") + "</div></div>";
+    var st = F.steps[F.i], n = F.steps.length, pct = Math.round(F.i / Math.max(1, n - 1) * 100), last = F.i === n - 1, canBack = F.i > 0 && !st.result, ok = st.need();
+    var lbl = (FLOW_LABEL[F.kind] || "Progress") + " · " + (st.result ? "done" : "step " + (F.i + 1) + " of " + (st.result ? n : n));
+    flowEl.innerHTML = '<div class="in"><div class="prog">' + (canBack ? '<button class="icon-btn" data-act="fback" aria-label="Back">' + ic("left", 22) + "</button>" : '<span style="width:44px"></span>') + '<div class="trackwrap"><span class="progtxt" id="progLbl">' + lbl + '</span><div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '" aria-valuetext="' + esc(lbl) + '" aria-label="' + esc(FLOW_LABEL[F.kind] || "Progress") + '"><i style="width:' + pct + '%"></i></div></div><button class="icon-btn" data-act="fclose" aria-label="Close. Your progress is saved">' + ic("x", 22) + '</button></div><div class="body">' + st.html() + '</div><div class="foot">' + (!ok && st.needMsg ? '<p class="sm" id="needHint" style="text-align:center">' + st.needMsg + "</p>" : '<p class="sm" id="needHint" style="text-align:center"></p>') + '<button class="btn ' + (last ? "hi" : "") + ' block" id="fnext" data-act="fnext"' + (ok ? "" : " disabled") + ">" + (st.next || (last ? "Done" : "Next")) + "</button>" + (st.skip ? '<button class="btn ghost block" data-act="' + (st.skipAct || "fskip") + '">' + st.skip + "</button>" : "") + "</div></div>";
     flowEl.scrollTop = 0;
     runCounts(flowEl);
     syncBg();
@@ -1612,7 +1626,7 @@ function flexLabel() { return "Pay later + subscriptions"; }
       S.t.pre = d.preSkip ? { st: "skipped", ver: "A", at: Date.now() } : { st: "done", ver: "A", a: d.a.slice(), s: qScore(d.a, "A"), c: d.c, at: Date.now() };
       S.income = SCEN_INCOME; S.items = d.scen || scenItems(); S.goal = null; S.revealed = false; S.revealedAt = null;
       S.guess = parseFloat(d.guess); if (isNaN(S.guess)) S.guess = null; S.guessAt = Date.now();
-      S.onboarded = true; S.draft = null; save(); view = "home"; closeFlow(); startTour();
+      S.onboarded = true; S.draft = null; save(); view = "home"; closeFlow(); toast("Setup complete"); startTour();
     } else if (k === "pre") {
       S.t.pre = { st: "done", ver: "A", a: d.a.slice(), s: qScore(d.a, "A"), c: d.c, at: Date.now() }; S.draft = null; save(); closeFlow(); toast("Starter quiz saved");
     } else if (k === "after") {
@@ -1633,7 +1647,7 @@ function flexLabel() { return "Pay later + subscriptions"; }
   /* ---------- spotlight tour ---------- */
   var tourEl = null, T = null, tourTimer = null;
   var TOUR = [
-    { view: "home", title: "Quick tour", text: "Sam's made-up payments are in. Here is a 30 second look at where things are. At the end you will see the real total next to your guess." },
+    { view: "home", title: "Setup complete", text: "Setup is done and Sam's payments are loaded. Here is a 30 second tour of where things are. Then you will see the total next to your guess. The whole test has 6 steps." },
     { view: "home", sel: ["#view .steps"], title: "Your steps", text: "This card shows what comes next. A step is only ticked once you have done it, and skipped steps stay visible so you can come back." },
     { view: "items", sel: ["#view .group"], title: "Sam's payments", text: "Everything is listed here, grouped by type. Tap one to see its details. Only optional recurring payments have a switch, and it only changes the simulation: it does not cancel anything." },
     { view: "cal", sel: ["nav.tabs button[data-v=\"cal\"]"], title: "Calendar", text: "Every payment lands on its pay day, so you can see where payments overlap and when they end." },
@@ -1746,19 +1760,32 @@ function flexLabel() { return "Pay later + subscriptions"; }
 
   /* ---------- results sharing ---------- */
   function canSend() { return !!(RESULTS_FORM.action && RESULTS_FORM.entry); }
+  var sendBusy = false, sendErr = "";
+  function refreshSend() {
+    if (!(sheet && sheet.dataset.kind === "send")) return;
+    sheet.innerHTML = '<div class="grab"></div>' + sendDialogHTML();
+    var hh = sheet.querySelector("h2"); if (hh) { hh.id = "sheetTitle"; sheet.setAttribute("aria-labelledby", "sheetTitle"); }
+  }
+  /* sending is only ever started by a tap. A second tap while sending, or after nothing has changed, does nothing. */
   function sendResults() {
     if (DEV) { toast("This is a development copy, so sending is turned off."); return; }
     if (!canSend()) { copyResults(); return; }
     if (sendBusy) return;
-    var txt = resultsText(), body = new URLSearchParams();
+    var txt = resultsText();
+    if (S.sentTxt === txt) { toast("Already sent. Nothing has changed."); return; }
+    if (navigator.onLine === false) { sendErr = "You seem to be offline. Your results are still saved on this device. Try again when you are online, or use Copy instead."; refreshSend(); return; }
+    var body = new URLSearchParams();
     body.append(RESULTS_FORM.entry, txt + "\nSent: " + new Date().toISOString());
-    sendBusy = true; toast("Sending…");
-    fetch(RESULTS_FORM.action, { method: "POST", mode: "no-cors", body: body }).then(function () {
-      sendBusy = false; S.sentAt = Date.now(); S.sentTxt = txt; save(); toast("Sent. Thank you!");
-      if (sheet && sheet.dataset.kind === "send") openSend();
-    }, function () { sendBusy = false; toast("Could not send. Use Copy instead."); });
+    sendBusy = true; sendErr = ""; refreshSend();
+    var ctl = typeof AbortController !== "undefined" ? new AbortController() : null, timer = setTimeout(function () { if (ctl) ctl.abort(); }, 15000);
+    fetch(RESULTS_FORM.action, { method: "POST", mode: "no-cors", body: body, signal: ctl ? ctl.signal : undefined }).then(function () {
+      clearTimeout(timer); sendBusy = false; sendErr = ""; S.sentAt = Date.now(); S.sentTxt = txt; save(); refreshSend(); toast("Sent to the project");
+    }, function () {
+      clearTimeout(timer); sendBusy = false;
+      sendErr = "It did not send. Your results are still saved on this device, so you can try again, or use Copy instead.";
+      refreshSend();
+    });
   }
-  var sendBusy = false;
   /* shows exactly what would be sent, in plain words, before anything leaves the device */
   function sendRows() {
     var T = S.t, q = function (x, name) { return !x ? "not taken" : x.st === "skipped" ? "skipped" : x.st === "done" ? "version " + x.ver + ", your answers and score " + x.s + " of 3" + (x.c != null ? ", confidence " + x.c + " of 5" : "") : "incomplete"; };
@@ -1769,21 +1796,24 @@ function flexLabel() { return "Pay later + subscriptions"; }
     rows.push(["Other", "what you tried in the app (calendar, a change, the calculator), the time of each step, the app version, and a note on whether it is complete"]);
     return rows;
   }
-  function openSend() {
-    closeSheet(true);
+  function sendDialogHTML() {
     var rows = sendRows(), missing = stages().filter(function (x) { return x.st !== "done"; }).map(function (x) { return x.name + (x.st === "skipped" ? " (skipped)" : " (not done)"); });
+    var unchanged = !!(S.sentAt && S.sentTxt === resultsText());
     var h = '<div class="stack" style="gap:12px"><div class="row-between"><h2>Review what will be sent</h2><button class="icon-btn" data-act="sheetclose" aria-label="Close">' + ic("x", 22) + "</button></div>";
-    h += '<p class="sm"><b style="color:var(--ink)">Sending is optional, and nothing has been sent yet' + (S.sentAt ? " except what is shown below" : "") + ".</b> No name, email, real income or account details are included, because you never entered any.</p>";
+    h += '<p class="sm"><b style="color:var(--ink)">Sending is optional' + (S.sentAt ? "." : ", and nothing has been sent yet.") + "</b> No name, email, real income or account details are included, because you never entered any.</p>";
     h += '<div class="sendbox">' + rows.map(function (r) { return '<div class="leader"><span>' + r[0] + '</span><span class="dots"></span><span class="amt" style="text-align:right;white-space:normal;max-width:60%">' + esc(r[1]) + "</span></div>"; }).join("") + "</div>";
     h += '<p class="sm"><b style="color:var(--ink)">Where it goes.</b> To a Google Form owned by the project organiser. The responses are collected in the organiser\'s Google spreadsheet and used for the competition evidence report. Google handles the submission under its own terms.</p>';
     if (missing.length) h += '<div class="note">Not complete: ' + esc(missing.join(", ")) + ". You can still send. It will be marked as incomplete and kept apart from complete results.</div>";
-    if (S.sentAt && S.sentTxt === resultsText()) h += '<div class="note">Sent on ' + new Date(S.sentAt).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) + ". Nothing has changed since.</div>";
+    if (sendErr) h += '<div class="note" role="alert" style="color:var(--bad);font-weight:600">' + esc(sendErr) + "</div>";
+    if (unchanged) h += '<div class="note" role="status">Sent on ' + new Date(S.sentAt).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) + ". Nothing has changed since. Your browser cannot read Google's reply, so this only means the request left your device.</div>";
     else if (S.sentAt) h += '<div class="note">Sent earlier on ' + new Date(S.sentAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + ". Your results have changed since, so you can send an update.</div>";
     h += '<details class="how"><summary>Show the exact text</summary><textarea readonly style="min-height:160px;font-family:var(--fm);font-size:12.5px" aria-label="Exact text that would be sent">' + esc(resultsText()) + "</textarea></details>";
     if (DEV) h += '<div class="note">This is a development copy, so sending is turned off here. Copy still works.</div>';
-    h += '<div class="stack" style="gap:8px">' + (DEV || !canSend() ? "" : '<button class="btn hi block" data-act="sendnow">' + (S.sentAt ? "Send an update" : "Send to the project") + "</button>") + '<button class="btn ghost block" data-act="copy">Copy instead (does not submit anything)</button><button class="btn ghost block" data-act="sheetclose">' + (S.sentAt ? "Close" : "Do not send") + "</button></div></div>";
-    openSheet(h, null, "send");
+    var main = DEV || !canSend() ? "" : sendBusy ? '<button class="btn hi block" disabled>Sending…</button>' : unchanged ? '<button class="btn block" disabled>Already sent</button>' : '<button class="btn hi block" data-act="sendnow">' + (sendErr ? "Try again" : S.sentAt ? "Send an update" : "Send to the project") + "</button>";
+    h += '<div class="stack" style="gap:8px">' + main + '<button class="btn ghost block" data-act="copy">Copy instead (does not submit anything)</button><button class="btn ghost block" data-act="sheetclose">' + (S.sentAt ? "Close" : "Do not send") + "</button></div></div>";
+    return h;
   }
+  function openSend() { closeSheet(true); sendErr = ""; openSheet(sendDialogHTML(), null, "send"); }
 
 
   function copyResults() {
@@ -1821,10 +1851,12 @@ function flexLabel() { return "Pay later + subscriptions"; }
   function pick(arr, n) { var a = arr.slice(), out = []; while (out.length < n && a.length) out.push(a.splice(Math.floor(Math.random() * a.length), 1)[0]); return out; }
 
   function exList(e) {
-    var kn = { pay: "Pay-later", sub: "Subscription", game: "Game / in-app", bill: "Bill", loan: "Loan", other: "Other" };
-    var fq = function (it) { return it.freq === "yearly" ? " / year" : it.freq === "biweekly" ? " / 2 weeks" : it.freq === "weekly" ? " / week" : " / month"; };
-    var rows = e.items.map(function (it) { return '<div class="exrow"><span class="exn">' + esc(it.name) + '<small>' + (kn[it.kind] || "") + (it.left ? " · " + it.left + " payment" + (it.left === 1 ? "" : "s") + " left" : "") + '</small></span><span class="exa mono">AED ' + it.amount + fq(it) + "</span></div>"; }).join("");
-    return '<div class="card exlist">' + rows + "</div>";
+    var fq = function (it) { return it.freq === "yearly" ? "every year" : it.freq === "biweekly" ? "every 2 weeks" : it.freq === "weekly" ? "every week" : "every month"; };
+    var row = function (it) { return '<div class="exrow"><span class="exn">' + esc(it.name) + (it.left ? "<small>" + it.left + " payment" + (it.left === 1 ? "" : "s") + " left</small>" : "") + '</span><span class="exa mono">AED ' + nf.format(it.amount) + " " + fq(it) + "</span></div>"; };
+    var subs = e.items.filter(function (i) { return i.kind === "sub"; }), pays = e.items.filter(function (i) { return i.kind === "pay"; }), rest = e.items.filter(function (i) { return i.kind !== "sub" && i.kind !== "pay"; });
+    var h = '<div class="card exlist"><div class="eyebrow">Subscriptions</div>' + subs.map(row).join("") + '<div class="eyebrow" style="margin-top:12px">Pay-later plans</div>' + pays.map(row).join("") + "</div>";
+    if (rest.length) h += '<details class="how card"><summary>Other payments—not included in this guess (' + rest.length + ")</summary>" + rest.map(row).join("") + "</details>";
+    return h;
   }
   /* The app is a demo: everyone works with made-up numbers. */
   var SCEN_INCOME = 9000; /* fictional */
