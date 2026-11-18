@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1794986500"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1794987526"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -489,7 +489,35 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     return null;
   }
   var S = load() || fresh();
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { storeOK = false; $("#storeWarn").hidden = false; } }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { storeOK = false; $("#storeWarn").hidden = false; } syncNative(); }
+
+  /* iPhone app bridge: only active inside the native app. Sends the pay-day schedule for widgets and reminders. */
+  var NATIVE = !!(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.tt);
+  function nativePost(m) { try { window.webkit.messageHandlers.tt.postMessage(m); } catch (e) {} }
+  var syncT = null;
+  function syncNative() {
+    if (!NATIVE) return;
+    clearTimeout(syncT);
+    syncT = setTimeout(function () {
+      var ev = upcoming(50).slice(0, 55);
+      nativePost({ type: "sync", notify: S.notify === true, remind: S.remind, revealed: !!S.revealed, revealedAt: S.revealedAt || 0, reviewDone: !!S.post,
+        events: ev.map(function (e) { return { n: e.it.name, a: e.it.amount, d: iso(e.d), k: e.it.kind }; }) });
+    }, 400);
+  }
+  window.ttNative = {
+    go: function (v) {
+      if (!S.onboarded) return;
+      closeSheet(true); if (flowEl) closeFlow();
+      if (v === "review") { if (S.revealed) { openFlow("post"); } else { view = "home"; render(); } return; }
+      view = (v === "cal" || v === "save" || v === "items" || v === "learn") ? v : "home";
+      render(); window.scrollTo(0, 0);
+    },
+    onPermission: function (ok) {
+      S.notify = !!ok; S.notifyAsked = true; save();
+      if (sheet) { var seg = $("#notifSeg"); if (seg) $$("#notifSeg button").forEach(function (b) { b.setAttribute("aria-pressed", (b.dataset.v === "1") === S.notify); }); }
+      render(); toast(ok ? "Reminders are on" : "Reminders are off. You can allow them in iPhone Settings.");
+    }
+  };
   try { localStorage.setItem("tt-test", "1"); localStorage.removeItem("tt-test"); } catch (e) { storeOK = false; }
   if (!storeOK) $("#storeWarn").hidden = false;
   S.pauses = S.pauses || []; S.days = S.days || [];
@@ -779,6 +807,9 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function homeExtras() {
     if (!S.revealed) return "";
     var h = "", st = streak();
+    if (NATIVE && S.notify === undefined && !S.notifyAsked) {
+      h += '<section class="card stack" style="gap:8px"><b style="font-family:var(--fd);font-size:18px">Want reminders?</b><p class="sm">TrueTotal can nudge you before pay days and remind you to give your review. You can also add the TrueTotal widget to your home screen.</p><div style="display:flex;gap:8px"><button class="btn ghost block" data-act="notifyno">Not now</button><button class="btn hi block" data-act="notifyon">Turn on</button></div></section>';
+    }
     S.pauses.filter(function (p) { return !p.done; }).slice(0, 2).forEach(function (p) {
       var left = p.until - Date.now(), hrs = Math.ceil(left / 36e5);
       h += '<section class="card stack" style="gap:8px"><div class="row-between"><span><span class="eyebrow">Thinking about it</span><br><b>' + esc(p.name) + '</b></span><span class="mono" style="font-weight:600">' + aed(p.price) + '</span></div><p class="sm">' + (left > 0 ? "You paused this. Decide in about " + hrs + " hour" + (hrs === 1 ? "" : "s") + "." : "24 hours are up. Do you still want it?") + '</p><div style="display:flex;gap:8px"><button class="btn ghost block" data-act="pskip" data-id="' + p.id + '">Skip it</button><button class="btn ghost block" data-act="pbuy" data-id="' + p.id + '">I bought it</button></div></section>';
@@ -1224,6 +1255,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
             '<div class="field"><div class="lbl">Reminder time for calendar file</div><div class="seg" id="remSeg"><button data-act="rem" data-v="0" ' + 'aria-pressed="' + (S.remind === 0) + '">On the day</button><button data-act="rem" data-v="1" aria-pressed="' + (S.remind === 1) + '">1 day before</button><button data-act="rem" data-v="2" aria-pressed="' + (S.remind === 2) + '">2 days before</button></div></div>' +
       '<div class="field"><div class="lbl">Appearance</div><div class="seg" id="themeSeg"><button data-act="theme" data-v="auto" ' + st("auto") + '>Auto</button><button data-act="theme" data-v="light" ' + st("light") + '>Light</button><button data-act="theme" data-v="dark" ' + st("dark") + ">Dark</button></div></div>" +
       '<div class="field"><div class="lbl">Send my results automatically</div><div class="seg" id="autoSeg"><button data-act="autosend" data-v="1" aria-pressed="' + (S.autosend === true) + '">On</button><button data-act="autosend" data-v="0" aria-pressed="' + (S.autosend !== true) + '">Off</button></div><small>Sends your name, tester code, quiz scores and answers, and spending totals. Never your income.</small></div>' +
+      (NATIVE ? '<div class="field"><div class="lbl">Reminders</div><div class="seg" id="notifSeg"><button data-act="notifyset" data-v="1" aria-pressed="' + (S.notify === true) + '">On</button><button data-act="notifyset" data-v="0" aria-pressed="' + (S.notify !== true) + '">Off</button></div><small>Pay-day reminders at 9am (' + (S.remind === 0 ? "on the day" : S.remind === 1 ? "1 day before" : "2 days before") + ') and a nudge to give your review.</small><button class="btn ghost sm2" data-act="notifytest" style="margin-top:8px;align-self:flex-start">Send a test reminder</button></div><div class="field"><div class="lbl">Widget</div><small>Press and hold your home screen, tap +, search TrueTotal, and add the Next pay day widget. It also works on the lock screen.</small></div>' : "") +
       '<div class="stack" style="gap:8px"><button class="btn ghost block" data-act="reveal">Replay the reveal</button><button class="btn ghost block" data-act="copy">Copy my results</button><button class="btn danger block" id="clearBtn" data-act="clear">Delete all my data</button></div>' +
       '<p class="sm">Everything stays on this device unless you turn on automatic sending or tap Send my results. Reset the example numbers any time by deleting your data. Your tester code is <span class="mono">' + S.id + "</span>.</p></div>", null, "settings");
   }
@@ -1439,7 +1471,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function openReveal() {
     closeSheet(true);
     F = { kind: "reveal" };
-    if (!S.revealed) { S.revealed = true; save(); F.firstTime = true; }
+    if (!S.revealed) { S.revealed = true; S.revealedAt = Date.now(); save(); F.firstTime = true; }
     if (!flowEl) { flowEl = document.createElement("div"); flowEl.className = "flow"; flowEl.setAttribute("role", "dialog"); flowEl.setAttribute("aria-modal", "true"); flowEl.setAttribute("aria-label", "TrueTotal"); flowEl.setAttribute("tabindex", "-1"); document.body.appendChild(flowEl); }
     document.documentElement.style.overflow = "hidden";
     var items = S.items.filter(function (i) { return i.on; }).sort(function (a, b) { return monthly(b) - monthly(a); }), shown = items.slice(0, 7), more = items.length - shown.length, tot = total(), real = flexible(), g = S.guess;
@@ -1640,6 +1672,10 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       /* settings */
       theme: function () { S.theme = t.dataset.v; applyTheme(); save(); $$("#themeSeg button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.v === S.theme); }); },
       autosend: function () { S.autosend = t.dataset.v === "1"; save(); $$("#autoSeg button").forEach(function (b) { b.setAttribute("aria-pressed", (b.dataset.v === "1") === S.autosend); }); if (S.autosend && S.revealed) autoSend(true); },
+      notifyon: function () { nativePost({ type: "askNotify" }); },
+      notifyno: function () { S.notify = false; S.notifyAsked = true; save(); render(); },
+      notifyset: function () { if (t.dataset.v === "1") { nativePost({ type: "askNotify" }); } else { S.notify = false; save(); $$("#notifSeg button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.v === "0"); }); } },
+      notifytest: function () { nativePost({ type: "testNotify" }); toast("Test reminder in a few seconds"); },
       rem: function () { S.remind = Number(t.dataset.v); save(); $$("#remSeg button").forEach(function (b) { b.setAttribute("aria-pressed", Number(b.dataset.v) === S.remind); }); },
       clear: function () {
         if (t.dataset.armed) { try { localStorage.removeItem(KEY); } catch (er) {} S = fresh(); view = "home"; closeSheet(true); render(); openFlow("onboard"); return; }
