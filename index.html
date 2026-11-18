@@ -210,7 +210,9 @@ nav.tabs .pill { width: 52px; height: 30px; border-radius: 99px; display: grid; 
 .flow .prog .track { flex: 1; height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
 .flow .prog .track i { display: block; height: 100%; background: var(--ink); border-radius: 99px; transition: width .4s; }
 .flow .body { flex: 1; display: flex; flex-direction: column; gap: 16px; }
-.flow .foot { display: flex; flex-direction: column; gap: 8px; }
+.flow .foot { display: flex; flex-direction: column; gap: 8px; position: sticky; bottom: 0; z-index: 3; margin-top: auto; padding: 22px 0 calc(14px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(to top, var(--ground) 72%, transparent); }
+.flow .in { padding-bottom: 0; }
+button, [data-act], input, textarea, select { touch-action: manipulation; }
 .flow h1 { font-size: 32px; font-weight: 800; line-height: 1.08; }
 .flow h2 { font-size: 24px; font-weight: 800; line-height: 1.15; }
 .opt { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 14px; min-height: 56px; border-radius: 14px; background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--line); font-weight: 500; }
@@ -285,6 +287,12 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
 .rate5 button { flex: 1; min-height: 48px; border-radius: 14px; background: var(--paper2); color: var(--ink); font-family: var(--fd); font-weight: 700; font-size: 18px; transition: transform .12s, background .15s; }
 .rate5 button[aria-pressed="true"] { background: var(--hi); color: var(--hi-ink); transform: scale(1.06); box-shadow: 0 6px 14px -8px #6CC24A; }
 @media (hover: hover) { .rate5 button:hover { box-shadow: inset 0 0 0 1.5px var(--ink2); } .rate5 button[aria-pressed="true"]:hover { box-shadow: 0 6px 14px -8px #6CC24A; } }
+.exlist { padding: 6px 16px; }
+.exrow { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 9px 0; border-bottom: 1px dashed var(--line); }
+.exrow:last-child { border-bottom: 0; }
+.exn { display: flex; flex-direction: column; min-width: 0; font-weight: 500; }
+.exn small { color: var(--ink2); font-size: 12px; font-weight: 400; }
+.exa { white-space: nowrap; font-weight: 600; font-size: 14px; }
 .demo-pill { margin-left: 10px; font-family: var(--fb); font-size: 11.5px; font-weight: 700; letter-spacing: .02em; padding: 4px 10px; border-radius: 99px; background: var(--hi); color: var(--hi-ink); white-space: nowrap; }
 .demo-pill:empty { display: none; }
 /* spotlight tour */
@@ -529,6 +537,18 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     }
     return out;
   }
+  /* like occ, but recurring payments are also projected backwards, so past days of this month are not empty */
+  function occAll(it, from, to) {
+    var out = [], k = 0;
+    if (it.left == null) { while (k > -4000 && nth(it, k - 1) >= from) k--; }
+    for (; k < 4000; k++) {
+      if (it.left != null && k >= it.left) break;
+      var d = nth(it, k);
+      if (d > to) break;
+      if (d >= from) out.push(d);
+    }
+    return out;
+  }
   var lastDate = function (it) { return it.left != null ? nth(it, it.left - 1) : null; };
 
   function payText(it) {
@@ -541,7 +561,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function monthEvents(y, m) {
     var first = D(y, m, 1), last = D(y, m, dim(y, m)), map = {};
     counted().forEach(function (it) {
-      occ(it, first, last).forEach(function (d) { var k = d.getDate(); (map[k] = map[k] || []).push(it); });
+      occAll(it, first, last).forEach(function (d) { var k = d.getDate(); (map[k] = map[k] || []).push(it); });
     });
     return map;
   }
@@ -556,7 +576,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     for (var i = 0; i < n; i++) {
       var f = D(t.getFullYear(), t.getMonth() + i, 1), l = D(f.getFullYear(), f.getMonth() + 1, 0), by = {}, tot = 0, cnt = 0;
       counted().forEach(function (it) {
-        var c = occ(it, f, l).length;
+        var c = occAll(it, f, l).length;
         if (c) { by[it.kind] = (by[it.kind] || 0) + c * it.amount; tot += c * it.amount; cnt += c; }
       });
       out.push({ f: f, by: by, tot: tot, cnt: cnt, label: f.toLocaleDateString("en-GB", { month: "short" }) });
@@ -737,7 +757,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     var cur = d.indexOf(false), h = '<section class="card steps"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (compact ? "Next step" : "Your steps") + '</h3><span class="seg5" role="img" aria-label="' + d.filter(Boolean).length + ' of 4 steps done">' + d.map(function (x, i) { return "<i" + (x || i === cur ? ' class="on"' : "") + "></i>"; }).join("") + "</span></div>";
     if (cur < 0) return h + '<p class="sm" style="margin-top:6px">All done. Thank you for your review!</p>' + (!sent && canSend() ? '<button class="btn hi block" data-act="send" style="margin-top:8px">Send my review</button>' : "") + (compact ? "" : '<button class="btn ghost block" data-act="guide" style="margin-top:8px">' + ic("bulb", 16) + "Show me how this works</button>") + "</section>";
     T.forEach(function (t, i) { if (compact && i !== cur) return; h += '<div class="stp' + (d[i] ? " done" : i === cur ? " now" : "") + '"><span class="num">' + (d[i] ? "✓" : i + 1) + '</span><div><b style="font-weight:600">' + t[0] + "</b>" + (i === cur ? '<p class="sm">' + t[1] + "</p>" : "") + "</div></div>"; });
-    var cta = cur === 1 ? ["reveal", "Show the total"] : cur === 2 ? ["post", "I have explored it. Give my review"] : cur === 3 ? ["post", "Give my review"] : null;
+    var cta = cur === 2 ? ["post", "I have explored it. Give my review"] : cur === 3 ? ["post", "Give my review"] : null;
     if (cta) h += '<button class="btn ' + (cur === 2 ? "ghost " : "hi ") + 'block" data-act="' + cta[0] + '" style="margin-top:8px">' + cta[1] + "</button>";
     return h + (compact ? '<button class="btn ghost sm2" data-act="guide" style="margin-top:8px">How this works</button>' : '<button class="btn ghost block" data-act="guide" style="margin-top:8px">' + ic("bulb", 16) + "Show me how this works</button>") + "</section>";
   }
@@ -1295,7 +1315,8 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     document.documentElement.style.overflow = "hidden";
     drawFlow();
   }
-  function closeFlow() { if (flowEl) { flowEl.remove(); flowEl = null; } F = null; document.documentElement.style.overflow = ""; syncBg(); render(); }
+  function closeFlow() { if (flowEl) { flowEl.remove(); flowEl = null; } F = null; document.documentElement.style.overflow = ""; syncBg(); render(); window.scrollTo(0, 0); }
+  function showBreakdown() { setTimeout(function () { var p = $("#view .paper"); if (p) { p.style.scrollMarginTop = "14px"; p.scrollIntoView({ block: "start" }); } }, 150); }
   function drawFlow() {
     var fsig = flowEl && flowEl.contains(document.activeElement) ? sigOf(document.activeElement) : null;
     var st = F.steps[F.i], pct = Math.round(F.i / (F.steps.length - 1) * 100), last = F.i === F.steps.length - 1;
@@ -1541,9 +1562,9 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   }
   function exList(e) {
     var kn = { pay: "Pay-later", sub: "Subscription", game: "Game / in-app", bill: "Bill", loan: "Loan" };
-    var fq = function (it) { return it.freq === "yearly" ? " a year" : it.freq === "biweekly" ? " every 2 weeks" : it.freq === "weekly" ? " a week" : " a month"; };
-    var rows = e.items.map(function (it) { return '<div class="leader"><span>' + esc(it.name) + ' <small>' + (kn[it.kind] || "") + (it.left ? ", " + it.left + " payments left" : "") + '</small></span><span class="dots"></span><span class="amt mono">AED ' + it.amount + fq(it) + "</span></div>"; }).join("");
-    return '<div class="card stack" style="gap:2px">' + rows + "</div>";
+    var fq = function (it) { return it.freq === "yearly" ? " / year" : it.freq === "biweekly" ? " / 2 weeks" : it.freq === "weekly" ? " / week" : " / month"; };
+    var rows = e.items.map(function (it) { return '<div class="exrow"><span class="exn">' + esc(it.name) + '<small>' + (kn[it.kind] || "") + (it.left ? " · " + it.left + " payments left" : "") + '</small></span><span class="exa mono">AED ' + it.amount + fq(it) + "</span></div>"; }).join("");
+    return '<div class="card exlist">' + rows + "</div>";
   }
   /* The app is a demo: everyone works with made-up numbers. */
   function exampleData(teen) {
@@ -1575,7 +1596,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       calnav: function () { var d = new Date(cal.y, cal.m + Number(t.dataset.d), 1); cal.y = d.getFullYear(); cal.m = d.getMonth(); cal.sel = iso(D(cal.y, cal.m, 1)); render(); },
       calday: function () { cal.sel = t.dataset.d; render(); },
       mbar: function () { var n = Number(t.dataset.i); cal.mi = cal.mi === n ? -1 : n; render(); },
-      reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { S.revealed = true; save(); view = "home"; closeFlow(); window.scrollTo(0, 0); confetti(); autoSend(true); },
+      reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { S.revealed = true; save(); view = "home"; closeFlow(); window.scrollTo(0, 0); confetti(); autoSend(true); showBreakdown(); },
       gateskip: leaveGate,
       gateinstall: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; } leaveGate(); },
       copylink: function () { var u = location.origin + location.pathname, ok = function () { toast("Link copied. Paste it in Safari."); }; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(ok, function () { toast(u); }); else toast(u); },
@@ -1625,7 +1646,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
         t.dataset.armed = "1"; t.textContent = "Tap again to delete everything"; setTimeout(function () { if (t.isConnected) { delete t.dataset.armed; t.textContent = "Delete all my data"; } }, 4000);
       },
       /* flows */
-      fnext: fnext, fback: function () { if (F.i > 0) { F.i--; drawFlow(); } }, fclose: function () { if (F && F.kind === "onboard" && !S.onboarded) { S.onboarded = true; save(); } var ft = F && F.kind === "reveal" && F.firstTime; if (F && F.kind === "reveal") rvTimers.forEach(clearTimeout); closeFlow(); if (ft) { window.scrollTo(0, 0); autoSend(true); } },
+      fnext: fnext, fback: function () { if (F.i > 0) { F.i--; drawFlow(); } }, fclose: function () { if (F && F.kind === "onboard" && !S.onboarded) { S.onboarded = true; save(); } var ft = F && F.kind === "reveal" && F.firstTime; if (F && F.kind === "reveal") rvTimers.forEach(clearTimeout); closeFlow(); if (ft) { window.scrollTo(0, 0); autoSend(true); showBreakdown(); } },
       fskip: function () { F.i = F.steps.length - 2; drawFlow(); },
       fopt: function () { F.d.a[F.steps[F.i].quiz] = Number(t.dataset.o); drawFlow(); },
       frand: function () { F.d.rand = randomData(curMode() === "teen"); drawFlow(); },
@@ -1667,6 +1688,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function installDismissed() { try { return localStorage.getItem("tt-install-off") === "1"; } catch (e) { return false; } }
   function inApp() { return (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true; }
   function showInstall() {
+    return; /* demo: no install banner */
     var bar = $("#installBar");
     if (!bar || typeof window.claude !== "undefined" || inApp() || installDismissed()) return;
     var ua = navigator.userAgent, ios = /iphone|ipad|ipod/i.test(ua), android = /android/i.test(ua);
