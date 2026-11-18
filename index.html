@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1795016177"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1795022060"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,7 +69,7 @@ small, .sm { font-size: 12.5px; color: var(--ink2); }
 header.top { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 12px; }
 .brand { display: flex; align-items: center; gap: 8px; font-family: var(--fd); font-weight: 800; font-size: 21px; letter-spacing: -0.03em; }
 .brand-mark { width: 28px; height: 28px; border-radius: 8px; background: var(--ink); color: var(--paper); display: grid; place-items: center; }
-.icon-btn { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; }
+.icon-btn { flex: none; min-width: 44px; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; }
 .icon-btn:hover { background: var(--paper); }
 svg.i { display: block; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
@@ -111,13 +111,13 @@ svg.i { display: block; fill: none; stroke: currentColor; stroke-width: 1.8; str
 .btn.danger { background: var(--bad); color: #fff; }
 .btn.block { width: 100%; }
 .btn[disabled] { opacity: .35; pointer-events: none; }
-.btn.sm2 { min-height: 36px; padding: 0 14px; font-size: 13.5px; }
+.btn.sm2 { min-height: 44px; padding: 0 14px; font-size: 13.5px; }
 .link { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border-radius: 99px; background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--line); font-weight: 500; font-size: 14px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border-radius: 99px; background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--line); font-weight: 500; font-size: 14px; }
 .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); box-shadow: none; }
 .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--paper2); border-radius: 12px; padding: 3px; gap: 2px; }
-.seg button { min-height: 38px; border-radius: 10px; font-weight: 500; font-size: 13.5px; color: var(--ink2); }
+.seg button { min-height: 44px; border-radius: 10px; font-weight: 500; font-size: 13.5px; color: var(--ink2); }
 .seg button[aria-pressed="true"] { background: var(--paper); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.15); font-weight: 600; }
 .sw { width: 46px; height: 28px; border-radius: 99px; background: var(--line); position: relative; flex: none; transition: background .2s; }
 .sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,.3); }
@@ -244,7 +244,7 @@ button, [data-act], input, textarea, select { touch-action: manipulation; }
 @media (min-width: 900px) { #view > .steps { column-span: all; } }
 .tipcard { display: flex; gap: 12px; padding: 14px 0; border-top: 1px solid var(--line); }
 .tipcard:first-child { border-top: 0; }
-.tag { align-self: flex-start; font-family: var(--fm); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; color: var(--c); background: color-mix(in srgb, var(--c) 15%, var(--paper)); white-space: nowrap; margin-top: 2px; flex: none; min-width: 64px; text-align: center; }
+.tag { align-self: flex-start; font-family: var(--fm); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; color: color-mix(in srgb, var(--c) 55%, var(--ink)); background: color-mix(in srgb, var(--c) 15%, var(--paper)); white-space: nowrap; margin-top: 2px; flex: none; min-width: 64px; text-align: center; }
 .meter { position: relative; height: 12px; border-radius: 99px; background: var(--paper2); overflow: visible; }
 .meter i.f { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--c); transition: width 1s cubic-bezier(.2,.8,.2,1); }
 .meter i.g { position: absolute; top: -4px; width: 2.5px; height: 20px; background: var(--ink); border-radius: 2px; }
@@ -334,6 +334,21 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   .icon-btn:hover { background: var(--paper); }
 }
 
+.badge { flex: none; align-self: center; font-family: var(--fm); font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 5px 9px; border-radius: 6px; color: var(--ink2); background: var(--paper2); white-space: nowrap; margin-left: 4px; }
+.st-chip { font-family: var(--fm); font-size: 10.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; background: var(--paper2); color: var(--ink2); vertical-align: middle; }
+.steps .stp.skip .num { background: var(--warn); color: #fff; }
+.steps .stp.skip b { color: var(--ink); }
+.seg5 i.on:nth-child(6) { background: var(--good); }
+.errmsg { color: var(--bad); font-size: 13.5px; font-weight: 600; min-height: 0; }
+.errmsg:empty { display: none; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+details.how summary { cursor: pointer; font-weight: 600; min-height: 44px; display: flex; align-items: center; }
+details.how[open] summary { margin-bottom: 6px; }
+details.how .stack p, details.how p { font-size: 14.5px; line-height: 1.5; }
+.confirm-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.confirm-actions .btn { flex: 1; }
+.sendbox { background: var(--paper2); border-radius: 14px; padding: 12px 14px; }
+.sendbox .leader { font-size: 14px; }
 /* laptop and desktop: sidebar, two columns, centred dialogs */
 @media (min-width: 900px) {
   body { font-size: 16px; padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
@@ -387,10 +402,10 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     <button class="icon-btn" data-act="settings" aria-label="Settings" id="gearBtn"></button>
   </header>
   <div id="installBar" class="install" hidden></div>
-  <div id="storeWarn" class="warnbar" hidden style="margin-bottom:12px">This browser can't save your data, so it will be lost when you close the page. Copy your results before you leave.</div>
+  <div id="storeWarn" class="warnbar" hidden style="margin-bottom:12px">This browser can't save your answers, so they will be lost when you close the page. Use Copy my results before you leave if you want to keep them.</div>
   <main id="view" tabindex="-1"></main>
 </div>
-<nav class="tabs" aria-label="Main"><div class="in" id="tabs"></div><p class="nav-note">TrueTotal is a learning tool, not financial advice. Everything stays on this device unless you send your results.</p></nav>
+<nav class="tabs" aria-label="Main"><div class="in" id="tabs"></div><p class="nav-note">TrueTotal is a learning tool, not financial advice. Your answers are saved on this device and only sent if you choose Send.</p></nav>
 <div id="layer"></div>
 <div id="toast" class="toast" role="status"></div>
 
@@ -461,8 +476,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     game: { name: "Games & apps", icon: "game", need: false },
     other: { name: "Other", icon: "dots", need: false }
   };
-  var TEEN_NAMES = { bill: "Phone & data" };
-  var KORD_A = ["pay", "sub", "bill", "loan", "other"], KORD_T = ["sub", "game", "pay", "bill", "other"];
+  var KORD_A = ["pay", "sub", "bill", "loan", "game", "other"];
   var kcol = function (k) { return "var(--k-" + k + ")"; };
   var FREQ = {
     weekly: { l: "Every week", short: "Weekly", per: 52 / 12, days: 7 },
@@ -470,30 +484,33 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     monthly: { l: "Every month", short: "Monthly", per: 1, days: 30.4375 },
     yearly: { l: "Every year", short: "Yearly", per: 1 / 12, days: 365.25 }
   };
-  var PRESETS_T = [["Streaming", "sub"], ["Music app", "sub"], ["App subscription", "sub"], ["Game pass", "game"], ["In-game coins", "game"], ["Phone top-up", "bill"], ["Tabby or Tamara", "pay"], ["Something else", "other"]];
   var PRESETS_A = [["Tabby", "pay"], ["Tamara", "pay"], ["Postpay", "pay"], ["Streaming", "sub"], ["Music app", "sub"], ["Gym", "sub"], ["Cloud storage", "sub"], ["Rent", "bill"], ["Phone plan", "bill"], ["Utilities", "bill"], ["Car loan", "loan"], ["Credit card", "loan"]];
-  var QUIZ_A = [
-    { q: "You have three separate pay-later plans running at once. What is true?", o: ["Each one is separate, so they don't affect each other", "They add together into one monthly total you have to cover", "Only the biggest one counts", "They are not debt"], c: 1, shuffle: true, e: "Every plan is a promise to pay. Together they make one monthly total." },
-    { q: "You pay AED 300 a month on subscriptions. About how much is that over a year?", o: ["AED 900", "AED 2,400", "AED 3,600", "AED 6,000"], c: 2, e: "300 x 12 = AED 3,600. Small monthly charges add up quietly." },
-    { q: "What is the most useful way to judge if a regular payment is affordable?", o: ["Whether the amount sounds small", "What share of your income it takes", "Whether your friends have it too", "Whether it is on sale"], c: 1, shuffle: true, e: "The share of your income shows how much room it takes from everything else." },
-    { q: "Sam earns AED 8,000 a month and Sam's regular payments total AED 2,400. What share of Sam's income is that?", o: ["10%", "20%", "30%", "40%"], c: 2, e: "2,400 / 8,000 = 0.30, so 30%." },
-    { q: "In the 50/30/20 rule of thumb, what is the 20% for?", o: ["Savings and paying down debt", "Rent", "Subscriptions", "Eating out"], c: 0, shuffle: true, e: "About 50% needs, 30% wants, 20% savings and debt repayment. It is a rough guide." },
-    { q: "Pay-later is a form of debt.", o: ["True", "False"], c: 0, e: "You are borrowing and paying back in instalments. Late fees can apply." }
-  ];
-  var CONF_A = ["I know what share of my income goes to my regular payments.", "I could list every pay-later plan and subscription I'm paying for right now."];
-  var QUIZ_T = [
-    { q: "You pay for 3 apps at AED 25 a month each. About how much is that in a year?", o: ["AED 300", "AED 600", "AED 900", "AED 1,200"], c: 2, e: "3 x 25 = 75 a month. 75 x 12 = AED 900. Small payments that repeat add up." },
-    { q: "A game offers a free trial that turns into a paid subscription. What should you do if you do not want to pay?", o: ["Do nothing, it cancels by itself", "Cancel before the trial ends", "Delete the app, that always cancels it", "Wait until they email you"], c: 1, shuffle: true, e: "Trials usually start charging automatically. Cancel in your account settings before the trial ends. Deleting the app often does not cancel it." },
-    { q: "Which of these is a need, not a want?", o: ["Extra coins in a game", "Lunch at school", "A limited-edition sneaker", "A new streaming subscription"], c: 1, shuffle: true, e: "Needs are things you must have, like food. Wants are nice to have." },
-    { q: "Alex gets AED 200 pocket money and puts AED 50 into savings. What share did Alex save?", o: ["10%", "20%", "25%", "50%"], c: 2, e: "50 / 200 = 0.25, so 25%." },
-    { q: "What does buy now, pay later mean?", o: ["You get the item free", "You borrow money and pay it back in instalments", "You only pay if you like it", "You pay with a gift card"], c: 1, shuffle: true, e: "It is borrowing. You take the item now and pay for it over time, and late fees can apply." },
-    { q: "A friend gets a new phone and now you want one too. What is a smart first step?", o: ["Buy one straight away on pay-later", "Wait a week and see if you still want it", "Ask your friend to pay", "Ignore the price"], c: 1, shuffle: true, e: "Waiting a week is a simple cooling-off rule. If you still want it, you have time to save for it." }
-  ];
-  var CONF_T = ["I know how much I spend on subscriptions, games and apps each month.", "I could list every subscription and in-app payment I have right now."];
+  /* ---------- the test: one fixed fictional scenario, two comparable quizzes, short feedback ---------- */
+  var SCEN_ID = "S1";
+  var APP_VER = (document.querySelector('meta[name="tt-build"]') || {}).content || "dev";
+  /* development copies (localhost, file, ?dev=1) are marked DEV and can never send into the real participant data */
+  var DEV = /^(localhost|127\.0\.0\.1|\[::1\]|)$/.test(location.hostname) || /\.(localhost|test)$/.test(location.hostname) || /[?&]dev=1/.test(location.search) || location.protocol === "file:";
+  var QZ = {
+    A: { who: "Maya", qs: [
+      { s: "combine", q: "Maya pays AED 45 a month for streaming, AED 25 a month for music and AED 150 a month on a pay-later plan. What do these three payments come to each month?", o: ["AED 170", "AED 195", "AED 220", "AED 240"], c: 2, e: "45 + 25 + 150 = AED 220 a month. Separate small payments still add into one monthly total." },
+      { s: "overlap", q: "Maya also has a second pay-later plan of AED 100 a month. Her AED 150 plan has 4 payments left and her AED 100 plan has 2 payments left. All are monthly and start this month. How much does she pay on these two plans over the next 3 months?", o: ["AED 450", "AED 650", "AED 750", "AED 800"], c: 1, e: "Months 1 and 2: 150 + 100 = 250 each, so 500. Month 3: the AED 100 plan has ended, so only 150. The total is AED 650. A plan stops counting after its last payment." },
+      { s: "obligation", q: "Maya sees a AED 600 jacket. She could buy it on a new plan of 4 payments of AED 150. Which statement is true?", o: ["If she skips the jacket, her two existing plans stop too", "If she skips the jacket, she avoids a new AED 150 monthly payment, but her existing plans are still due", "The new plan would replace her existing plans", "Her existing plans do not count because she already agreed to them"], c: 1, e: "Existing instalments are promises already made and are still due. Only the new purchase is a choice she can still make." }
+    ] },
+    B: { who: "Leo", qs: [
+      { s: "combine", q: "Leo pays AED 35 a month for streaming, AED 20 a month for an app and AED 120 a month on a pay-later plan. What do these three payments come to each month?", o: ["AED 155", "AED 175", "AED 165", "AED 195"], c: 1, e: "35 + 20 + 120 = AED 175 a month. Separate small payments still add into one monthly total." },
+      { s: "overlap", q: "Leo also has a second pay-later plan of AED 80 a month. His AED 120 plan has 4 payments left and his AED 80 plan has 1 payment left. All are monthly and start this month. How much does he pay on these two plans over the next 3 months?", o: ["AED 360", "AED 440", "AED 560", "AED 600"], c: 1, e: "Month 1: 120 + 80 = 200. Months 2 and 3: the AED 80 plan has ended, so only 120 each. 200 + 120 + 120 = AED 440. A plan stops counting after its last payment." },
+      { s: "obligation", q: "Leo sees AED 480 sneakers. He could buy them on a new plan of 3 payments of AED 160. Which statement is true?", o: ["The new plan would replace his existing plans", "If he skips the sneakers, he avoids a new AED 160 monthly payment, but his existing plans are still due", "If he skips the sneakers, his existing plans stop too", "His existing plans do not count because he already agreed to them"], c: 1, e: "Existing instalments are promises already made and are still due. Only the new purchase is a choice he can still make." }
+    ] }
+  };
+  var CONF_Q = "How confident are you at working out what several payments add up to?";
   var CONF_LBL = ["Not at all", "A little", "Somewhat", "Quite well", "Completely"];
-  var RATE = ["TrueTotal made it clear where the money goes.", "Seeing the share of income made each payment feel more real.", "I would use TrueTotal with my own money.", "I would recommend TrueTotal to a friend."];
-  var ACTIONS = ["Cancel a subscription", "Avoid a new pay-later plan", "Pay one off early", "Make a budget", "Nothing", "Other"];
-  var HELPED = ["The reveal", "The breakdown", "The calendar", "The what-if switches", "The tips", "Nothing"];
+  var WHY_Q = "In your own words, why can several small pay-later plans at once become a problem?";
+  var WHY_POINTS = ["They overlap, so small payments add up into one monthly bill.", "Each plan is a promise to keep paying even if you change your mind, which limits your choices later.", "End dates are easy to lose track of. What happens if you miss a payment differs by provider, so it is worth reading the terms."];
+  var EASE_LBL = ["Very difficult", "Difficult", "Okay", "Easy", "Very easy"];
+  var CLEAR_LBL = ["Very unclear", "Unclear", "Okay", "Clear", "Very clear"];
+  var USEFUL = ["The total reveal", "The calendar", "Explore a change", "The explanations", "Ideas to pay less", "None"];
+  var AGES = ["Under 18", "18-22", "23-30", "31-45", "46-60", "61 or older", "Prefer not to say"];
+  var CLS = { need: "Need", want: "Want", save: "Saving or debt repayment" };
 
   /* ---------- dates ---------- */
   var D = function (y, m, d) { return new Date(y, m, d, 12); };
@@ -515,16 +532,21 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   /* ---------- formatting ---------- */
   var nf = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
   var aed = function (n) { return "AED " + nf.format(Math.round(n)); };
+  var nf2 = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  /* shows cents only when there are some, so worked examples add up exactly */
+  var aed2 = function (n) { return "AED " + (Math.abs(n - Math.round(n)) < 0.005 ? nf.format(Math.round(n)) : nf2.format(n)); };
   var pc = function (n) { return (n < 10 ? n.toFixed(1) : String(Math.round(n))) + "%"; };
 
   /* ---------- state ---------- */
-  var KEY = "truetotal-v2";
+  var KEY = "truetotal-v3";
   var storeOK = true;
+  function newCode() { var c = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", out = ""; for (var i = 0; i < 5; i++) out += c.charAt(Math.floor(Math.random() * c.length)); return (DEV ? "DEV-" : "TT-") + out; }
+  function newTest() { return { age: null, pre: null, post: null, fb: null, ex: { cal: false, sim: false, dec: false, skipped: false } }; }
   function fresh() {
-    return { v: 2, id: "TT-" + String(1000 + Math.floor(Math.random() * 9000)), startedAt: Date.now(), income: 0, guess: null, items: [], onboarded: false, revealed: false, about: null, pre: null, post: null, check: null, theme: "auto", remind: 1, mode: "adult", goal: null, days: [], pauses: [] };
+    return { v: 3, id: newCode(), startedAt: Date.now(), income: 0, guess: null, items: [], onboarded: false, revealed: false, t: newTest(), draft: null, theme: "auto", remind: 1, mode: "adult", goal: null, days: [], pauses: [] };
   }
   function load() {
-    try { var r = localStorage.getItem(KEY); if (r) { var o = JSON.parse(r); if (o && o.v === 2) return o; } } catch (e) { storeOK = false; }
+    try { var r = localStorage.getItem(KEY); if (r) { var o = JSON.parse(r); if (o && o.v === 3) return o; } } catch (e) { storeOK = false; }
     return null;
   }
   var S = load() || fresh();
@@ -544,7 +566,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       counted().forEach(function (it) { occAll(it, mf, ml).forEach(function (d) { mt += it.amount; if (d < t0) mp += it.amount; }); });
       var pl = counted().filter(function (i) { return i.kind === "pay" && i.left != null; }).map(function (i) { var ld = lastDate(i); return { n: i.name, l: i.left, e: ld ? iso(ld) : "" }; }).slice(0, 6);
       var subs = counted().filter(function (i) { return i.kind === "sub"; }).sort(function (a, b) { return monthly(b) - monthly(a); }), ts = subs[0];
-      nativePost({ type: "sync", notify: S.notify === true, remind: S.remind, revealed: !!S.revealed, revealedAt: S.revealedAt || 0, reviewDone: !!S.post,
+      nativePost({ type: "sync", notify: S.notify === true, remind: S.remind, revealed: !!S.revealed, revealedAt: S.revealedAt || 0, reviewDone: !!(S.t.fb && S.t.fb.st === "done"),
         mt: Math.round(mt), mp: Math.round(mp), st: streak(), g: S.guess == null ? -1 : S.guess, real: S.revealed ? Math.round(flexible()) : -1, pl: pl,
         ts: ts ? { n: ts.name, m: Math.round(monthly(ts)) } : null,
         events: ev.map(function (e) { return { n: e.it.name, a: e.it.amount, d: iso(e.d), k: e.it.kind }; }) });
@@ -554,7 +576,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     go: function (v) {
       if (!S.onboarded) return;
       closeSheet(true); if (flowEl) closeFlow();
-      if (v === "review") { if (S.revealed) { openFlow("post"); } else { view = "home"; render(); } return; }
+      if (v === "review") { if (!S.revealed) { view = "home"; render(); } else if (!S.t.post) openFlow("after"); else if (!S.t.fb) openFlow("fb"); else openSend(); return; }
       view = (v === "cal" || v === "save" || v === "items" || v === "learn") ? v : "home";
       render(); window.scrollTo(0, 0);
     },
@@ -566,18 +588,27 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   };
   try { localStorage.setItem("tt-test", "1"); localStorage.removeItem("tt-test"); } catch (e) { storeOK = false; }
   if (!storeOK) $("#storeWarn").hidden = false;
-  S.pauses = S.pauses || []; S.days = S.days || [];
+  S.pauses = S.pauses || []; S.days = S.days || []; S.t = S.t || newTest(); S.t.ex = S.t.ex || { cal: false, sim: false, dec: false, skipped: false }; S.mode = "adult";
   (function () { var t = iso(today()); if (S.onboarded && S.days.indexOf(t) < 0) { S.days.push(t); if (S.days.length > 90) S.days = S.days.slice(-90); save(); } })();
 
   function isTeen() { return S && S.mode === "teen"; }
-  function curMode() { if (F && F.kind === "onboard") return F.d.age === "Under 18" ? "teen" : "adult"; return isTeen() ? "teen" : "adult"; }
-  function quiz() { return curMode() === "teen" ? QUIZ_T : QUIZ_A; }
-  function confQ() { return curMode() === "teen" ? CONF_T : CONF_A; }
-  function presets() { return isTeen() ? PRESETS_T : PRESETS_A; }
-  function korder() { return isTeen() ? KORD_T : KORD_A; }
-  function kname(k) { return (isTeen() && TEEN_NAMES[k]) || KINDS[k].name; }
-  function baseWord() { return S.income > 0 ? (isTeen() ? "of pocket money" : "of income") : "of your total"; }
-  function flexLabel() { return isTeen() ? "Subscriptions, games and pay-later" : "Pay later + subscriptions"; }
+function curMode() { return "adult"; }
+  /* the quiz version a tester sees: the starter quiz is always A, the follow-up always B */
+  function quizOf(ver) { return QZ[ver]; }
+  function qScore(ans, ver) { var q = QZ[ver].qs; return (ans || []).reduce(function (n, v, i) { return n + (v === q[i].c ? 1 : 0); }, 0); }
+  /* answer order is shuffled per tester and question, so positions are not memorised; answers are stored by canonical index */
+  function qOrder(ver, qi) {
+    var q = QZ[ver].qs[qi], idx = q.o.map(function (_, i) { return i; }), seed = 0, str = S.id + ver + qi;
+    for (var i = 0; i < str.length; i++) seed = (seed * 31 + str.charCodeAt(i)) % 9973;
+    for (var j = idx.length - 1; j > 0; j--) { seed = (seed * 31 + 7) % 9973; var r = seed % (j + 1), t = idx[j]; idx[j] = idx[r]; idx[r] = t; }
+    return idx;
+  }
+function confQ() { return [CONF_Q]; }
+function presets() { return PRESETS_A; }
+function korder() { return KORD_A; }
+function kname(k) { return KINDS[k].name; }
+function baseWord() { return S.income > 0 ? "of income" : "of your total"; }
+function flexLabel() { return "Pay later + subscriptions"; }
   function cleanText(v, n) { return String(v || "").replace(/["\\<>\n\r\t]/g, " ").replace(/\s+/g, " ").trim().slice(0, n || 300); }
   function cleanName(v) { return String(v || "").replace(/["\\<>\n\r\t]/g, " ").replace(/\s+/g, " ").trim().slice(0, 30); }
   var uid = function () { return "i" + Math.random().toString(36).slice(2, 9); };
@@ -588,11 +619,21 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   var sumBy = function (f) { return counted().filter(f).reduce(function (s, i) { return s + monthly(i); }, 0); };
   var total = function () { return sumBy(function () { return true; }); };
   var kindTotal = function (k) { return sumBy(function (i) { return i.kind === k; }); };
-  var needs = function () { return sumBy(function (i) { return KINDS[i.kind].need; }); };
-  var flexible = function () { return isTeen() ? kindTotal("sub") + kindTotal("game") + kindTotal("pay") : kindTotal("pay") + kindTotal("sub"); };
+  var needs = function () { return sumBy(function (i) { return i.cls === "need"; }); };
+  /* the total the tester guesses: pay-later + subscriptions, always counted in full. Simulation switches never change it. */
+  var flexible = function () { return S.items.filter(function (i) { return i.kind === "pay" || i.kind === "sub"; }).reduce(function (a, i) { return a + monthly(i); }, 0); };
   var leftOver = function () { return S.income - total(); };
   var share = function (v) { var b = S.income > 0 ? S.income : total(); return b > 0 ? v / b * 100 : 0; };
-  var payLaterOwed = function () { return counted().filter(function (i) { return i.kind === "pay" && i.left != null; }).reduce(function (s, i) { return s + i.amount * i.left; }, 0); };
+
+  /* what is still owed on plans with an end date: remaining payments x the listed amount (assumes every remaining payment is that amount) */
+  var remaining = function (it) { return it.left != null ? it.amount * it.left : 0; };
+  var payLaterOwed = function () { return S.items.filter(function (i) { return i.left != null; }).reduce(function (s, i) { return s + remaining(i); }, 0); };
+  var sumOf = function (arr) { return arr.reduce(function (s, i) { return s + monthly(i); }, 0); };
+  /* what kind of commitment an item is. Only optional recurring items can be switched off in the simulation. */
+  var isRepayment = function (i) { return i.left != null || i.kind === "pay" || i.kind === "loan"; };
+  var cancellable = function (i) { return !isRepayment(i) && (i.kind === "sub" || i.kind === "game" || i.kind === "other"); };
+  var groupOf = function (i) { return isRepayment(i) ? "repay" : i.kind === "bill" ? "essential" : "optional"; };
+
 
   function nth(it, k) {
     var a = pISO(it.anchor);
@@ -622,6 +663,16 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       if (d >= from) out.push(d);
     }
     return out;
+  }
+  /* scheduled payments due from today for the next `days` days. Plans that end sooner stop contributing after their last payment. */
+  function forecast(days) {
+    var t = today(), end = addDays(t, days - 1), sum = 0;
+    counted().forEach(function (it) { sum += occ(it, t, end).length * it.amount; });
+    return sum;
+  }
+  function forecastEach(days, all) {
+    var t = today(), end = addDays(t, days - 1);
+    return (all ? S.items : counted()).map(function (it) { var n = occ(it, t, end).length; return { it: it, n: n, sum: n * it.amount }; }).filter(function (x) { return x.n > 0; });
   }
   var lastDate = function (it) { return it.left != null ? nth(it, it.left - 1) : null; };
 
@@ -668,84 +719,78 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   }
 
   /* ---------- tips ---------- */
-  function tipsTeen() {
-    var t = [], tot = total(), subs = counted().filter(function (i) { return i.kind === "sub"; }), games = counted().filter(function (i) { return i.kind === "game"; }), pays = counted().filter(function (i) { return i.kind === "pay"; });
-    if (!counted().length) return t;
-    t.push({ l: "ok", lab: "Per year", h: "Your payments add up to " + aed(tot * 12) + " a year", p: "That is " + aed(tot) + " a month, or about " + aed(tot * 12 / 52) + " a week. Small amounts that repeat add up fast." });
-    if (S.income > 0) {
-      var sp = share(tot);
-      if (sp >= 50) t.push({ l: "bad", lab: "Act now", h: "Your payments take " + pc(sp) + " of your pocket money", p: "That leaves very little for anything else. Pick one or two to switch off and see what changes." });
-      else if (sp >= 25) t.push({ l: "warn", lab: "Watch out", h: "Your payments take " + pc(sp) + " of your pocket money", p: "Try to keep room to save. A good habit is to put some aside first, before you spend." });
-      else t.push({ l: "good", lab: "Good", h: "Your payments take " + pc(sp) + " of your pocket money", p: "That leaves room to save. Keep new subscriptions and in-app purchases small." });
-    }
-    if (subs.length) t.push({ l: subs.length >= 3 ? "warn" : "ok", lab: subs.length >= 3 ? "Watch out" : "Idea", h: subs.length + " subscription" + (subs.length === 1 ? "" : "s") + " cost " + aed(kindTotal("sub") * 12) + " a year", p: "Switch off the ones you use least and watch the total fall. Cancel before a free trial ends if you do not want to pay." });
-    if (games.length) t.push({ l: "warn", lab: "Watch out", h: "Games and apps cost " + aed(kindTotal("game") * 12) + " a year", p: "In-game coins and passes feel small when you buy them. Try a rule: wait 7 days before buying anything extra." });
-    if (pays.length) t.push({ l: "warn", lab: "Watch out", h: "Pay-later is borrowing", p: "It means paying in instalments for something you already have. Talk to a parent or guardian before you use it." });
-    if (S.goal) t.push({ l: "good", lab: "Goal", h: "You are saving for " + S.goal.name, p: "Switch off a cost on the Total tab to see how much faster you could reach " + aed(S.goal.target) + "." });
-    var svT = savings();
-    if (svT.monthly > 0) t.push({ l: "good", lab: "Saving", h: "You could free up " + aed(svT.monthly) + " a month", p: "Open the Save tab to see which items and cheaper options add up to that." });
-    t.push({ l: "good", lab: "Habit", h: "Wait 7 days before a new subscription or purchase", p: "If you still want it after a week, it is more likely a real want. It also gives you time to save instead of borrowing." });
-    t.push({ l: "good", lab: "Habit", h: "Check what renews every month", p: "Subscriptions keep charging until you cancel. Ten minutes a month keeps the total honest." });
-    var o = { bad: 0, warn: 1, ok: 2, good: 3 };
-    return t.sort(function (a, b) { return o[a.l] - o[b.l]; }).slice(0, 8);
-  }
+
   function tips() {
-    if (isTeen()) return tipsTeen();
-    var t = [], inc = S.income, tot = total(), left = leftOver(), lp = share(left);
-    if (!(inc > 0) || !counted().length) return t;
-    if (left < 0) t.push({ l: "bad", lab: "Act now", h: "You're committed to more than you earn", p: "Your payments come to " + aed(tot) + " a month, which is " + aed(-left) + " above your income. Look at which plan, subscription or bill you can clear or cut first." });
-    else if (lp < 10) t.push({ l: "warn", lab: "Watch out", h: "Very little is left each month", p: "After everything you keep " + aed(left) + ", or " + pc(lp) + " of income. One surprise bill could cause a missed payment." });
-    else if (lp < 20) t.push({ l: "ok", lab: "Close", h: "You're near the 20% savings target", p: "You keep " + pc(lp) + " of income. The 50/30/20 rule of thumb suggests about 20%. Trimming a subscription or two could close the gap." });
-    else t.push({ l: "good", lab: "Good", h: "You keep " + pc(lp) + " of your income free", p: "That clears the 20% savings target in the 50/30/20 rule of thumb. Keep new commitments small so it stays that way." });
-
-    var pay = kindTotal("pay"), payP = share(pay), payN = counted().filter(function (i) { return i.kind === "pay"; }).length;
-    if (payP > 20) t.push({ l: "bad", lab: "Act now", h: "Pause new pay-later purchases", p: "Pay-later plans take " + pc(payP) + " of your income. Until that is under 10%, say no to any new plan, even a small one." });
-    else if (payP > 10) t.push({ l: "warn", lab: "Watch out", h: "Hold off on a new pay-later plan", p: "Pay-later takes " + pc(payP) + " of your income. Wait until a current plan ends before starting another." });
-    if (payN >= 3) t.push({ l: "warn", lab: "Watch out", h: "You have " + payN + " pay-later plans at once", p: "Overlapping plans are how small amounts turn into a big monthly bill. Finish one before you start the next." });
-
-    var ends = counted().filter(function (i) { return i.kind === "pay" && i.left != null; }).map(lastDate).sort(function (a, b) { return b - a; })[0];
-    if (ends && daysUntil(ends) > 90) t.push({ l: "ok", lab: "Good to know", h: "Pay-later runs until " + fDateY(ends), p: "Anything you buy on pay-later before then sits on top of these payments." });
-
-    var subs = counted().filter(function (i) { return i.kind === "sub"; });
-    if (subs.length) {
-      var sp = share(kindTotal("sub"));
-      t.push({ l: sp > 5 ? "warn" : "ok", lab: sp > 5 ? "Watch out" : "Idea", h: subs.length + " subscription" + (subs.length === 1 ? "" : "s") + " cost " + aed(kindTotal("sub") * 12) + " a year", p: "That is " + pc(sp) + " of your income. Switch off the ones you used least this month and watch the total fall." });
+    var t = [], its = counted();
+    if (!its.length) return t;
+    var tot = total(), inc = S.income, left = leftOver();
+    t.push({ l: "ok", lab: "Note", h: "Your listed payments average " + aed(tot) + " a month", p: "That is the average monthly cost of everything entered while it is running. Payments with an end date stop after their last payment, so the payments actually scheduled over the next 12 months come to " + aed(forecast(365)) + "." });
+    if (inc > 0) t.push({ l: left < 0 ? "warn" : "ok", lab: left < 0 ? "Check" : "Note", h: "Remaining after listed payments: " + (left < 0 ? "-" : "") + aed(Math.abs(left)) + " a month", p: (left < 0 ? "The listed payments are higher than the income entered, so check the figures. " : "This is not spare money. ") + "It leaves out food, transport, savings and any other cost that was not entered." });
+    var pl = its.filter(function (i) { return i.kind === "pay" && i.left != null; }).sort(function (a, b) { return lastDate(a) - lastDate(b); });
+    if (pl.length >= 2) {
+      var after = sumOf(pl.slice(1)), firstEnd = lastDate(pl[0]), lastEnd = lastDate(pl[pl.length - 1]);
+      t.push({ l: "warn", lab: "Overlap", h: pl.length + " pay-later plans are running at the same time", p: "Together they average " + aed(sumOf(pl)) + " a month. The first ends on " + fDateY(firstEnd) + " and the last on " + fDateY(lastEnd) + ". Starting another plan before then would be added on top of what is already due." });
     }
-    var flex = counted().filter(function (i) { return i.kind === "pay" || i.kind === "sub"; }).sort(function (a, b) { return monthly(b) - monthly(a); })[0];
-    if (flex) t.push({ l: "ok", lab: "Idea", h: "Your biggest flexible cost is " + flex.name, p: "It costs about " + aed(monthly(flex)) + " a month, or " + aed(monthly(flex) * 12) + " a year. Cutting it frees the most cash of anything you can change." });
-
+    var owed = payLaterOwed();
+    if (owed > 0) {
+      var lines = S.items.filter(function (i) { return i.left != null; }).sort(function (a, b) { return remaining(b) - remaining(a); }).slice(0, 3).map(function (i) { return i.name + ": " + i.left + " x " + aed(i.amount) + " = " + aed(remaining(i)); }).join("; ");
+      t.push({ l: "ok", lab: "Still to pay", h: aed(owed) + " is still to pay on plans with an end date", p: lines + ". This assumes every remaining payment is the listed amount. These are existing repayments, not optional costs." });
+    }
+    var opt = its.filter(cancellable);
+    if (opt.length) {
+      var big = opt.slice().sort(function (a, b) { return monthly(b) - monthly(a); })[0];
+      t.push({ l: "ok", lab: "Idea", h: opt.length + " optional recurring payment" + (opt.length === 1 ? "" : "s") + " average " + aed(sumOf(opt)) + " a month", p: "If they all carried on for a year that would be about " + aed(sumOf(opt) * 12) + " (an illustration that assumes no changes). Some may be possible to cancel or change, subject to their terms and notice periods. Money already paid or owed under those terms is not saved. The biggest is " + big.name + " at about " + aed(monthly(big)) + " a month." });
+    }
+    var ess = its.filter(function (i) { return groupOf(i) === "essential"; });
+    if (ess.length) t.push({ l: "ok", lab: "Idea", h: "Essential costs can sometimes be reduced, not switched off", p: "Rent, utilities and phone costs are not optional, but a different plan, a negotiation at renewal or a cheaper provider can change the amount. Check your own terms first." });
     var hw = heaviestWeek();
-    if (hw && hw.sum > 0 && hw.sum > tot * 0.35) t.push({ l: "warn", lab: "Calendar", h: "Heaviest week: " + fDate(hw.a) + " to " + fDate(hw.b), p: aed(hw.sum) + " leaves your account in those 7 days. Make sure your balance covers it before the week starts." });
-
-    var svT = savings();
-    if (svT.monthly > 0) t.push({ l: "good", lab: "Saving", h: "You could free up " + aed(svT.monthly) + " a month", p: "Open the Save tab to see which items and cheaper options add up to that." });
-    t.push({ l: "good", lab: "Habit", h: "Set a reminder two days before each payment", p: "Late fees and blocked accounts are the main way pay-later gets expensive. Fees differ by provider, so read your terms once." });
-    t.push({ l: "good", lab: "Habit", h: "Review this once a month", p: "Subscriptions and plans creep up. Ten minutes a month keeps the total honest." });
-    var o = { bad: 0, warn: 1, ok: 2, good: 3 };
-    return t.sort(function (a, b) { return o[a.l] - o[b.l]; }).slice(0, 8);
+    if (hw && hw.sum > 0 && hw.sum > tot * 0.35) t.push({ l: "ok", lab: "Calendar", h: "Heaviest week: " + fDate(hw.a) + " to " + fDate(hw.b), p: aed(hw.sum) + " is due in those 7 days. A calendar reminder a day or two before each payment helps you keep track." });
+    t.push({ l: "ok", lab: "Habit", h: "Check the end date before you add a new plan", p: "A new instalment plan overlaps with the ones already running. Fees and what happens if you miss a payment differ by provider, so read the terms first." });
+    return t.slice(0, 8);
   }
   var LV = { good: "var(--good)", ok: "var(--k-bill)", warn: "var(--warn)", bad: "var(--bad)" };
 
   /* ---------- scoring + export ---------- */
-  var score = function (a) { return a ? a.reduce(function (s, v, i) { return s + (v === quiz()[i].c ? 1 : 0); }, 0) : 0; };
-  function resultsText() {
-    var L = ["TRUETOTAL REVIEW", "Name: " + (S.name || "-"), "Code: " + S.id, "Track: " + (isTeen() ? "under 18" : "18+")];
-    if (S.about) L.push("About: age " + (S.about.age || "-") + (isTeen() ? ", pocket money: " + (S.about.stat || "-") + ", pays for apps/games: " : ", " + (S.about.stat || "-") + ", pay-later use: ") + (S.about.pl || "-"));
-    if (S.guess != null) L.push("Guess (" + flexLabel().toLowerCase() + "): " + aed(S.guess) + "; real: " + aed(flexible()) + (S.guess > 0 ? " (" + (flexible() >= S.guess ? "+" : "") + Math.round((flexible() - S.guess) / S.guess * 100) + "%)" : ""));
-    L.push("Items tracked: " + S.items.length + "; " + (S.income > 0 ? "share of " + (isTeen() ? "pocket money" : "income") + " committed: " + pc(share(total())) : "per year: " + aed(total() * 12)));
-    var svE = savings();
-    L.push("Saving ideas: usage marked on " + S.items.filter(function (i) { return i.use; }).length + " items, cheaper options on " + S.items.filter(function (i) { return i.alt; }).length + ", possible saving " + aed(svE.monthly) + "/month");
-    if (S.post) {
-      L.push("Ratings: " + S.post.r.join(",") + "; helped most: " + (S.post.h || "-"));
-      L.push("Will do: " + (S.post.act.join("; ") || "-"));
-      if (S.post.cm) L.push("Comment: " + S.post.cm.replace(/\s+/g, " "));
-    }
-    if (S.check) L.push("Check-in: " + (S.check.act.join("; ") || "-") + "; saved " + (S.check.saved || 0) + " AED/mo; still using: " + (S.check.use || "-"));
-    var cavg = function (c) { return c ? (c[0] + c[1]) / 2 : null; };
-    var j = { id: S.id, nm: S.name || "", tr: isTeen() ? "teen" : "adult", age: (S.about && S.about.age) || "", qb: S.pre ? score(S.pre.a) : null, cb: S.pre ? cavg(S.pre.c) : null, qa: null, ca: null, g: S.guess, real: Math.round(flexible()), n: S.items.length, sv: Math.round(svE.monthly), ra: S.post ? Math.round((S.post.r[0] + S.post.r[1] + S.post.r[2] + (S.post.r[3] || 0)) / (S.post.r[3] ? 4 : 3) * 10) / 10 : null, hm: S.post ? (S.post.h || "") : "", r1: S.post ? S.post.r[0] : null, r2: S.post ? S.post.r[1] : null, r3: S.post ? S.post.r[2] : null, r4: S.post ? (S.post.r[3] == null ? null : S.post.r[3]) : null, ac: S.post ? cleanText(S.post.act.join("; "), 200) : "", cm: S.post ? cleanText(S.post.cm, 300) : "", ck: S.check ? S.check.act.join("; ") : "", cs: S.check ? (S.check.saved || 0) : null, su: S.check ? (S.check.use || "") : "" };
-    L.push("DATA " + JSON.stringify(j));
-    return L.join("\n");
+  var pct3 = function (n) { return n == null ? null : Math.round(n / 3 * 1000) / 10; };
+  function isDone(x) { return !!(x && x.st === "done"); }
+  function complete() { return isDone(S.t.pre) && isDone(S.t.post) && isDone(S.t.fb) && S.guess != null && !!S.revealed; }
+  /* anonymous record: tester code, fictional scenario id, assessment answers and scores, voluntary feedback, timestamps. No name, no email, no real money. */
+  function dataObj() {
+    var T = S.t, pre = T.pre, post = T.post, fb = T.fb, ex = T.ex || {};
+    return { sv: 2, id: S.id, dev: DEV ? 1 : 0, scen: SCEN_ID, app: APP_VER, age: T.age || "", t0: S.startedAt,
+      pre: pre ? { st: pre.st, ver: pre.ver || "A", a: pre.st === "done" ? pre.a : null, s: pre.st === "done" ? pre.s : null, c: pre.st === "done" && pre.c != null ? pre.c : null, at: pre.at || null } : null,
+      g: S.guess, gat: S.guessAt || null, real: Math.round(flexible()), rv: S.revealed ? (S.revealedAt || 1) : null,
+      ex: { cal: !!ex.cal, sim: !!ex.sim, dec: !!ex.dec, sk: !!ex.skipped },
+      post: post ? { st: post.st, ver: post.ver || "B", a: post.st === "done" ? post.a : null, s: post.st === "done" ? post.s : null, c: post.st === "done" && post.c != null ? post.c : null, why: post.st === "done" ? cleanText(post.why, 300) : "", at: post.at || null } : null,
+      fb: fb ? { st: fb.st, ease: fb.st === "done" ? fb.ease : null, clarity: fb.st === "done" ? fb.clarity : null, useful: fb.st === "done" ? fb.useful : null, confusing: cleanText(fb.confusing, 300), change: cleanText(fb.change, 300), use: cleanText(fb.use, 300), at: fb.at || null } : null,
+      cs: complete() ? "complete" : "incomplete" };
   }
+  function resultsLines() {
+    var d = dataObj(), T = S.t, L = ["TRUETOTAL RESULTS (fictional scenario, no real money details)", "Tester code: " + S.id, "Scenario: " + SCEN_ID, "Age group: " + (T.age || "not given")];
+    var qline = function (name, x) {
+      if (!x) return name + ": not started";
+      if (x.st === "skipped") return name + ": skipped";
+      if (x.st !== "done") return name + ": incomplete";
+      return name + " (version " + x.ver + "): " + x.s + " of 3 correct (" + Math.round(x.s / 3 * 100) + "%)" + (x.c != null ? ", confidence " + x.c + " of 5" : ", confidence not given");
+    };
+    L.push(qline("Starter quiz", T.pre), qline("Follow-up quiz", T.post));
+    if (isDone(T.pre) && isDone(T.post)) { var ch = Math.round((T.post.s - T.pre.s) / 3 * 100); L.push("Change in score: " + (ch > 0 ? "+" : "") + ch + " percentage points"); }
+    else L.push("Change in score: not calculated (both quizzes are needed)");
+    if (S.guess != null) L.push("Guess: " + aed(S.guess) + " a month; actual total for the fictional scenario: " + aed(flexible()) + " a month" + (S.revealed ? "" : " (not shown yet)"));
+    if (T.post && T.post.st === "done" && T.post.why) L.push("Why small pay-later plans can be a problem: " + T.post.why.replace(/\s+/g, " "));
+    var fb = T.fb;
+    if (!fb) L.push("Feedback: not given");
+    else if (fb.st === "skipped") L.push("Feedback: skipped");
+    else {
+      L.push("Ease of use: " + fb.ease + " of 5; clarity of explanations: " + fb.clarity + " of 5; most useful: " + fb.useful);
+      if (fb.confusing) L.push("Confusing or difficult: " + fb.confusing.replace(/\s+/g, " "));
+      if (fb.change) L.push("Would change: " + fb.change.replace(/\s+/g, " "));
+      if (fb.use) L.push("How they might use what they learned: " + fb.use.replace(/\s+/g, " "));
+    }
+    L.push("Status: " + d.cs, "DATA " + JSON.stringify(d));
+    return L;
+  }
+  function resultsText() { return resultsLines().join("\n"); }
 
   /* ---------- animation helpers ---------- */
   var prevNum = {};
@@ -802,8 +847,9 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   var lastSig = null, lastView = null;
   function render() {
     var v = $("#view"), sig = sigOf(document.activeElement);
-    var dp = $("#demoPill"); if (dp) dp.textContent = S.onboarded ? "Demo: made-up numbers" : "";
-    v.innerHTML = view === "home" ? vHome() : view === "items" ? vItems() : view === "cal" ? vCal() : view === "save" ? vSave() : vLearn();
+    var dp = $("#demoPill"); if (dp) dp.textContent = DEV ? "Dev copy: sending off" : S.onboarded ? "Demo: made-up numbers" : "";
+    if (S.onboarded && S.revealed && view === "cal" && !S.t.ex.cal) { S.t.ex.cal = true; save(); }
+    v.innerHTML = !S.onboarded ? resumeCard() : view === "home" ? vHome() : view === "items" ? vItems() : view === "cal" ? vCal() : view === "save" ? vSave() : vLearn();
     v.className = "v-" + view;
     if (view !== "home" && S.fresh) { S.fresh = false; }
     if (lastView !== view) { lastView = view; v.classList.add("enter"); }
@@ -813,28 +859,74 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   }
 
   /* ---------- HOME ---------- */
-  function teenStamp() {
-    if (S.income > 0) { var p = share(total()); return p >= 50 ? ["Heavy", "var(--bad)"] : p >= 25 ? ["Watch", "var(--warn)"] : ["Light", "var(--good)"]; }
-    return ["Added up", "var(--k-bill)"];
+  /* plain-language working: what the total measures, its period, and how it was calculated */
+  function workedHTML() {
+    var subs = S.items.filter(function (i) { return i.kind === "sub"; }), pays = S.items.filter(function (i) { return i.kind === "pay"; });
+    var conv = function (i) { return i.freq === "monthly" ? "" : " (" + aed2(i.amount) + " " + FREQ[i.freq].l.toLowerCase() + (i.freq === "yearly" ? ", ÷ 12" : i.freq === "biweekly" ? ", × 26 ÷ 12" : ", × 52 ÷ 12") + ")"; };
+    var part = function (arr) { return arr.length ? arr.map(function (i) { return esc(i.name) + " " + aed2(monthly(i)) + conv(i); }).join(" + ") : "none"; };
+    var h = '<div class="stack" style="gap:10px"><p><b>What it measures.</b> The average cost per month of the pay-later plans and subscriptions together, while they are all running.</p>';
+    h += '<p><b>How it adds up.</b><br>Subscriptions: ' + part(subs) + " = <b>" + aed2(sumOf(subs)) + "</b>.<br>Pay-later: " + part(pays) + " = <b>" + aed2(sumOf(pays)) + "</b>.<br>Together: <b>" + aed2(sumOf(subs) + sumOf(pays)) + "</b> a month.</p>";
+    var ends = S.items.filter(function (i) { return i.left != null; }).sort(function (a, b) { return lastDate(a) - lastDate(b); });
+    if (ends.length) {
+      h += '<p><b>Plans with an end date.</b> These stop after their last payment, so they are not an ongoing yearly cost.</p><div>' + ends.map(function (i) { return '<div class="leader"><span>' + esc(i.name) + ": " + i.left + " × " + aed2(i.amount) + '</span><span class="dots"></span><span class="amt">' + aed2(remaining(i)) + " left</span></div>"; }).join("") + "</div>";
+      h += '<p class="sm">Still to pay in total: <b style="color:var(--ink)">' + aed2(payLaterOwed()) + "</b>, if every remaining payment is the listed amount. The last payment is on " + fDateY(lastDate(ends[ends.length - 1])) + ".</p>";
+    }
+    var f12 = forecastEach(365, true).filter(function (x) { return x.it.kind === "pay" || x.it.kind === "sub"; }).reduce(function (a, x) { return a + x.sum; }, 0);
+    return h + '<p class="sm">Over the next 12 months only the payments actually due are added up. For these pay-later plans and subscriptions that is <b style="color:var(--ink)">' + aed(f12) + "</b>, not 12 times the monthly average, because plans that end sooner stop counting. Yearly and every-2-weeks payments are turned into a monthly average above.</p></div>";
   }
   function ldr(label, val, color) { return '<div class="leader"><span>' + label + '</span><span class="dots"></span><span class="amt"' + (color ? ' style="color:' + color + '"' : "") + ">" + val + "</span></div>"; }
   function goalCard() {
-    var g = S.goal, freed = S.items.filter(function (i) { return !i.on; }).reduce(function (s, i) { return s + monthly(i); }, 0);
-    if (!g) return '<section class="card stack"><h3 style="font-size:18px;font-weight:800">Saving for something?</h3><p class="sm">Set a goal and see how much faster you could reach it by switching off costs.</p><button class="btn ghost" data-act="goal">Set a goal</button></section>';
+    var g = S.goal, freed = S.items.filter(function (i) { return !i.on && cancellable(i); }).reduce(function (s, i) { return s + monthly(i); }, 0);
+    if (!g) return '<section class="card stack"><h3 style="font-size:18px;font-weight:800">Saving for something?</h3><p class="sm">Set a goal to see how long it could take if you put money aside each month.</p><button class="btn ghost" data-act="goal">Set a goal</button></section>';
     var m = freed > 0 ? Math.ceil(g.target / freed) : null;
-    return '<section class="card stack"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Goal: ' + esc(g.name) + '</h3><span class="mono" style="font-weight:600">' + aed(g.target) + "</span></div>" + (m ? '<p>Switch off the costs above and you free <b>' + aed(freed) + '</b> a month. You would reach this goal in <span class="hl" style="font-weight:600">' + m + " month" + (m === 1 ? "" : "s") + "</span>.</p>" : '<p class="sm">Switch off a cost in "What if you cancelled?" to see how fast you could reach this goal.</p>') + '<button class="btn ghost sm2" data-act="goal">Edit goal</button></section>';
+    return '<section class="card stack"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Goal: ' + esc(g.name) + '</h3><span class="mono" style="font-weight:600">' + aed(g.target) + "</span></div>" + (m ? "<p>In the simulation you have switched off optional payments worth <b>" + aed(freed) + "</b> a month. If you could stop them and put that money aside, this goal would take about <span class=\"hl\" style=\"font-weight:600\">" + m + " month" + (m === 1 ? "" : "s") + "</span>. Cancellation terms may apply.</p>" : '<p class="sm">Switch off an optional payment in "Explore a change" to see how long this goal could take.</p>') + '<button class="btn ghost sm2" data-act="goal">Edit goal</button></section>';
   }
 
+  /* where the tester is: each stage is done, skipped or still to do. Nothing is marked done unless its action was completed. */
+  function stages() {
+    var T = S.t, ex = T.ex, exDone = ex.cal && (ex.sim || ex.dec);
+    var of = function (x) { return x ? (x.st === "done" ? "done" : "skipped") : "todo"; };
+    return [
+      { k: "pre", name: "Starter quiz", st: of(T.pre), hint: "3 short questions before you see anything. About 1 minute." },
+      { k: "guess", name: "Guess Sam's total", st: S.guess != null ? "done" : "todo", hint: "Add up Sam's pay-later plans and subscriptions in your head." },
+      { k: "reveal", name: "See the real total", st: S.revealed ? "done" : "todo", hint: "Tap Show the total to see the worked answer." },
+      { k: "explore", name: "Explore the app", st: exDone ? "done" : ex.skipped ? "skipped" : "todo", hint: "Look at the Calendar, then try one change or the pay-later calculator. About 3 minutes." },
+      { k: "post", name: "Follow-up quiz", st: of(T.post), hint: "3 new questions with different numbers. About 1 minute." },
+      { k: "fb", name: "Feedback", st: of(T.fb), hint: "A few quick ratings and optional comments. About 1 minute." }
+    ];
+  }
   function stepsCard(compact) {
-    var sent = !!(S.autosend === true ? S.post : (S.sentAt && S.post && S.sentAt >= S.post.at));
-    var d = [S.guess != null, !!S.revealed, !!S.post, !!S.post];
-    var T = [["Guess the total", "You made your guess."], ["Show the total", "Tap Show the total to see how close you were."], ["Explore the app", "Open the calendar, try the cancel switches, look at Ways to pay less. A few minutes is enough."], ["Give your review", "Learn tab, then Give my review. It takes about a minute."]];
-    var cur = d.indexOf(false), h = '<section class="card steps"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (compact ? "Next step" : "Your steps") + '</h3><span class="seg5" role="img" aria-label="' + d.filter(Boolean).length + ' of 4 steps done">' + d.map(function (x, i) { return "<i" + (x || i === cur ? ' class="on"' : "") + "></i>"; }).join("") + "</span></div>";
-    if (cur < 0) return h + '<p class="sm" style="margin-top:6px">All done. Thank you for your review!</p>' + (!sent && canSend() ? '<button class="btn hi block" data-act="send" style="margin-top:8px">Send my review</button>' : "") + (compact ? "" : '<button class="btn ghost block" data-act="guide" style="margin-top:8px">' + ic("bulb", 16) + "Show me how this works</button>") + "</section>";
-    T.forEach(function (t, i) { if (compact && i !== cur) return; h += '<div class="stp' + (d[i] ? " done" : i === cur ? " now" : "") + '"><span class="num">' + (d[i] ? "✓" : i + 1) + '</span><div><b style="font-weight:600">' + t[0] + "</b>" + (i === cur ? '<p class="sm">' + t[1] + "</p>" : "") + "</div></div>"; });
-    var cta = cur === 2 ? ["post", "I have explored it. Give my review"] : cur === 3 ? ["post", "Give my review"] : null;
-    if (cta) h += '<button class="btn ' + (cur === 2 ? "ghost " : "hi ") + 'block" data-act="' + cta[0] + '" style="margin-top:8px">' + cta[1] + "</button>";
-    return h + (compact ? '<button class="btn ghost sm2" data-act="guide" style="margin-top:8px">How this works</button>' : '<button class="btn ghost block" data-act="guide" style="margin-top:8px">' + ic("bulb", 16) + "Show me how this works</button>") + "</section>";
+    var st = stages(), cur = -1, i, ex = S.t.ex;
+    for (i = 0; i < st.length; i++) if (st[i].st === "todo") { cur = i; break; }
+    var nd = st.filter(function (x) { return x.st === "done"; }).length, ns = st.filter(function (x) { return x.st === "skipped"; }).length;
+    var h = '<section class="card steps"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (compact ? "Next step" : "Your steps") + '</h3><span class="seg5" role="img" aria-label="' + nd + " of " + st.length + " steps done" + (ns ? ", " + ns + " skipped" : "") + '">' + st.map(function (x) { return "<i" + (x.st === "done" ? ' class="on"' : "") + "></i>"; }).join("") + "</span></div>";
+    if (!compact) h += '<p class="sm" style="margin-top:4px">The whole test takes about 8 to 10 minutes. Steps are only ticked when you have done them.</p>';
+    var redo = function (x) {
+      if (x.st !== "skipped") return "";
+      if (x.k === "pre") return S.revealed ? '<p class="sm">No starting score was recorded, so no change in score will be worked out.</p>' : '<button class="btn ghost sm2" data-act="redopre" style="margin-top:6px">Take it now</button>';
+      if (x.k === "explore") return '<button class="btn ghost sm2" data-act="goCal" style="margin-top:6px">Explore now</button>';
+      if (x.k === "post") return '<button class="btn ghost sm2" data-act="after" style="margin-top:6px">Take it now</button>';
+      if (x.k === "fb") return '<button class="btn ghost sm2" data-act="fb" style="margin-top:6px">Give feedback now</button>';
+      return "";
+    };
+    st.forEach(function (x, n) {
+      if (compact && n !== cur && x.st !== "skipped") return;
+      var cls = x.st === "done" ? " done" : x.st === "skipped" ? " skip" : n === cur ? " now" : "";
+      var sym = x.st === "done" ? "✓" : x.st === "skipped" ? "–" : String(n + 1);
+      var lab = x.st === "done" ? "Done" : x.st === "skipped" ? "Skipped" : n === cur ? "Next" : "";
+      h += '<div class="stp' + cls + '"><span class="num" aria-hidden="true">' + sym + '</span><div style="flex:1;min-width:0"><b style="font-weight:600">' + x.name + "</b>" + (lab ? ' <span class="st-chip">' + lab + "</span>" : "") + (n === cur ? '<p class="sm">' + x.hint + "</p>" : "") + (redo(x) ? "<div>" + redo(x) + "</div>" : "") + "</div></div>";
+    });
+    if (cur === 2) h += '<button class="btn hi block" data-act="reveal" style="margin-top:8px">Show the total</button>';
+    if (cur === 3) h += '<p class="sm" style="margin-top:6px">Calendar viewed: <b>' + (ex.cal ? "yes" : "not yet") + "</b>. Tried a change or the calculator: <b>" + (ex.sim || ex.dec ? "yes" : "not yet") + '</b>.</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn hi" data-act="goCal">Open the Calendar</button><button class="btn ghost" data-act="exskip">Skip this step</button></div>';
+    if (cur === 4) h += '<button class="btn hi block" data-act="after" style="margin-top:8px">Start the follow-up quiz</button>';
+    if (cur === 5) h += '<button class="btn hi block" data-act="fb" style="margin-top:8px">Give feedback</button>';
+    if (cur < 0) h += '<p class="sm" style="margin-top:6px">All steps are handled. You can review exactly what would be sent and decide whether to send it. Sending is optional.</p><button class="btn hi block" data-act="sendreview" style="margin-top:8px">' + (S.sentAt ? "Review what was sent" : "Review and send (optional)") + "</button>";
+    h += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn ghost sm2" data-act="guide">' + ic("bulb", 16) + "How this works</button>" + (compact ? "" : '<button class="btn ghost sm2" data-act="newtest">Start a new test</button>') + "</div>";
+    return h + "</section>";
+  }
+  function resumeCard() {
+    var d = S.draft && S.draft.i > 0 ? S.draft : null;
+    return '<div class="card empty"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h2 style="font-size:24px;font-weight:800">' + (d ? "Pick up where you left off" : "Start the test") + '</h2><p class="muted">Try TrueTotal on a made-up person called Sam. It takes about 8 to 10 minutes, and you never enter real money details.</p><button class="btn hi" data-act="resume">' + (d ? "Continue" : "Start") + "</button>" + (d ? '<button class="btn ghost" data-act="newtest">Start again from the beginning</button>' : "") + "</div>";
   }
   function confetti() {
     if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -853,35 +945,31 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function streak() { var n = 0, d = today(); S.days = S.days || []; while (S.days.indexOf(iso(d)) >= 0) { n++; d = addDays(d, -1); } return n; }
   function homeExtras() {
     if (!S.revealed) return "";
-    var h = "", st = streak();
+    var h = "";
     if (NATIVE && S.notify === undefined && !S.notifyAsked) {
-      h += '<section class="card stack" style="gap:8px"><b style="font-family:var(--fd);font-size:18px">Want reminders?</b><p class="sm">TrueTotal can nudge you before pay days and remind you to give your review. You can also add the TrueTotal widget to your home screen.</p><div style="display:flex;gap:8px"><button class="btn ghost block" data-act="notifyno">Not now</button><button class="btn hi block" data-act="notifyon">Turn on</button></div></section>';
+      h += '<section class="card stack" style="gap:8px"><b style="font-family:var(--fd);font-size:18px">Want reminders?</b><p class="sm">TrueTotal can nudge you before pay days and remind you about the next step. You can also add the TrueTotal widget to your home screen.</p><div style="display:flex;gap:8px"><button class="btn ghost block" data-act="notifyno">Not now</button><button class="btn hi block" data-act="notifyon">Turn on</button></div></section>';
     }
     (S.pauses || []).filter(function (p) { return !p.done; }).slice(0, 2).forEach(function (p) {
       var left = p.until - Date.now(), hrs = Math.ceil(left / 36e5);
       h += '<section class="card stack" style="gap:8px"><div class="row-between"><span><span class="eyebrow">Thinking about it</span><br><b>' + esc(p.name) + '</b></span><span class="mono" style="font-weight:600">' + aed(p.price) + '</span></div><p class="sm">' + (left > 0 ? "You paused this. Decide in about " + hrs + " hour" + (hrs === 1 ? "" : "s") + "." : "24 hours are up. Do you still want it?") + '</p><div style="display:flex;gap:8px"><button class="btn ghost block" data-act="pskip" data-id="' + p.id + '">Skip it</button><button class="btn ghost block" data-act="pbuy" data-id="' + p.id + '">I bought it</button></div></section>';
     });
-    h += '<div class="row-between" style="padding:0 4px"><small class="mono">' + (st >= 2 ? st + " days in a row" : "Day 1") + '</small>' + (S.guess != null ? '<button class="btn ghost sm2" data-act="sharecard">' + ic("share", 15) + "Share my result</button>" : "") + "</div>";
+    if (S.guess != null) h += '<div style="padding:0 4px"><button class="btn ghost sm2" data-act="sharecard">' + ic("share", 15) + "Share my guess vs total</button></div>";
     return h;
   }
   function vHome() { if (S.revealed && S.fresh) return vHome0() + stepsCard(true) + homeExtras(); return stepsCard(true) + homeExtras() + vHome0(); }
   function vHome0() {
-    var teen = isTeen();
     if (!S.items.length) {
-      return '<div class="card empty"><span class="ico lg" style="--c:var(--k-pay)">' + ic("receipt", 22) + '</span><h2 style="font-size:24px;font-weight:800">Add what you pay for</h2><p class="muted">' + (teen ? "Subscriptions, games, in-app purchases, phone top-ups. Add the day each one is paid and TrueTotal fills your calendar." : "Pay-later plans, subscriptions, rent, bills, loans. Add the day each one is paid and TrueTotal fills your calendar.") + '</p><button class="btn hi" data-act="add">' + ic("plus", 18) + 'Add a payment</button><button class="btn ghost" data-act="example">Try example numbers</button></div>';
+      return '<div class="card empty"><span class="ico lg" style="--c:var(--k-pay)">' + ic("receipt", 22) + '</span><h2 style="font-size:24px;font-weight:800">Sam\'s payments</h2><p class="muted">The made-up payments are not loaded. Load them to continue the test.</p><button class="btn hi" data-act="example">Load Sam\'s payments</button></div>';
     }
     if (!S.revealed) {
-      return '<div class="card empty"><h2 style="font-size:26px;font-weight:800">Ready for the real number?</h2><p class="muted">' + S.items.length + ' random payments are loaded. Reveal what they really add up to.</p><button class="btn hi block" data-act="reveal">Reveal the real total</button></div>';
+      return '<div class="card empty"><h2 style="font-size:26px;font-weight:800">Ready to see the real total?</h2><p class="muted">Sam\'s ' + S.items.length + ' made-up payments are loaded. Tap below to see what the pay-later plans and subscriptions really add up to' + (S.guess != null ? ", next to your guess." : ".") + '</p><button class="btn hi block" data-act="reveal">Show the total</button></div>';
     }
-    var tot = total(), left = leftOver(), lp = share(left);
-    var st = teen ? teenStamp() : (left < 0 ? ["Overspent", "var(--bad)"] : lp < 10 ? ["Tight", "var(--warn)"] : lp < 20 ? ["Close", "var(--k-bill)"] : ["On track", "var(--good)"]);
-    var up = upcoming(7), upSum = up.reduce(function (s, e) { return s + e.it.amount; }, 0);
-    var h = "";
+    var tot = total(), left = leftOver();
+    var up = upcoming(7), upSum = up.reduce(function (s, e) { return s + e.it.amount; }, 0), h = "";
     h += '<button class="card row-between" data-act="goCal" style="text-align:left;width:100%"><span><span class="eyebrow">Next 7 days</span><br><b style="font-family:var(--fm);font-size:20px">' + aed(upSum) + '</b> <small>' + up.length + " payment" + (up.length === 1 ? "" : "s") + (up[0] ? " · next " + rel(daysUntil(up[0].d)) : "") + "</small></span>" + ic("right", 20) + "</button>";
-
-    h += '<section class="paper"><div class="stamp" style="--c:' + st[1] + '">' + st[0] + "</div>";
-    h += '<div class="eyebrow">TrueTotal · per month</div><div class="eyebrow" style="margin-top:2px">' + fDateY(today()) + "</div>";
-    h += '<h1 style="font-size:28px;font-weight:800;margin:14px 0 4px;line-height:1.1;max-width:62%">Everything you pay for</h1><hr class="rule">';
+    h += '<section class="paper"><div class="stamp" style="--c:var(--k-bill)">Per month</div>';
+    h += '<div class="eyebrow">TrueTotal · average per month</div><div class="eyebrow" style="margin-top:2px">' + fDateY(today()) + "</div>";
+    h += '<h1 style="font-size:28px;font-weight:800;margin:14px 0 4px;line-height:1.1;max-width:62%">Everything Sam pays for</h1><hr class="rule">';
     korder().forEach(function (k) {
       var t = kindTotal(k), n = counted().filter(function (i) { return i.kind === k; }).length;
       if (!n) return;
@@ -889,38 +977,41 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       h += '<div class="share"><div class="bar" style="--c:' + kcol(k) + '"><i data-w="' + Math.min(100, share(t)) + '"></i></div><small class="mono">' + pc(share(t)) + "</small></div>";
     });
     h += '<hr class="rule"><div class="leader total-line"><span>TOTAL</span><span class="dots"></span><span class="total-num"><span class="hl" data-count="' + tot + '" data-key="tot" data-pre="AED ">AED ' + nf.format(tot) + "</span></span></div>";
-    h += '<div style="margin-top:8px">';
-    if (teen) {
-      h += ldr("Per week", aed(tot * 12 / 52)) + ldr("Per year", aed(tot * 12));
-      if (S.income > 0) h += ldr("Share of pocket money", pc(share(tot))) + ldr("Left over", (left < 0 ? "-" : "") + aed(Math.abs(left)), left < 0 ? "var(--bad)" : "var(--good)");
-    } else {
-      h += ldr("Share of income", S.income > 0 ? pc(share(tot)) : "-") + ldr("Left over", (left < 0 ? "-" : "") + aed(Math.abs(left)), left < 0 ? "var(--bad)" : "var(--good)") + ldr("Per year", aed(tot * 12));
-    }
-    h += '</div><div class="barcode" aria-hidden="true"></div></section>';
-
-    h += '<section class="card"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (S.income > 0 ? "Where your " + (teen ? "pocket money" : "income") + " goes" : "Where your money goes") + '</h3><small>tap a slice</small></div>' + donutHTML() + "</section>";
-
-    var top = S.items.slice().sort(function (a, b) { return monthly(b) - monthly(a); }).slice(0, 5), freed = S.items.filter(function (i) { return !i.on; }).reduce(function (s, i) { return s + monthly(i); }, 0);
-    h += '<section class="card" id="whatif"><h3 style="font-size:18px;font-weight:800">What if you cancelled?</h3><p class="sm" style="margin:2px 0 4px">Switch a cost off and watch the total, the chart and the calendar change.</p><div class="group" style="padding:0;background:none">';
-    top.forEach(function (it) { h += itemRow(it, true); });
-    h += "</div>" + (freed > 0 ? '<p style="margin-top:8px"><span class="hl" style="font-weight:600">Saves ' + aed(freed) + " a month · " + aed(freed * 12) + " a year</span></p>" : "") + "</section>";
+    h += '<div style="margin-top:8px">' + (S.income > 0 ? ldr("Share of income entered", pc(share(tot))) + ldr("Remaining after listed payments", (left < 0 ? "-" : "") + aed(Math.abs(left)), left < 0 ? "var(--bad)" : "") : "") + ldr("Scheduled, next 12 months", aed(forecast(365))) + "</div>";
+    h += '<p class="sm" style="margin-top:8px">Remaining after listed payments is not spare money. It leaves out food, transport, savings and anything not entered. The 12-month figure counts only payments actually due, so plans that end sooner stop counting.</p><div class="barcode" aria-hidden="true"></div></section>';
+    h += '<section class="card"><details class="how"><summary>How was this calculated?</summary>' + workedHTML() + "</details></section>";
+    h += '<section class="card"><div class="row-between"><h3 style="font-size:18px;font-weight:800">' + (S.income > 0 ? "Where Sam's income goes" : "Where the money goes") + '</h3><small>tap a slice</small></div>' + donutHTML() + "</section>";
+    h += exploreCard();
     var svH = savings();
-    h += '<button class="card row-between" data-act="gosave" style="text-align:left;width:100%"><span><span class="eyebrow">Ways to pay less</span><br><b>' + (svH.monthly > 0 ? "You could free up " + aed(svH.monthly) + " a month" : "See ideas and cheaper options") + "</b></span>" + ic("right", 20) + "</button>";
-    if (teen) h += goalCard();
-
+    h += '<button class="card row-between" data-act="gosave" style="text-align:left;width:100%"><span><span class="eyebrow">Ways to pay less</span><br><b>' + (svH.monthly > 0 ? "Possible future saving: " + aed(svH.monthly) + " a month" : "See ideas and cheaper options") + "</b></span>" + ic("right", 20) + "</button>";
     if (S.guess != null) {
       var real = flexible(), diff = real - S.guess;
-      h += '<section class="card"><div class="eyebrow">Your guess vs the real number</div><div class="row-between" style="margin-top:6px;align-items:flex-start;gap:16px"><div style="white-space:nowrap"><small>You guessed</small><div class="mono" style="font-size:22px;color:var(--ink2)">' + aed(S.guess) + '</div></div><div style="text-align:right"><small>' + flexLabel() + '</small><div class="mono" style="font-size:22px;font-weight:600">' + aed(real) + "</div></div></div>" +
-        '<p style="margin-top:8px">' + (Math.abs(diff) < Math.max(10, real * 0.05) ? "You were close." : diff > 0 ? aed(diff) + " more than you thought." : aed(-diff) + " less than you feared.") + '</p><button class="btn ghost sm2" data-act="reveal" style="margin-top:10px">Replay the reveal</button></section>';
+      h += '<section class="card"><div class="eyebrow">Your guess vs the real number</div><div class="row-between" style="margin-top:6px;align-items:flex-start;gap:16px"><div style="white-space:nowrap"><small>You guessed</small><div class="mono" style="font-size:22px;color:var(--ink2)">' + aed(S.guess) + '</div></div><div style="text-align:right"><small>' + flexLabel() + ' per month</small><div class="mono" style="font-size:22px;font-weight:600">' + aed(real) + "</div></div></div>" +
+        '<p style="margin-top:8px">' + (Math.abs(diff) < Math.max(10, real * 0.05) ? "You were close." : diff > 0 ? aed(diff) + " more than you guessed." : aed(-diff) + " less than you guessed.") + '</p><button class="btn ghost sm2" data-act="reveal" style="margin-top:10px">Replay the reveal</button></section>';
     }
     return h;
+  }
+  /* "Explore a change": a simulation. Only optional recurring payments can be switched off, and switching one off cancels nothing. */
+  function exploreCard() {
+    var by = function (a, b) { return monthly(b) - monthly(a); };
+    var opt = S.items.filter(cancellable).sort(by), rep = S.items.filter(isRepayment).sort(by), ess = S.items.filter(function (i) { return groupOf(i) === "essential"; }).sort(by);
+    var freed = opt.filter(function (i) { return !i.on; }).reduce(function (s, i) { return s + monthly(i); }, 0), h = '<section class="card stack" id="whatif" style="gap:10px"><h3 style="font-size:18px;font-weight:800">Explore a change</h3><p class="sm">Switching an item off here only changes this simulation. It does not cancel a service or remove anything you owe.</p>';
+    if (opt.length) {
+      h += '<div class="eyebrow">Optional recurring payments (may be cancellable, subject to their terms)</div><div class="group" style="padding:0;background:none">' + opt.map(function (it) { return itemRow(it, true); }).join("") + "</div>";
+      if (freed > 0) h += '<p><span class="hl" style="font-weight:600">The average falls by ' + aed(freed) + ' a month</span> in this simulation. If those payments would otherwise have carried on, that is about ' + aed(freed * 12) + " over 12 months. Notice periods or terms may mean some money is still owed.</p>";
+      if (opt.some(function (i) { return !i.on; })) h += '<button class="btn ghost sm2" data-act="resetsim" style="align-self:flex-start">Reset the simulation</button>';
+    }
+    if (rep.length) h += '<div class="eyebrow">Existing repayments: still due</div><p class="sm">These are promises already made. They end on their last payment date, they are not switched off.</p><div class="group" style="padding:0;background:none">' + rep.map(function (it) { return itemRow(it, true); }).join("") + "</div>";
+    if (ess.length) h += '<div class="eyebrow">Essential costs</div><p class="sm">These can sometimes be reduced or changed, for example with a different plan, but not simply switched off.</p><div class="group" style="padding:0;background:none">' + ess.map(function (it) { return itemRow(it, true); }).join("") + "</div>";
+    h += '<div class="eyebrow">A future purchase you could choose</div><p class="sm">Try a new pay-later plan before you take it, so you see how it would overlap with the plans above.</p><div class="chips"><button class="chip" data-act="calc">' + ic("card", 15) + 'Pay-later calculator</button><button class="chip" data-act="pause">' + ic("bag", 15) + "Should I buy this?</button></div>";
+    return h + "</section>";
   }
 
   function donutHTML() {
     var sl = [];
     korder().forEach(function (k) { var t = kindTotal(k); if (t > 0) sl.push({ id: k, name: kname(k), v: t, c: kcol(k) }); });
     var left = leftOver();
-    if (left > 0) sl.push({ id: "left", name: "Left over", v: left, c: "var(--k-left)" });
+    if (left > 0) sl.push({ id: "left", name: "Remaining after listed payments", v: left, c: "var(--k-left)" });
     var all = Math.max(S.income, total()) || 1, R = 76, C = 2 * Math.PI * R, off = 0, svg = "";
     svg += '<circle cx="100" cy="100" r="' + R + '" fill="none" stroke="var(--paper2)" stroke-width="28"/>';
     sl.forEach(function (s) {
@@ -930,7 +1021,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     });
     var sel = sl.filter(function (s) { return s.id === donutSel; })[0], over = S.income > 0 && total() > S.income;
     var mid = sel ? '<small>' + esc(sel.name) + '</small><b class="mono" style="font-size:18px;white-space:nowrap">' + aed(sel.v) + '</b><small>' + pc(share(sel.v)) + " of income</small>" : over ? '<small>Over by</small><b class="mono" style="font-size:19px;color:var(--bad);white-space:nowrap">' + aed(total() - S.income) + "</b>" : S.income > 0 ? '<small>' + (isTeen() ? "Pocket money" : "Monthly income") + '</small><b class="mono" style="font-size:19px;white-space:nowrap">' + aed(S.income) + "</b>" : '<small>Per month</small><b class="mono" style="font-size:19px;white-space:nowrap">' + aed(total()) + "</b>";
-    var h = '<div class="donut-wrap"><svg viewBox="0 0 200 200" role="img" aria-label="Income split by category">' + svg + '</svg><div class="donut-mid">' + mid + "</div></div><div class=\"legend\">";
+    var h = '<div class="donut-wrap"><svg viewBox="0 0 200 200" role="img" aria-label="' + esc("Split by category: " + sl.map(function (x) { return x.name + " " + aed(x.v); }).join(", ")) + '">' + svg + '</svg><div class="donut-mid">' + mid + "</div></div><div class=\"legend\">";
     sl.forEach(function (s) {
       h += '<button class="lg" data-act="seg" data-id="' + s.id + '" aria-pressed="' + (donutSel === s.id) + '" style="--c:' + s.c + '"><span class="dot"></span><span class="nm">' + s.name + '</span><span class="mono sm">' + aed(s.v) + '</span><span class="mono" style="min-width:48px;text-align:right;font-weight:600">' + pc(share(s.v)) + "</span></button>";
     });
@@ -939,13 +1030,15 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
 
   /* ---------- ITEMS ---------- */
   function itemRow(it, compact) {
-    var sh = share(monthly(it)), eq = it.freq !== "monthly" ? " · about " + aed(monthly(it)) + "/mo" : "";
-    return '<div class="item' + (it.on ? "" : " off") + '"><button class="main" data-act="edit" data-id="' + it.id + '"><span class="ico lg" style="--c:' + kcol(it.kind) + '">' + ic(KINDS[it.kind].icon) + '</span><span class="tx"><b>' + esc(it.name) + "</b><small>" + aed(it.amount) + " " + FREQ[it.freq].l.toLowerCase() + (it.left != null ? " · " + it.left + " left" : "") + eq + "</small>" + (compact ? "" : "<small>" + payText(it) + "</small>") + '</span><span class="rt"><b class="mono" style="color:' + kcol(it.kind) + '">' + pc(sh) + '</b><small>' + baseWord() + '</small></span></button><button class="tapzone" data-act="toggle" data-id="' + it.id + '" role="switch" aria-checked="' + it.on + '" aria-label="Count ' + esc(it.name) + '"><span class="sw" aria-hidden="true" ' + 'aria-checked="' + it.on + '"></span></button></div>';
+    var sh = share(monthly(it)), eq = it.freq !== "monthly" ? " · about " + aed(monthly(it)) + "/mo" : "", g = groupOf(it);
+    var end = it.left != null ? " · " + it.left + " left, ends " + fDateY(lastDate(it)) + " · " + aed(remaining(it)) + " still to pay" : "";
+    var ctl = cancellable(it) ? '<button class="tapzone" data-act="toggle" data-id="' + it.id + '" role="switch" aria-checked="' + it.on + '" aria-label="Include ' + esc(it.name) + ' in the simulation. This does not cancel it."><span class="sw" aria-hidden="true"></span></button>' : '<span class="badge">' + (g === "repay" ? "Still due" : "Essential") + "</span>";
+    return '<div class="item' + (it.on ? "" : " off") + '"><button class="main" data-act="edit" data-id="' + it.id + '"><span class="ico lg" style="--c:' + kcol(it.kind) + '">' + ic(KINDS[it.kind].icon) + '</span><span class="tx"><b>' + esc(it.name) + "</b><small>" + aed(it.amount) + " " + FREQ[it.freq].l.toLowerCase() + eq + end + "</small>" + (compact ? "" : "<small>" + payText(it) + "</small>") + '</span><span class="rt"><b class="mono" style="color:' + kcol(it.kind) + '">' + pc(sh) + '</b><small>' + baseWord() + "</small></span></button>" + ctl + "</div>";
   }
   function vItems() {
     var h = '<div class="row-between"><div><h1 class="pg-title">Everything you pay for</h1><small>' + S.items.length + " item" + (S.items.length === 1 ? "" : "s") + (S.revealed ? " · " + aed(total()) + " a month" : "") + "</small></div><button class=\"btn hi sm2\" data-act=\"add\">" + ic("plus", 16) + "Add</button></div>";
-    if (!S.items.length) h += '<div class="card empty"><span class="ico lg" style="--c:var(--k-sub)">' + ic("list", 22) + '</span><p class="muted">Nothing yet. ' + (isTeen() ? "Add a subscription, a game, a phone top-up or anything else you pay for." : "Add a pay-later plan, a subscription, your rent or a loan.") + '</p><button class="btn ghost" data-act="example">Try example numbers</button></div>';
-    if (S.items.length && !S.revealed) h += '<button class="btn hi block" data-act="reveal">Reveal my TrueTotal</button>';
+    if (!S.items.length) h += '<div class="card empty"><span class="ico lg" style="--c:var(--k-sub)">' + ic("list", 22) + '</span><p class="muted">Nothing yet. ' + (isTeen() ? "Add a subscription, a game, a phone top-up or anything else you pay for." : "Add a pay-later plan, a subscription, your rent or a loan.") + '</p><button class="btn ghost" data-act="example">Load Sam\'s payments</button></div>';
+    if (S.items.length && !S.revealed) h += '<button class="btn hi block" data-act="reveal">Show the total</button>';
     korder().forEach(function (k) {
       var g = S.items.filter(function (i) { return i.kind === k; });
       if (!g.length) return;
@@ -1017,39 +1110,49 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function niceStep(raw) { var mag = Math.pow(10, Math.floor(Math.log10(raw))), c = [1, 2, 2.5, 5, 10]; for (var i = 0; i < c.length; i++) if (c[i] * mag >= raw) return c[i] * mag; return 10 * mag; }
 
   /* ---------- LEARN ---------- */
-  function vLearn() {
-    var h = '<h1 class="pg-title">Learn</h1>' + stepsCard();
-    h += '<section class="card stack"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Your results</h3><small class="mono">' + (S.name ? esc(S.name) + " · " : "") + S.id + "</small></div>";
-    if (S.guess != null && S.items.length && S.revealed) h += '<div class="leader"><span>Your guess</span><span class="dots"></span><span class="amt">' + aed(S.guess) + " → " + aed(flexible()) + "</span></div>";
-    h += '<div class="leader"><span>Your review</span><span class="dots"></span><span class="amt">' + (S.post ? "done" : "not yet") + "</span></div>";
-    h += "<p class=\"sm\">" + (S.post ? "Thanks for taking part." : "Give your review once you have had a good look around the app. It takes about a minute.") + "</p>";
-    h += '<button class="btn ' + (S.post ? "ghost" : "hi") + ' block" data-act="post">' + (S.post ? "Edit my review" : "Give my review") + "</button>";
-    h += (canSend() ? sendBlock() : "") + '<button class="btn ' + (canSend() ? "ghost " : "") + 'block" data-act="copy">Copy my results</button></section>';
-
-    if (counted().length) {
-      if (!isTeen() && S.income > 0) {
-        var np = share(needs()), wp = share(total() - needs()), sp = share(leftOver());
-        h += '<section class="card stack"><h3 style="font-size:18px;font-weight:800">The 50/30/20 rule of thumb</h3><p class="sm">A common guide: about 50% of income on needs, up to 30% on wants, 20% saved. A rough guide, not a law.</p>' +
-          meter("Needs (rent, bills, loans)", np, 50, false, "var(--k-bill)") + meter("Wants (pay later, subscriptions, other)", wp, 30, false, "var(--k-pay)") + meter("Left over to save", Math.max(0, sp), 20, true, "var(--good)") + "</section>";
-      } else if (isTeen() && S.income > 0) {
-        h += '<section class="card stack"><h3 style="font-size:18px;font-weight:800">Save first</h3><p class="sm">A good habit: keep at least 20% of your pocket money before you spend the rest. A rough guide, not a rule.</p>' + meter("Left after your payments", Math.max(0, share(leftOver())), 20, true, "var(--good)") + "</section>";
-      }
-      var ts = tips();
-      if (ts.length) h += '<section class="card"><h3 style="font-size:18px;font-weight:800;margin-bottom:6px">What to do next</h3>' + ts.map(function (x) { return '<div class="tipcard"><span class="tag" style="--c:' + LV[x.l] + '">' + x.lab + '</span><div><b style="font-weight:600">' + esc(x.h) + '</b><p class="sm" style="margin-top:2px">' + esc(x.p) + "</p></div></div>"; }).join("") + "</section>";
+  function resultsCard() {
+    var T = S.t, h = '<section class="card stack"><div class="row-between"><h3 style="font-size:18px;font-weight:800">Your results</h3><small class="mono">' + S.id + "</small></div>";
+    var qrow = function (name, x) { return '<div class="leader"><span>' + name + '</span><span class="dots"></span><span class="amt">' + (!x ? "not yet" : x.st === "skipped" ? "skipped" : x.st === "done" ? x.s + " of 3" : "incomplete") + "</span></div>"; };
+    h += qrow("Starter quiz", T.pre) + qrow("Follow-up quiz", T.post);
+    if (isDone(T.pre) && isDone(T.post)) {
+      var ch = Math.round((T.post.s - T.pre.s) / 3 * 100);
+      h += '<div class="leader"><span>Change</span><span class="dots"></span><span class="amt">' + (ch > 0 ? "+" : "") + ch + " percentage points</span></div><p class=\"sm\">A change straight after learning suggests short-term learning. It does not show that anyone's behaviour changed for good.</p>";
+    } else if (T.post && T.post.st === "done") h += '<p class="sm">You did not take the starter quiz, so no starting score was recorded and no change is worked out.</p>';
+    if (S.guess != null && S.revealed) h += '<div class="leader"><span>Your guess</span><span class="dots"></span><span class="amt">' + aed(S.guess) + " → " + aed(flexible()) + "</span></div>";
+    h += '<div class="leader"><span>Feedback</span><span class="dots"></span><span class="amt">' + (!T.fb ? "not yet" : T.fb.st === "done" ? "done" : "skipped") + "</span></div>";
+    if (isDone(T.post)) {
+      var ans = function (ver, x) { return "<h4 style=\"font-size:15px;margin:10px 0 4px\">" + (ver === "A" ? "Starter quiz" : "Follow-up quiz") + " answers</h4>" + QZ[ver].qs.map(function (q, i) { var ok = x.a[i] === q.c; return '<p class="sm"><b style="color:var(--ink)">' + (i + 1) + ". " + (ok ? "Correct" : "Not quite") + ".</b> " + esc(q.e) + "</p>"; }).join(""); };
+      h += '<details class="how"><summary>See the answers</summary>' + (isDone(T.pre) ? ans("A", T.pre) : "") + ans("B", T.post) + "</details>";
     }
-    h += '<section class="card"><h3 style="font-size:18px;font-weight:800;margin-bottom:6px">Good to know</h3>' + (isTeen() ? [["repeat", "sub", "Free trials turn into bills", "Many apps start with a free trial and then charge you every month. Cancel before it ends if you do not want to pay."], ["game", "game", "In-game coins add up", "Small purchases feel like nothing in the moment. Add them up over a month and a year to see the real cost."], ["bag", "pay", "Wait 7 days", "If you still want it after a week, it is more likely a real want. Waiting also gives you time to save instead of borrowing."]] : [["bag", "pay", "Pay later is still debt", "Splitting a purchase into instalments is easy to ignore, but each plan is a promise to pay. Several small plans at once can add up to a large monthly bill."], ["repeat", "sub", "Subscriptions are bills you chose", "A few small monthly charges can cost thousands a year. Yearly totals make them easier to judge."], ["receipt", "bill", "Share of income is the real measure", "AED 300 means little on its own. As a share of your income it shows how much room it takes from everything else."]]).map(function (x) { return '<div class="tipcard"><span class="ico lg" style="--c:' + kcol(x[1]) + '">' + ic(x[0], 20) + '</span><div><b style="font-weight:600">' + x[2] + '</b><p class="sm" style="margin-top:2px">' + x[3] + "</p></div></div>"; }).join("") + '</section><p class="sm" style="padding-bottom:8px">TrueTotal is a learning tool, not financial advice. The bands are rules of thumb, not official limits. Late fees and terms differ by provider, so check your own.</p>';
+    h += '<button class="btn ' + (isDone(T.fb) || (T.post && T.fb) ? "hi" : "ghost") + ' block" data-act="sendreview">Review and send (optional)</button><button class="btn ghost block" data-act="copy">Copy my results</button><p class="sm">Copying only puts the text on your clipboard. It does not submit anything. Nothing is sent unless you choose Send.</p></section>';
     return h;
   }
-  function meter(label, v, goal, higher, col) {
-    var good = higher ? v >= goal : v <= goal;
-    return '<div><div class="row-between" style="margin-bottom:8px"><span style="font-weight:500">' + label + '</span><span class="mono" style="font-weight:600;color:' + (good ? "var(--good)" : "var(--warn)") + '">' + pc(v) + ' <small style="white-space:nowrap">goal ' + (higher ? "≥" : "≤") + " " + goal + '%</small></span></div><div class="meter" style="--c:' + (good ? "var(--good)" : "var(--warn)") + '"><i class="f" data-w="' + Math.min(100, v) + '"></i><i class="g" style="left:calc(' + goal + '% - 1px)"></i></div></div>';
+  /* optional 50/30/20 guide: uses the need/want choice on each payment, never the payment method */
+  function budgetCard() {
+    if (!(S.income > 0) || !counted().length) return "";
+    var inc = S.income, c = { need: 0, want: 0, save: 0 }, un = 0;
+    counted().forEach(function (i) { if (c[i.cls] != null) c[i.cls] += monthly(i); else un++; });
+    var bar = function (label, v, ref, col) { var p = v / inc * 100; return '<div><div class="row-between" style="margin-bottom:8px"><span style="font-weight:500">' + label + '</span><span class="mono" style="font-weight:600">' + pc(p) + ' <small style="white-space:nowrap">guide about ' + ref + '%</small></span></div><div class="meter" style="--c:' + col + '"><i class="f" data-w="' + Math.min(100, p) + '"></i><i class="g" style="left:calc(' + ref + '% - 1px)"></i></div></div>'; };
+    var h = '<section class="card stack"><h3 style="font-size:18px;font-weight:800">50/30/20 (optional rule of thumb)</h3><p class="sm">A common rough guide is about 50% of income on needs, 30% on wants and 20% on saving and paying down debt. It is a starting point, not a pass or fail test.</p>';
+    if (un === counted().length) h += '<p class="sm">Tap a payment on the Items tab and choose Need, Want or Saving or debt repayment to see the split.</p>';
+    else h += bar("Needs", c.need, 50, "var(--k-bill)") + bar("Wants", c.want, 30, "var(--k-pay)") + bar("Saving and debt repayment", c.save, 20, "var(--k-sub)") + (un ? '<p class="sm">' + un + " payment" + (un === 1 ? " is" : "s are") + " not classified yet, so " + (un === 1 ? "it is" : "they are") + " not counted above.</p>" : "");
+    return h + '<details class="how"><summary>What this does not tell you</summary><p class="sm">It only uses the payments listed, so food, transport and other costs are missing. Whether something is a need or a want is your own call: a pay-later plan can be for something essential, and a subscription can be a need for one person and a want for another. An income share below or above a guide does not show whether something is affordable.</p></details></section>';
   }
+  function vLearn() {
+    var h = '<h1 class="pg-title">Learn</h1>' + stepsCard() + resultsCard() + budgetCard();
+    var ts = tips();
+    if (ts.length) h += '<section class="card"><h3 style="font-size:18px;font-weight:800;margin-bottom:6px">Worth knowing</h3>' + ts.map(function (x) { return '<div class="tipcard"><span class="tag" style="--c:' + LV[x.l] + '">' + x.lab + '</span><div><b style="font-weight:600">' + esc(x.h) + '</b><p class="sm" style="margin-top:2px">' + esc(x.p) + "</p></div></div>"; }).join("") + "</section>";
+    h += '<section class="card"><h3 style="font-size:18px;font-weight:800;margin-bottom:6px">Good to know</h3>' + [["bag", "pay", "Pay later is still a commitment", "Splitting a purchase into instalments makes each payment look small, but each plan is a promise to pay the full amount over time. Several plans at once overlap and add into one monthly total. Terms and fees differ by provider, so read yours."], ["repeat", "sub", "Optional recurring payments add up", "AED 50 a month is AED 600 over 12 months if it carries on. Checking each one now and then keeps the total honest. Check any notice period before you cancel."], ["receipt", "bill", "A share of income gives context", "AED 300 means little on its own. As a share of income it shows how much of a month's income it takes. It only tells part of the story, because costs you have not listed matter too."]].map(function (x) { return '<div class="tipcard"><span class="ico lg" style="--c:' + kcol(x[1]) + '">' + ic(x[0], 20) + '</span><div><b style="font-weight:600">' + x[2] + '</b><p class="sm" style="margin-top:2px">' + x[3] + "</p></div></div>"; }).join("") + '</section><p class="sm" style="padding-bottom:8px">TrueTotal is a learning tool, not financial advice. Terms, fees and prices differ by provider, so check your own.</p>';
+    return h;
+  }
+
 
   /* ---------- SAVE: ideas, usage and cheaper options ---------- */
   var USE = [["daily", "Daily", 30], ["weekly", "Weekly", 4], ["monthly", "Monthly", 1], ["rarely", "Rarely", 0.5], ["never", "Never", 0]];
   function savings() {
     var list = [], tot = 0;
     counted().forEach(function (it) {
+      if (!cancellable(it)) return;
       var m = monthly(it);
       if (it.use === "never" || it.use === "rarely") { list.push({ it: it, type: "unused", amt: m }); tot += m; }
       else if (it.alt && it.alt.amount > 0) { var d = m - it.alt.amount * FREQ[it.alt.freq].per; if (d > 0) { list.push({ it: it, type: "alt", amt: d }); tot += d; } }
@@ -1093,6 +1196,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     ] }
   ];
   function altsFor(it) {
+    if (isRepayment(it)) return [];
     for (var i = 0; i < ALTS.length; i++) if (ALTS[i].re.test(it.name)) return ALTS[i].list;
     return [];
   }
@@ -1110,19 +1214,23 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     }).join("") + '</div><p class="sm" style="margin-top:6px">Checked ' + ALTS_DATE + '. Prices, student rules and offers change, so confirm on the provider site.</p></div>';
   }
   function ideasFor(it) {
-    var t = isTeen(), k = it.kind;
+    var k = it.kind;
+    if (it.left != null) {
+      var ld = lastDate(it);
+      return ["This plan ends on " + fDateY(ld) + ", after " + it.left + " more payment" + (it.left === 1 ? "" : "s") + ". " + aed(remaining(it)) + " is still to pay, and it is not an optional cost.", "After the last payment about " + aed(monthly(it)) + " a month is no longer due, if you do not start another plan.", "Avoid starting a new plan before this one ends, so payments do not overlap.", "Check your terms to see whether paying early is allowed and whether any fees apply."];
+    }
     if (k === "sub") return [
       "Look for a free or cheaper plan with fewer features.",
-      it.freq === "monthly" ? "Ask about a yearly plan. It can cost less per month, but check the total first." : "Compare the yearly price with paying monthly, if you do not use it much.",
-      t ? "Ask a parent if you can share a family plan." : "Check for a family or shared plan, if the terms allow it.",
-      "Pause or cancel in the months you do not use it. You can often come back later.",
+      it.freq === "monthly" ? "Compare the yearly price with paying monthly. It can cost less per month, but check the total first." : "Compare the yearly price with paying monthly, if you do not use it much.",
+      "Check for a family or shared plan, if the terms allow it.",
+      "Check whether you can pause or cancel, and whether there is a notice period or minimum term, before you decide.",
       "Some services have student prices. Ask, with proof that you study."
     ].slice(0, 4);
     if (k === "game") return [
       "Play the free version without buying extras.",
       "Set a monthly limit for coins and passes, and stop when it is used up.",
       "Wait 7 days before buying. Many wants fade.",
-      t ? "Ask a parent if a one-off purchase is cheaper than a subscription." : "Check if a one-off purchase is cheaper than a subscription."
+      "Check if a one-off purchase is cheaper than a subscription."
     ];
     if (k === "bill" && /rent/i.test(it.name)) return [
       "Before you renew, look at what similar places cost nearby.",
@@ -1132,19 +1240,13 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     if (k === "bill") return [
       "Compare your plan with the other plans from the same provider. A smaller one may cover what you really use.",
       "Check how much data, minutes or electricity you actually use. Pay for what you use.",
-      "Ask your provider if there is a cheaper tier or a loyalty offer.",
+      "Ask your provider if a cheaper tier or an offer exists, and check any contract end date first.",
       "Compare prices with other providers before you renew."
     ];
     if (k === "loan") return [
-      "Pay more than the minimum when you can. It cuts the interest you pay.",
-      "Ask your bank if a lower rate is available.",
-      "If you have several, pay off the one with the highest interest first."
-    ];
-    if (k === "pay") return [
-      "Save up and buy it later, instead of borrowing.",
-      "Finish one plan before you start another.",
-      "If your provider allows early payment without a fee, clearing the biggest plan first frees the most cash.",
-      "Look for a cheaper version of the item."
+      "If your terms allow it, paying more than the minimum can reduce the interest you pay.",
+      "Ask your bank whether other options exist.",
+      "If you have several, compare their interest rates before deciding which to pay down first."
     ];
     return [
       "Ask: do I still need this?",
@@ -1153,31 +1255,31 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     ];
   }
   function saveCard(it) {
-    var m = monthly(it), canUse = it.kind === "sub" || it.kind === "game" || it.kind === "other", h = '<section class="card stack' + (it.on ? "" : " save-off") + '" style="gap:12px">';
-    h += '<div style="display:flex;gap:12px;align-items:center"><span class="ico lg" style="--c:' + kcol(it.kind) + '">' + ic(KINDS[it.kind].icon) + '</span><div style="min-width:0;flex:1"><b style="display:block;font-weight:600">' + esc(it.name) + "</b><small>" + aed(m) + " a month · " + aed(m * 12) + " a year" + (it.on ? "" : " · switched off") + "</small></div></div>";
+    var m = monthly(it), canUse = cancellable(it), g = groupOf(it), h = '<section class="card stack' + (it.on ? "" : " save-off") + '" style="gap:12px">';
+    h += '<div style="display:flex;gap:12px;align-items:center"><span class="ico lg" style="--c:' + kcol(it.kind) + '">' + ic(KINDS[it.kind].icon) + '</span><div style="min-width:0;flex:1"><b style="display:block;font-weight:600">' + esc(it.name) + "</b><small>" + (g === "repay" ? "Existing repayment: still due" : g === "essential" ? "Essential cost" : "Optional recurring") + " · about " + aed(m) + " a month" + (it.left != null ? " · " + aed(remaining(it)) + " still to pay" : "") + (it.on ? "" : " · not counted in the simulation") + "</small></div></div>";
     if (canUse) {
       h += '<div><div class="lbl" style="margin-bottom:8px">How often do you use it?</div><div class="chips">' + USE.map(function (u) { return '<button class="chip" data-act="use" data-id="' + it.id + '" data-v="' + u[0] + '" aria-pressed="' + (it.use === u[0]) + '">' + u[1] + "</button>"; }).join("") + "</div>";
       var sel = USE.filter(function (x) { return x[0] === it.use; })[0];
       if (sel && sel[2] > 0) h += '<p class="sm" style="margin-top:8px">About <b style="color:var(--ink)">' + aed(m / sel[2]) + "</b> each time you use it.</p>";
-      if (it.use === "never" || it.use === "rarely") h += '<div class="note" style="margin-top:8px">You hardly use this. Cancelling would save <b style="color:var(--ink)">' + aed(m * 12) + "</b> a year.</div>" + (it.on ? '<button class="btn ghost sm2" style="margin-top:8px" data-act="switchoff" data-id="' + it.id + '">Switch it off to see the effect</button>' : "");
+      if (it.use === "never" || it.use === "rarely") h += '<div class="note" style="margin-top:8px">You hardly use this. If you can cancel it and it would otherwise continue, that is about <b style="color:var(--ink)">' + aed(m * 12) + "</b> over 12 months. Check any notice period or minimum term first.</div>" + (it.on ? '<button class="btn ghost sm2" style="margin-top:8px" data-act="switchoff" data-id="' + it.id + '">Stop counting it (simulation only)</button>' : "");
       h += "</div>";
     }
     h += altsHtml(it);
     h += '<div><div class="eyebrow">Ideas to try</div><ul class="ideas">' + ideasFor(it).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>";
     if (it.alt && it.alt.amount > 0) {
       var am = it.alt.amount * FREQ[it.alt.freq].per, d = m - am;
-      h += '<div class="preview"><b>' + esc(it.alt.name || "Cheaper option") + "</b><br><small>" + aed(it.alt.amount) + " " + FREQ[it.alt.freq].l.toLowerCase() + ", about " + aed(am) + ' a month</small><p style="margin-top:6px">' + (d > 0 ? 'Saves <span class="hl" style="font-weight:600">' + aed(d * 12) + "</span> a year" : d < 0 ? "Costs " + aed(-d * 12) + " more a year than now" : "Same cost as now") + '</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' + (d > 0 && it.left == null ? '<button class="btn hi sm2" data-act="altswitch" data-id="' + it.id + '">Switch to this</button>' : "") + '<button class="btn ghost sm2" data-act="alt" data-id="' + it.id + '">Edit</button><button class="btn ghost sm2" data-act="altclear" data-id="' + it.id + '">Remove</button></div></div>';
+      h += '<div class="preview"><b>' + esc(it.alt.name || "Cheaper option") + "</b><br><small>" + aed2(it.alt.amount) + " " + FREQ[it.alt.freq].l.toLowerCase() + ", about " + aed2(am) + ' a month</small><p style="margin-top:6px">' + (d > 0 ? 'Could save <span class="hl" style="font-weight:600">' + aed(d * 12) + "</span> over 12 months, if it replaces this" : d < 0 ? "Costs " + aed(-d * 12) + " more a year than now" : "Same cost as now") + '</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' + (d > 0 && it.left == null ? '<button class="btn hi sm2" data-act="altswitch" data-id="' + it.id + '">Switch to this</button>' : "") + '<button class="btn ghost sm2" data-act="alt" data-id="' + it.id + '">Edit</button><button class="btn ghost sm2" data-act="altclear" data-id="' + it.id + '">Remove</button></div></div>';
     } else h += '<button class="btn ghost sm2" data-act="alt" data-id="' + it.id + '">I found a cheaper price</button>';
     return h + "</section>";
   }
   function vSave() {
-    var h = '<div><h1 class="pg-title">Ways to pay less</h1><p class="sm" style="margin-top:4px">Ideas based on what you pay for and what you tell us. Prices and offers change, so check each provider. These are ideas, not advice.</p></div>';
+    var h = '<div><h1 class="pg-title">Ways to pay less</h1><p class="sm" style="margin-top:4px">Ideas for lowering future costs. Existing repayments stay due, and switching something off here only changes the simulation. Prices and offers change, so check each provider. These are ideas, not advice.</p></div>';
     h += toolsCard();
     if (!S.items.length) return h + '<div class="card empty"><span class="ico lg" style="--c:var(--k-pay)">' + ic("tag", 22) + '</span><p class="muted">Add what you pay for and TrueTotal will suggest ways to pay less.</p><button class="btn hi" data-act="add">' + ic("plus", 18) + 'Add a payment</button></div>';
     h += freeCard();
-    if (!isTeen()) h += goalCard();
+    h += goalCard();
     var sv = savings();
-    h += '<section class="card stack"><div class="eyebrow">Possible saving</div>' + (sv.monthly > 0 ? '<div><span class="total-num"><span class="hl">' + aed(sv.monthly) + '</span></span> <small>a month</small></div><p>That is about <b>' + aed(sv.monthly * 12) + "</b> a year, from " + sv.list.length + " thing" + (sv.list.length === 1 ? "" : "s") + " you flagged below.</p>" : '<p class="muted">Tell us how often you use each item, and add a cheaper price when you find one. The saving adds up here.</p>') + '<p class="sm">How we count use: daily is 30 times a month, weekly is 4, monthly is 1, rarely is once every 2 months.</p></section>';
+    h += '<section class="card stack"><div class="eyebrow">Possible future saving</div>' + (sv.monthly > 0 ? '<div><span class="total-num"><span class="hl">' + aed(sv.monthly) + '</span></span> <small>a month</small></div><p>That is about <b>' + aed(sv.monthly * 12) + "</b> over 12 months if those costs would otherwise carry on, from " + sv.list.length + " optional item" + (sv.list.length === 1 ? "" : "s") + " you flagged below. Cancellation terms and notice periods may apply.</p>" : '<p class="muted">Tell us how often you use each item, and add a cheaper price when you find one. The saving adds up here.</p>') + '<p class="sm">How we count use: daily is 30 times a month, weekly is 4, monthly is 1, rarely is once every 2 months.</p></section>';
     S.items.slice().sort(function (a, b) { return monthly(b) - monthly(a); }).forEach(function (it) { h += saveCard(it); });
     return h;
   }
@@ -1219,6 +1321,20 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     sheet = null; syncBg(); render();
     var back = lastSig; lastSig = null; refocus(back);
   }
+  function hasProgress() { return !!(S.onboarded || S.draft); }
+  function resetAll() {
+    try { localStorage.removeItem(KEY); } catch (er) {}
+    S = fresh(); view = "home"; cal = { mode: "month", y: today().getFullYear(), m: today().getMonth(), sel: iso(today()), mi: -1 }; donutSel = null; prevNum = {}; ed = null; ad = null; cd = null; pdd = null;
+    rvTimers.forEach(clearTimeout); rvTimers = [];
+    if (tourEl) { tourEl.remove(); tourEl = null; T = null; }
+    closeSheet(true); if (flowEl) { flowEl.remove(); flowEl = null; F = null; document.documentElement.style.overflow = ""; }
+    applyTheme(); render(); window.scrollTo(0, 0); openFlow("onboard");
+  }
+  function openNewTest() {
+    if (!hasProgress()) { resetAll(); return; }
+    var unfinished = !complete();
+    openSheet('<div class="stack" style="gap:14px"><div class="row-between"><h2>Start a new test?</h2><button class="icon-btn" data-act="sheetclose" aria-label="Close">' + ic("x", 22) + '</button></div><p>This clears the answers and progress on this device and gives you a new tester code. ' + (unfinished ? "<b>Your current test is not finished.</b> " : "") + (S.sentAt ? "Results you already sent stay with the project." : "Nothing from this test has been sent.") + ' Use Copy my results first if you want to keep them.</p><div class="confirm-actions"><button class="btn ghost" data-act="sheetclose" id="keepBtn">Keep this test</button><button class="btn danger" data-act="newtestgo">Start a new test</button></div></div>', function () { setTimeout(function () { var b = $("#keepBtn"); if (b) b.focus({ preventScroll: true }); }, 80); }, "confirm");
+  }
 
   var ed = null; // item being edited
   function openItem(id) {
@@ -1232,16 +1348,18 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     if (ed.isNew) h += '<div><div class="lbl" style="margin-bottom:8px">Quick fill</div><div class="chips" style="flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;margin-right:-18px;padding-right:18px">' + presets().map(function (p, i) { return '<button class="chip" data-act="preset" data-i="' + i + '">' + p[0] + "</button>"; }).join("") + "</div></div>";
     h += '<div class="field"><label for="fName">Name</label><input id="fName" type="text" data-in="name" placeholder="e.g. Tabby, sneakers" value="' + esc(ed.name) + '" autocomplete="off"></div>';
     h += '<div><div class="lbl" style="margin-bottom:8px">Type</div><div class="chips" id="kindChips">' + kindChips() + "</div></div>";
+    h += '<div><div class="lbl" style="margin-bottom:8px">What is it for? <small>(optional)</small></div><div class="chips" id="clsChips" role="group" aria-label="What is it for">' + clsChips() + '</div><small>Only used for the optional 50/30/20 guide. The payment method does not decide this: a pay-later plan can be for a need.</small></div>';
     h += '<div class="field"><label for="fAmt">Each payment (AED)</label><div class="money"><span>AED</span><input id="fAmt" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="amount" placeholder="250" value="' + (ed.amount > 0 ? ed.amount : "") + '"></div></div>';
     h += '<div><div class="lbl" style="margin-bottom:8px">How often</div><div class="seg" id="freqSeg">' + freqSeg() + "</div></div>";
     h += '<div class="field"><label for="fDate" id="dateLbl">' + dateLabel() + '</label><input id="fDate" type="date" data-in="anchor" value="' + esc(ed.anchor) + '"><small id="dateHint">' + dateHint() + "</small></div>";
     h += '<div class="row-between"><span id="endLbl" style="font-weight:500">It ends after a set number of payments</span><button class="tapzone" data-act="endtoggle" role="switch" aria-checked="' + ed.hasEnd + '" aria-labelledby="endLbl"><span class="sw" id="endSw" aria-checked="' + ed.hasEnd + '"></span></button></div>';
     h += '<div id="endBox" ' + (ed.hasEnd ? "" : "hidden") + ' class="row-between"><span>Payments left <small>(including the next one)</small></span><span style="display:flex;align-items:center;gap:6px"><button class="icon-btn" data-act="leftdec" aria-label="Fewer">−</button><b class="mono" id="leftN" style="min-width:34px;text-align:center;font-size:20px">' + ed.leftN + '</b><button class="icon-btn" data-act="leftinc" aria-label="More">+</button></span></div>';
     h += '<div class="preview" id="prev">' + previewHTML() + "</div>";
-    h += '<div class="sticky" style="display:flex;gap:10px">' + (ed.isNew ? "" : '<button class="btn ghost" data-act="delitem" style="color:var(--bad)">Delete</button>') + '<button class="btn block" id="saveItem" data-act="saveitem">Save</button></div></div>';
+    h += '<p class="errmsg" id="fErr" role="alert"></p><div class="sticky" style="display:flex;gap:10px">' + (ed.isNew ? "" : '<button class="btn ghost" data-act="delitem" style="color:var(--bad)">Delete</button>') + '<button class="btn block" id="saveItem" data-act="saveitem">Save</button></div></div>';
     return h;
   }
   var kindChips = function () { return korder().map(function (k) { return '<button class="chip" data-act="kind" data-k="' + k + '" aria-pressed="' + (ed.kind === k) + '">' + ic(KINDS[k].icon, 15) + kname(k) + "</button>"; }).join(""); };
+  var clsChips = function () { return Object.keys(CLS).map(function (k) { return '<button class="chip" data-act="cls" data-v="' + k + '" aria-pressed="' + (ed.cls === k) + '">' + CLS[k] + "</button>"; }).join(""); };
   var freqSeg = function () { return ["weekly", "biweekly", "monthly", "yearly"].map(function (f) { return '<button data-act="freq" data-f="' + f + '" aria-pressed="' + (ed.freq === f) + '">' + FREQ[f].short + "</button>"; }).join(""); };
   var dateLabel = function () { return ed.freq === "monthly" ? "Next payment date (the day repeats each month)" : ed.freq === "yearly" ? "Next payment date (repeats each year)" : "Next payment date"; };
   function dateHint() {
@@ -1284,7 +1402,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     var ends = pl.map(function (i) { return { it: i, d: lastDate(i) }; }).filter(function (x) { return x.d; }).sort(function (a, b) { return a.d - b.d; });
     if (!ends.length) return "";
     var last = ends[ends.length - 1].d, freed = pl.reduce(function (a, i) { return a + monthly(i); }, 0);
-    return '<section class="card stack"><div class="eyebrow">Pay-later free date</div><div><span class="total-num"><span class="hl">' + fDateY(last) + '</span></span></div><p class="sm">After that, about <b style="color:var(--ink)">' + aed(freed) + "</b> a month is free again, if you take on no new plans.</p>" + ends.slice(0, 4).map(function (x) { return '<div class="leader"><span>' + esc(x.it.name) + '</span><span class="dots"></span><span class="amt">' + fDateY(x.d) + "</span></div>"; }).join("") + "</section>";
+    return '<section class="card stack"><div class="eyebrow">Pay-later end date</div><div><span class="total-num"><span class="hl">' + fDateY(last) + '</span></span></div><p class="sm">After the last payment, about <b style="color:var(--ink)">' + aed(freed) + "</b> a month is no longer due, if you take on no new plans. Each plan ends on its own date:</p>" + ends.slice(0, 4).map(function (x) { return '<div class="leader"><span>' + esc(x.it.name) + '</span><span class="dots"></span><span class="amt">' + fDateY(x.d) + "</span></div>"; }).join("") + "</section>";
   }
   var cd = null;
   function calcChips() { return [3, 4, 6, 12].map(function (n) { return '<button class="chip" data-act="calcn" data-v="' + n + '" aria-pressed="' + (cd.n === n) + '">' + n + " payments</button>"; }).join(""); }
@@ -1296,7 +1414,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     h += '<div class="leader"><span>Total with fees</span><span class="dots"></span><span class="amt">' + aed(tot) + "</span></div>";
     h += '<p style="margin-top:8px">' + (extra > 0 ? 'Pay later costs <span class="hl" style="font-weight:600">' + aed(extra) + "</span> more than paying now." : "No extra fees, so the real cost is the same. The risk is the habit, not the price.") + "</p>";
     if (cd.late > 0) h += '<p class="sm">Miss one payment and it becomes ' + aed(tot + cd.late) + ".</p>";
-    h += '<p class="sm">It adds ' + aed(per) + " a month for " + cd.n + " months" + (S.income > 0 ? ", " + pc(per / S.income * 100) + " of your " + (isTeen() ? "pocket money" : "income") : "") + ". Your TrueTotal would go from " + aed(total()) + " to " + aed(total() + per) + ".</p>";
+    h += '<p class="sm">This is a what-if and nothing is saved. It would add ' + aed(per) + " a month for " + cd.n + " months" + (S.income > 0 ? ", " + pc(per / S.income * 100) + " of the income entered" : "") + ". The monthly average would go from " + aed(total()) + " to " + aed(total() + per) + " while it runs, on top of the plans already due.</p>"; if (S.revealed && !S.t.ex.dec) { S.t.ex.dec = true; save(); }
     return h;
   }
   function openCalc() {
@@ -1352,155 +1470,176 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function openSettings() {
     var st = function (k) { return 'aria-pressed="' + (S.theme === k) + '"'; };
     openSheet('<div class="stack" style="gap:16px"><div class="row-between"><h2>Settings</h2><button class="icon-btn" data-act="sheetclose" aria-label="Close">' + ic("x", 22) + '</button></div>' +
-      '<div class="field"><label for="sName">Your name or nickname</label><input id="sName" type="text" data-in="pname" maxlength="30" autocomplete="given-name" value="' + esc(S.name || "") + '"><small>Shown next to your results if you choose to send them.</small></div>' +
-            '<div class="field"><div class="lbl">Reminder time for calendar file</div><div class="seg" id="remSeg"><button data-act="rem" data-v="0" ' + 'aria-pressed="' + (S.remind === 0) + '">On the day</button><button data-act="rem" data-v="1" aria-pressed="' + (S.remind === 1) + '">1 day before</button><button data-act="rem" data-v="2" aria-pressed="' + (S.remind === 2) + '">2 days before</button></div></div>' +
-      '<div class="field"><div class="lbl">Appearance</div><div class="seg" id="themeSeg"><button data-act="theme" data-v="auto" ' + st("auto") + '>Auto</button><button data-act="theme" data-v="light" ' + st("light") + '>Light</button><button data-act="theme" data-v="dark" ' + st("dark") + ">Dark</button></div></div>" +
-      '<div class="field"><div class="lbl">Send my results automatically</div><div class="seg" id="autoSeg"><button data-act="autosend" data-v="1" aria-pressed="' + (S.autosend === true) + '">On</button><button data-act="autosend" data-v="0" aria-pressed="' + (S.autosend !== true) + '">Off</button></div><small>Sends your name, tester code, quiz scores and answers, and spending totals. Never your income.</small></div>' +
-      (NATIVE ? '<div class="field"><div class="lbl">Reminders</div><div class="seg" id="notifSeg"><button data-act="notifyset" data-v="1" aria-pressed="' + (S.notify === true) + '">On</button><button data-act="notifyset" data-v="0" aria-pressed="' + (S.notify !== true) + '">Off</button></div><small>Pay-day reminders at 9am (' + (S.remind === 0 ? "on the day" : S.remind === 1 ? "1 day before" : "2 days before") + ') and a nudge to give your review.</small><button class="btn ghost sm2" data-act="notifytest" style="margin-top:8px;align-self:flex-start">Send a test reminder</button></div><div class="field"><div class="lbl">Widget</div><small>Press and hold your home screen, tap +, search TrueTotal, and add the Next pay day widget. It also works on the lock screen.</small></div>' : "") +
-      '<div class="stack" style="gap:8px"><button class="btn ghost block" data-act="reveal">Replay the reveal</button><button class="btn ghost block" data-act="copy">Copy my results</button><button class="btn danger block" id="clearBtn" data-act="clear">Delete all my data</button></div>' +
-      '<p class="sm">Everything stays on this device unless you turn on automatic sending or tap Send my results. Reset the example numbers any time by deleting your data. Your tester code is <span class="mono">' + S.id + "</span>.</p></div>", null, "settings");
+      '<div class="field"><div class="lbl">Reminder time for the calendar file</div><div class="seg" id="remSeg" role="group" aria-label="Reminder time"><button data-act="rem" data-v="0" aria-pressed="' + (S.remind === 0) + '">On the day</button><button data-act="rem" data-v="1" aria-pressed="' + (S.remind === 1) + '">1 day before</button><button data-act="rem" data-v="2" aria-pressed="' + (S.remind === 2) + '">2 days before</button></div></div>' +
+      '<div class="field"><div class="lbl">Appearance</div><div class="seg" id="themeSeg" role="group" aria-label="Appearance"><button data-act="theme" data-v="auto" ' + st("auto") + '>Auto</button><button data-act="theme" data-v="light" ' + st("light") + '>Light</button><button data-act="theme" data-v="dark" ' + st("dark") + ">Dark</button></div></div>" +
+      (NATIVE ? '<div class="field"><div class="lbl">Reminders</div><div class="seg" id="notifSeg" role="group" aria-label="Reminders"><button data-act="notifyset" data-v="1" aria-pressed="' + (S.notify === true) + '">On</button><button data-act="notifyset" data-v="0" aria-pressed="' + (S.notify !== true) + '">Off</button></div><small>Pay-day reminders at 9am (' + (S.remind === 0 ? "on the day" : S.remind === 1 ? "1 day before" : "2 days before") + ') and a nudge about the next step.</small><button class="btn ghost sm2" data-act="notifytest" style="margin-top:8px;align-self:flex-start">Send a test reminder</button></div><div class="field"><div class="lbl">Widget</div><small>Press and hold your home screen, tap +, search TrueTotal, and add the Next pay day widget. It also works on the lock screen.</small></div>' : "") +
+      '<div class="stack" style="gap:8px"><button class="btn ghost block" data-act="sendreview">Review and send (optional)</button><button class="btn ghost block" data-act="copy">Copy my results</button><button class="btn ghost block" data-act="reveal">Replay the reveal</button><button class="btn danger block" data-act="newtest">Start a new test</button></div>' +
+      '<p class="sm">Your answers are saved in this browser, on this device. They are only sent if you review them and choose Send. Copying does not submit anything. The page loads its fonts from Google Fonts, which may log an ordinary web request. Your tester code is <span class="mono">' + S.id + "</span>.</p></div>", null, "settings");
   }
 
   /* ---------- flows ---------- */
   var flowEl = null, F = null;
-  function perm(qi) {
-    var q = quiz()[qi], idx = q.o.map(function (_, i) { return i; });
-    if (F.kind !== "post" || !q.shuffle) return idx;
-    var seed = 0, s = S.id + qi; for (var i = 0; i < s.length; i++) seed = (seed * 31 + s.charCodeAt(i)) % 9973;
-    for (var j = idx.length - 1; j > 0; j--) { seed = (seed * 31 + 7) % 9973; var r = seed % (j + 1), t = idx[j]; idx[j] = idx[r]; idx[r] = t; }
-    return idx;
-  }
-  function quizSteps() {
-    return [0, 1, 2, 3, 4, 5].map(function (qi) {
-      return {
-        quiz: qi, need: function () { return F.d.a[qi] != null; },
-        html: function () {
-          var q = quiz()[qi], order = perm(qi);
-          return '<p class="eyebrow">Question ' + (qi + 1) + " of 6</p><h2>" + esc(q.q) + '</h2><div class="stack" style="gap:10px">' + order.map(function (oi, n) { return '<button class="opt" data-act="fopt" data-o="' + oi + '" aria-pressed="' + (F.d.a[qi] === oi) + '"><span class="k">' + "ABCD"[n] + "</span>" + esc(q.o[oi]) + "</button>"; }).join("") + "</div>" + (F.kind === "onboard" ? '<p class="sm">Just your best answer. No looking things up.</p>' : "");
-        }
-      };
-    });
-  }
-  function confStep() {
-    return { need: function () { return true; }, html: function () {
-      return '<p class="eyebrow">How you feel right now</p><h2>How sure are you about your own money?</h2>' + confQ().map(function (c, i) { return '<div class="card stack" style="gap:6px"><p style="font-weight:500">' + c + '</p><input type="range" min="1" max="5" step="1" value="' + F.d.c[i] + '" data-in="conf' + i + '" aria-label="' + esc(c) + '"><div class="range-lbl"><span>Not at all</span><b id="cl' + i + '" style="color:var(--ink)">' + CONF_LBL[F.d.c[i] - 1] + "</b><span>Completely</span></div></div>"; }).join("");
+
+
+
+  /* ----- quiz and question building blocks ----- */
+  function quizStep(ver, qi) {
+    return { quiz: qi, needMsg: "Choose an answer to continue.", need: function () { return F.d.a[qi] != null; }, html: function () {
+      var q = QZ[ver].qs[qi], order = qOrder(ver, qi);
+      return '<p class="eyebrow">' + (ver === "A" ? "Starter quiz" : "Follow-up quiz") + " · question " + (qi + 1) + ' of 3</p><h2>' + esc(q.q) + '</h2><div class="stack" style="gap:10px" role="group" aria-label="Answer options">' + order.map(function (oi, n) { return '<button class="opt" data-act="fopt" data-o="' + oi + '" aria-pressed="' + (F.d.a[qi] === oi) + '"><span class="k" aria-hidden="true">' + "ABCD"[n] + "</span>" + esc(q.o[oi]) + "</button>"; }).join("") + '</div><p class="sm">Your best answer is fine. No looking things up and no calculator.</p>';
     } };
   }
+  function confStep() {
+    return { need: function () { return true; }, next: "Next", skip: "Skip this question", skipAct: "fskipconf", html: function () {
+      return '<p class="eyebrow">Optional</p><h2>' + CONF_Q + '</h2><p class="muted">Tap the one that fits. You can skip this.</p><div class="rate5" role="group" aria-label="' + esc(CONF_Q) + '">' + [1, 2, 3, 4, 5].map(function (n) { return '<button data-act="fset" data-k="c" data-v="' + n + '" aria-pressed="' + (F.d.c === n) + '" aria-label="' + n + " of 5, " + CONF_LBL[n - 1] + '">' + n + "</button>"; }).join("") + '</div><div class="range-lbl"><span>Not at all</span><span>Completely</span></div>';
+    } };
+  }
+  function ratingRows(items) {
+    return items.map(function (r) { return '<div class="card stack" style="gap:10px"><p style="font-weight:500" id="lb_' + r[0] + '">' + r[1] + '</p><div class="rate5" role="group" aria-labelledby="lb_' + r[0] + '">' + [1, 2, 3, 4, 5].map(function (n) { return '<button data-act="fset" data-k="' + r[0] + '" data-v="' + n + '" aria-pressed="' + (F.d[r[0]] === n) + '" aria-label="' + n + " of 5, " + r[2][n - 1] + '">' + n + "</button>"; }).join("") + '</div><div class="range-lbl"><span>' + r[2][0] + "</span><span>" + r[2][4] + "</span></div></div>"; }).join("");
+  }
+  function answersHTML(ver, x) {
+    return '<h3 style="font-size:16px;margin:14px 0 4px">' + (ver === "A" ? "Starter quiz" : "Follow-up quiz") + "</h3>" + QZ[ver].qs.map(function (q, i) { var ok = x.a[i] === q.c; return '<p class="sm"><b style="color:var(--ink)">' + (i + 1) + ". " + (ok ? "Correct" : "Not quite") + ".</b> " + esc(q.e) + "</p>"; }).join("");
+  }
+  function afterResultHTML() {
+    var T = S.t, post = T.post, h = '<p class="eyebrow">Follow-up quiz done</p><h1>' + post.s + " of 3 correct</h1>";
+    if (isDone(T.pre)) {
+      var ch = Math.round((post.s - T.pre.s) / 3 * 100);
+      h += '<p class="muted">Starter quiz: ' + T.pre.s + " of 3. Change: <b>" + (ch > 0 ? "+" : "") + ch + ' percentage points</b>.</p><div class="note">A change straight after learning suggests short-term learning. It does not show that behaviour changed for good.</div>';
+    } else h += '<p class="muted">There was no starter quiz score, so no change is worked out.</p>';
+    h += answersHTML("B", post) + (isDone(T.pre) ? answersHTML("A", T.pre) : "");
+    h += '<div class="card stack" style="gap:6px;margin-top:12px"><b style="font-family:var(--fd);font-size:16px">Why can several small pay-later plans be a problem?</b>' + (post.why ? '<p class="sm">Your answer: ' + esc(post.why) + "</p>" : "") + '<p class="sm">Some reasons to think about:</p><ul class="ideas">' + WHY_POINTS.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>";
+    return h;
+  }
   function buildFlow(kind) {
-    var d = { a: [null, null, null, null, null, null], c: [3, 3], r: [null, null, null, null], h: null, act: [], cm: "", saved: "", use: null, age: null, stat: null, pl: null, guess: "", name: S.name || "", income: S.income > 0 ? String(S.income) : "" }, steps = [];
+    var d, steps = [], notyet = function () { return F.i; };
+    var introStep = function (eyebrow, title, body, startLabel, skipLabel, skipAct) { return { need: function () { return true; }, next: startLabel, skip: skipLabel, skipAct: skipAct, html: function () { return '<p class="eyebrow">' + eyebrow + "</p><h2>" + title + '</h2><p class="muted">' + body + "</p>"; } }; };
     if (kind === "onboard") {
-      steps.push({ need: function () { return true; }, next: "Let's go", html: function () { return '<div style="padding-top:18px" class="stack"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>What do small payments <span class="hl">really</span> add up to?</h1><p class="muted" style="font-size:16px">Try TrueTotal on an example person with made-up numbers. You will fill the app with random made-up values, guess their total, take a quick tutorial, see the real total, then tell us what you thought.</p></div><div class="note">This is a student financial literacy project. <b>You never type in your real income or bills.</b> It takes about 4 minutes.</div>'; } });
-      steps.push({ need: function () { return F.d.age != null; }, html: function () {
+      d = { age: null, a: [null, null, null], c: null, preSkip: false, guess: "", scen: null };
+      steps.push({ need: function () { return true; }, next: "Let's go", html: function () { return '<div style="padding-top:18px" class="stack"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>What do small payments <span class="hl">really</span> add up to?</h1><p class="muted" style="font-size:16px">You will meet a made-up person called Sam, guess what their payments add up to, see the worked answer, explore the app and give feedback. It takes about 8 to 10 minutes.</p></div><div class="note">This is a student financial literacy project. <b>You never type in your real income, bills or accounts.</b> Taking part is voluntary. Nothing is sent unless you choose to send your results at the end, after you have seen exactly what would be sent.</div>'; } });
+      steps.push({ needMsg: "Choose an age group to continue.", need: function () { return F.d.age != null; }, html: function () {
         var teen = F.d.age === "Under 18";
-        return '<p class="eyebrow">First question</p><h2>How old are you?</h2><div class="chips">' + ["Under 18", "18-22", "23-30", "31-45", "46-60", "61 or older"].map(function (o) { return '<button class="chip" data-act="fchip" data-k="age" data-v="' + o + '" aria-pressed="' + (F.d.age === o) + '">' + o + "</button>"; }).join("") + "</div>" + (teen ? '<div class="note">Under 18? You get a version made for you, with no income questions. If you are not sure it is OK to take part, ask a parent or guardian first.</div>' : '<p class="sm">If you are under 18 you get a version made for you.</p>');
+        return '<p class="eyebrow">About you</p><h2>How old are you?</h2><div class="chips" role="group" aria-label="Age group">' + AGES.map(function (o) { return '<button class="chip" data-act="fchip" data-k="age" data-v="' + o + '" aria-pressed="' + (F.d.age === o) + '">' + o + "</button>"; }).join("") + "</div>" + (teen ? '<div class="note">Under 18? Please check with a parent or guardian that it is OK for you to take part. Everything uses made-up figures.</div>' : '<p class="sm">Only your age group is recorded. No name or email is needed.</p>');
       } });
-      steps.push({ need: function () { return F.d.share != null; }, html: function () {
-        var teen = F.d.age === "Under 18", on = F.d.share === "yes";
-        return '<p class="eyebrow">Your results</p><h2>Share your results with the project?</h2><p class="muted">If you say yes, TrueTotal sends your results by itself when you finish each part, so you never have to tap Send. It sends your age group, a tester code, your guess and your review. <b>No real money details, because you never enter any.</b></p>' + (teen ? '<div class="note">You are under 18, so ask a parent or guardian before you say yes.</div>' : "") + '<div class="stack" style="gap:10px"><button class="opt" data-act="fshare" data-v="yes" aria-pressed="' + on + '"><span class="k">&#10003;</span>Yes, send automatically</button><button class="opt" data-act="fshare" data-v="no" aria-pressed="' + (F.d.share === "no") + '"><span class="k">&ndash;</span>No, keep it private on my phone</button></div><p class="sm">You can change this any time in Settings.</p>';
+      steps.push({ need: function () { return true; }, next: "Start the quiz", skip: "Skip the starter quiz", skipAct: "fskipquiz", leave: function () { F.d.preSkip = false; }, html: function () { return '<p class="eyebrow">Starter quiz</p><h2>Three quick questions first</h2><p class="muted">They show where you are starting from, so we can see what changes later. The answers are shown at the end, not now. It takes about a minute.</p><div class="note">You can skip this. If you do, we cannot measure what changed, and your results are marked as incomplete.</div>'; } });
+      [0, 1, 2].forEach(function (qi) { steps.push(quizStep("A", qi)); });
+      steps.push(confStep());
+      steps.push({ need: function () { return true; }, next: "Next", back: function () { return F.d.preSkip ? 2 : 6; }, html: function () {
+        if (!F.d.scen) F.d.scen = scenItems();
+        return '<p class="eyebrow">The scenario</p><h2>Meet Sam</h2><p class="muted">Sam is made up. Sam earns AED 9,000 a month and says: "They are all small payments, so I am fine." These are Sam\'s payments. Do not add them up yet.</p>' + exList({ items: F.d.scen }) + '<p class="sm">Every-2-weeks and yearly payments are listed as they are paid.</p>';
       } });
-      steps.push({ need: function () { return !!F.d.rand; }, next: "Next", html: function () {
-        var teen = curMode() === "teen";
-        if (F.d.rand && F.d.rand.teen !== teen) F.d.rand = null;
-        var r = F.d.rand;
-        if (!r) return '<p class="eyebrow">Last question</p><h2>Now test the app</h2><p class="muted">TrueTotal needs some payments in it before you can try it. Tap the button and it fills in random, made-up pay-later plans, subscriptions and bills. Nothing here is real, and you never type your own details.</p><button class="btn hi block" data-act="frand">Insert random values</button>';
-        return '<p class="eyebrow">Last question</p><h2>Random values are in</h2><p class="muted">These made-up payments are now inside the app. Do not add them up yet.</p>' + exList(r) + '<button class="btn ghost block" data-act="frand">Shuffle new values</button>';
+      steps.push({ needMsg: "Enter a number, 0 or more, to continue.", next: "Start the tutorial", need: function () { return F.d.guess !== "" && parseFloat(F.d.guess) >= 0; }, err: function () { return F.d.guess !== "" && !(parseFloat(F.d.guess) >= 0) ? "Enter a number that is 0 or more." : ""; }, html: function () {
+        return '<p class="eyebrow">Your guess</p><h2>Take a guess</h2><p class="muted">About how much does Sam spend each month on <b>pay-later plans and subscriptions together</b>? Think of an average month while all of them are running. Add it up in your head. A rough guess is fine.</p><div class="field"><label for="gIn" class="vh">Your guess in AED a month</label><div class="money"><span>AED</span><input id="gIn" class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="guess" placeholder="e.g. 500" value="' + esc(F.d.guess) + '"></div></div><p class="errmsg" id="flowErr" role="alert">' + esc(F.steps[F.i].err()) + "</p>" + exList({ items: F.d.scen || [] });
       } });
-      steps.push({ need: function () { return parseFloat(F.d.guess) >= 0 && F.d.guess !== ""; }, next: "Start the tutorial", html: function () {
-        var teen = curMode() === "teen", r = F.d.rand;
-        return '<p class="eyebrow">Before the tutorial</p><h2>Take a guess</h2><p class="muted">' + (teen ? r.name + " gets AED " + r.income + " pocket money a month." : r.name + " earns AED " + r.income.toLocaleString("en-US") + " a month.") + ' About how much does ' + r.name + ' spend each month on ' + (teen ? "<b>subscriptions, games, in-app purchases and pay-later</b> together?" : "<b>pay-later plus subscriptions</b> together?") + ' Add it up in your head. No calculator.</p><div class="money"><span>AED</span><input class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="guess" placeholder="e.g. 500" value="' + esc(F.d.guess) + '"></div>' + exList(r);
-      } });
-    } else if (kind === "guide") {
-      var G = [
-        ["Do the before-quiz", "Where: the first screens you just did.", "This is your starting point. Later we compare it with the after-quiz to see what changed. There is nothing to do here, you are already past it.", "check"],
-        ["Add what you pay for", "Where: Items tab, then Add a payment. Or tap Try example numbers.", "Add pay-later plans, subscriptions, bills and loans, with the day each is paid. Then tap Reveal my TrueTotal to see the real total against your guess.", "plus"],
-        ["Use it for a few days", "Where: Calendar, Save and the switches on the Total tab.", "Look at your pay days in the Calendar. Switch a cost off to see what cancelling would do. Open Save for cheaper options. 3 to 5 days of real use works best.", "cal"],
-        ["Do the after-quiz", "Where: Learn tab, then Take the after-quiz.", "Same six questions as the start, plus a few ratings. It takes about 4 minutes. Do it after you have used the app.", "learn"],
-        ["Send your results", "Where: the button at the end of the after-quiz, or Learn, then Send.", "This is the step people forget. Tap Send my results after the after-quiz, so your before and after are counted together. Not your income.", "share"]
-      ];
-      var mini = function (cur) { return '<div class="steps" style="margin:14px 0 0">' + G.map(function (g, i) { return '<div class="stp' + (i < cur ? " done" : i === cur ? " now" : "") + '"><span class="num">' + (i < cur ? "✓" : i + 1) + '</span><div><b style="font-weight:600">' + g[0] + "</b></div></div>"; }).join("") + "</div>"; };
-      steps.push({ need: function () { return true; }, next: "Show me", html: function () { return '<p class="eyebrow">Quick tutorial</p><h1>5 steps. Before and after.</h1><p class="muted" style="font-size:16px">The project measures what changes after you use TrueTotal, so it needs both a before and an after from you. Here is the whole path.</p>' + mini(-1).replace('class="steps"', 'class="steps card"'); } });
-      G.forEach(function (g, i) {
-        steps.push({ need: function () { return true; }, next: i === 4 ? "Got it, let's start" : "Next", html: function () { return '<p class="eyebrow">Step ' + (i + 1) + " of 5" + (i === 0 ? " · done" : i === 1 ? " · do this now" : "") + '</p><div style="display:flex;gap:14px;align-items:center;margin:6px 0 2px"><span class="ico lg" style="--c:var(--k-pay);width:56px;height:56px;border-radius:16px">' + ic(g[3] === "learn" ? "bulb" : g[3], 28) + "</span><h1 style=\"margin:0\">" + g[0] + '</h1></div><p class="sm" style="font-weight:600;margin-top:12px">' + g[1] + '</p><p class="muted" style="font-size:16px">' + g[2] + "</p>" + mini(i); } });
-      });
     } else if (kind === "pre") {
-      /* not used */
-    } else if (kind === "post") {
-      steps.push({ need: function () { return F.d.r.every(function (x) { return x != null; }); }, next: "Next", html: function () {
-        return '<p class="eyebrow">Your review · 1 of 2</p><h2>How was it?</h2><p class="muted">Tap a number for each. 1 is disagree, 5 is agree.</p>' + RATE.map(function (c, i) { return '<div class="card stack" style="gap:10px"><p style="font-weight:500">' + c + '</p><div class="rate5" role="group" aria-label="' + esc(c) + '">' + [1, 2, 3, 4, 5].map(function (n) { return '<button data-act="frate" data-i="' + i + '" data-v="' + n + '" aria-pressed="' + (F.d.r[i] === n) + '">' + n + "</button>"; }).join("") + '</div><div class="range-lbl"><span>Disagree</span><span>Agree</span></div></div>'; }).join("") + '<div><div class="lbl" style="margin-bottom:8px">Which part helped most?</div><div class="chips">' + HELPED.map(function (o) { return '<button class="chip" data-act="fchip" data-k="h" data-v="' + o + '" aria-pressed="' + (F.d.h === o) + '">' + o + "</button>"; }).join("") + "</div></div>";
+      d = { a: [null, null, null], c: null };
+      steps.push(introStep("Starter quiz", "Three quick questions", "Take this before you show the total. It takes about a minute, and the answers are shown at the end of the test.", "Start the quiz"));
+      [0, 1, 2].forEach(function (qi) { steps.push(quizStep("A", qi)); });
+      steps.push(confStep());
+    } else if (kind === "after") {
+      d = { a: [null, null, null], why: "", c: null };
+      steps.push(introStep("Follow-up quiz", "Three new questions", "These are about someone else, with different numbers. Then there is one short written question. The answers are shown after you finish, not during. It takes about a minute.", "Start the quiz", "Skip the follow-up quiz", "fskipafter"));
+      [0, 1, 2].forEach(function (qi) { steps.push(quizStep("B", qi)); });
+      steps.push({ need: function () { return true; }, next: "Next", html: function () { return '<p class="eyebrow">Short written question · optional</p><h2>' + WHY_Q + '</h2><p class="muted">A sentence or two is plenty, or leave it blank. Some reasons are shown after you finish.</p><div class="field"><label for="why" class="vh">Your answer</label><textarea id="why" data-in="why" maxlength="300" placeholder="Type here (optional)">' + esc(F.d.why) + "</textarea></div>"; } });
+      var cs = confStep(); cs.commit = function () { S.t.post = { st: "done", ver: "B", a: F.d.a.slice(), s: qScore(F.d.a, "B"), c: F.d.c, why: cleanText(F.d.why, 300), at: Date.now() }; S.draft = null; F.committed = true; save(); };
+      steps.push(cs);
+      steps.push({ need: function () { return true; }, next: "Continue to feedback", result: true, html: afterResultHTML });
+    } else if (kind === "fb") {
+      d = { ease: null, clarity: null, useful: null, confusing: "", change: "", use: "" };
+      steps.push({ needMsg: "Choose a number for each to continue.", need: function () { return F.d.ease != null && F.d.clarity != null; }, next: "Next", skip: "Skip feedback", skipAct: "fskipfb", html: function () { return '<p class="eyebrow">Feedback · 1 of 3</p><h2>How was TrueTotal?</h2>' + ratingRows([["ease", "How easy was TrueTotal to use?", EASE_LBL], ["clarity", "How clear were its explanations?", CLEAR_LBL]]); } });
+      steps.push({ needMsg: "Choose one to continue. \"None\" is fine.", need: function () { return F.d.useful != null; }, next: "Next", html: function () { return '<p class="eyebrow">Feedback · 2 of 3</p><h2>Which feature was most useful?</h2><div class="chips" role="group" aria-label="Most useful feature">' + USEFUL.map(function (o) { return '<button class="chip" data-act="fchip" data-k="useful" data-v="' + o + '" aria-pressed="' + (F.d.useful === o) + '">' + o + "</button>"; }).join("") + "</div>"; } });
+      steps.push({ need: function () { return true; }, next: "Finish", commit: function () { S.t.fb = { st: "done", ease: F.d.ease, clarity: F.d.clarity, useful: F.d.useful, confusing: cleanText(F.d.confusing, 300), change: cleanText(F.d.change, 300), use: cleanText(F.d.use, 300), at: Date.now() }; S.draft = null; F.committed = true; save(); }, html: function () {
+        var ta = function (k, id, label, ph) { return '<div class="field"><label for="' + id + '">' + label + ' <small>(optional)</small></label><textarea id="' + id + '" data-in="' + k + '" maxlength="300" placeholder="' + ph + '">' + esc(F.d[k]) + "</textarea></div>"; };
+        return '<p class="eyebrow">Feedback · 3 of 3</p><h2>Anything else?</h2><p class="muted">All optional. Leave any blank.</p>' + ta("confusing", "fbA", "What was confusing or difficult?", "") + ta("change", "fbB", "What would you change?", "") + ta("use", "fbC", "How might you use what you learned?", "");
       } });
-      steps.push({ need: function () { return F.d.act.length > 0; }, next: "Done", html: function () { return '<p class="eyebrow">Your review · 2 of 2</p><h2>In real life, what would you do differently?</h2><p class="muted">Pick all that apply.</p><div class="chips">' + ACTIONS.map(function (o) { return '<button class="chip" data-act="fmulti" data-v="' + o + '" aria-pressed="' + (F.d.act.indexOf(o) >= 0) + '">' + o + "</button>"; }).join("") + '</div><div class="field"><label for="cm">Your review in a sentence or two <small>(optional)</small></label><textarea id="cm" data-in="cm" placeholder="What worked? What was confusing or missing?">' + esc(F.d.cm) + "</textarea></div>"; } });
-      steps.push({ need: function () { return true; }, next: "Close", result: true, html: function () { return resultHTML(); } });
-    } else if (kind === "check") {
-      steps.push({ need: function () { return F.d.act.length > 0 && F.d.use; }, next: "Save", html: function () { return '<p class="eyebrow">5-day check-in</p><h2>Since using TrueTotal, did you change anything?</h2><div class="chips">' + ["Cancelled a subscription", "Delayed a pay-later purchase", "Paid something off early", "Set a budget", "No change"].map(function (o) { return '<button class="chip" data-act="fmulti" data-v="' + o + '" aria-pressed="' + (F.d.act.indexOf(o) >= 0) + '">' + o + "</button>"; }).join("") + '</div><div class="field"><label for="sv">If you cancelled something, how much does that save a month? (AED, optional)</label><input id="sv" type="number" inputmode="decimal" min="0" data-in="saved" value="' + esc(F.d.saved) + '"></div><div><div class="lbl" style="margin-bottom:8px">Are you still using the app?</div><div class="chips">' + ["Yes, weekly", "Once or twice", "No"].map(function (o) { return '<button class="chip" data-act="fchip" data-k="use" data-v="' + o + '" aria-pressed="' + (F.d.use === o) + '">' + o + "</button>"; }).join("") + "</div></div>"; } });
+      steps.push({ need: function () { return true; }, next: "Review and send (optional)", skip: "Close without sending", skipAct: "fclose", result: true, html: function () { return '<p class="eyebrow">Thank you</p><h1>Feedback saved</h1><p class="muted">Your answers help show whether TrueTotal makes small payments easier to understand.</p><div class="note">Nothing has been sent. Next you can review exactly what would be sent and decide whether to send it.</div>'; } });
     }
     return { kind: kind, steps: steps, i: 0, d: d };
   }
-  function resultHTML() {
-    var g = S.guess, h = '<p class="eyebrow">Thank you</p><h1>Review saved</h1><p class="muted">Your answers help show whether TrueTotal makes small payments easier to understand.</p>';
-    if (g != null && S.revealed) h += '<div class="card stack" style="gap:4px"><b style="font-family:var(--fd);font-size:17px">Your guess vs the real total</b>' + ldr("Your guess", aed(g)) + ldr("Real total", aed(flexible())) + "</div>";
-    h += S.autosend === true ? '<p class="sm">Your results are sent automatically. Nothing more to do.</p>' : (canSend() ? '<div class="card stack" style="gap:8px"><b style="font-family:var(--fd);font-size:17px">Send your review</b>' + sendBlock() + "</div>" : "");
-    return h;
-  }
+  var PERSIST = /^(onboard|pre|after|fb)$/;
   function openFlow(kind) {
     closeSheet(true);
     F = buildFlow(kind);
+    var dr = S.draft;
+    if (dr && dr.kind === kind && dr.d) { F.d = dr.d; F.i = Math.min(Math.max(0, dr.i || 0), F.steps.length - 1); }
+    else if (PERSIST.test(kind)) { S.draft = null; }
     if (!flowEl) { flowEl = document.createElement("div"); flowEl.className = "flow"; flowEl.setAttribute("role", "dialog"); flowEl.setAttribute("aria-modal", "true"); flowEl.setAttribute("aria-label", "TrueTotal"); flowEl.setAttribute("tabindex", "-1"); document.body.appendChild(flowEl); }
     document.documentElement.style.overflow = "hidden";
     drawFlow();
   }
   function closeFlow() { if (flowEl) { flowEl.remove(); flowEl = null; } F = null; document.documentElement.style.overflow = ""; syncBg(); render(); window.scrollTo(0, 0); }
-  function showBreakdown() { setTimeout(function () { var p = $("#view .paper"); if (p) { p.style.scrollMarginTop = "calc(env(safe-area-inset-top, 0px) + 14px)"; p.scrollIntoView({ block: "start" }); } }, 150); }
+  function persistDraft() { if (F && PERSIST.test(F.kind) && !F.committed) { S.draft = { kind: F.kind, i: F.i, d: F.d }; save(); } }
   function drawFlow() {
     var fsig = flowEl && flowEl.contains(document.activeElement) ? sigOf(document.activeElement) : null;
-    var st = F.steps[F.i], pct = Math.round(F.i / (F.steps.length - 1) * 100), last = F.i === F.steps.length - 1;
-    flowEl.innerHTML = '<div class="in"><div class="prog">' + (F.i > 0 && !(st.result) ? '<button class="icon-btn" data-act="fback" aria-label="Back">' + ic("left", 22) + "</button>" : '<span style="width:44px"></span>') + '<div class="track"><i style="width:' + pct + '%"></i></div><button class="icon-btn" data-act="fclose" aria-label="Close">' + ic("x", 22) + '</button></div><div class="body">' + st.html() + '</div><div class="foot"><button class="btn ' + (last ? "hi" : "") + ' block" id="fnext" data-act="fnext"' + (st.need() ? "" : " disabled") + ">" + (st.next || (last ? "Done" : "Next")) + "</button>" + (st.skip ? '<button class="btn ghost block" data-act="fskip">' + st.skip + "</button>" : "") + "</div></div>";
+    var st = F.steps[F.i], pct = Math.round(F.i / Math.max(1, F.steps.length - 1) * 100), last = F.i === F.steps.length - 1, canBack = F.i > 0 && !st.result, ok = st.need();
+    flowEl.innerHTML = '<div class="in"><div class="prog">' + (canBack ? '<button class="icon-btn" data-act="fback" aria-label="Back">' + ic("left", 22) + "</button>" : '<span style="width:44px"></span>') + '<div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '" aria-label="Progress"><i style="width:' + pct + '%"></i></div><button class="icon-btn" data-act="fclose" aria-label="Close. Your progress is saved">' + ic("x", 22) + '</button></div><div class="body">' + st.html() + '</div><div class="foot">' + (!ok && st.needMsg ? '<p class="sm" id="needHint" style="text-align:center">' + st.needMsg + "</p>" : '<p class="sm" id="needHint" style="text-align:center"></p>') + '<button class="btn ' + (last ? "hi" : "") + ' block" id="fnext" data-act="fnext"' + (ok ? "" : " disabled") + ">" + (st.next || (last ? "Done" : "Next")) + "</button>" + (st.skip ? '<button class="btn ghost block" data-act="' + (st.skipAct || "fskip") + '">' + st.skip + "</button>" : "") + "</div></div>";
     flowEl.scrollTop = 0;
     runCounts(flowEl);
     syncBg();
-    if (fsig) refocus(fsig); else if (!flowEl.contains(document.activeElement)) flowEl.focus({ preventScroll: true });
+    persistDraft();
+    var moved = F.lastI !== F.i; F.lastI = F.i;
+    var hd = moved ? flowEl.querySelector(".body h1, .body h2") : null;
+    if (hd) { hd.setAttribute("tabindex", "-1"); hd.focus({ preventScroll: true }); }
+    else if (fsig) refocus(fsig); else if (!flowEl.contains(document.activeElement)) flowEl.focus({ preventScroll: true });
   }
   function fnext() {
     var st = F.steps[F.i];
     if (!st.need()) return;
+    if (st.leave) st.leave();
+    if (st.commit) st.commit();
     if (F.i < F.steps.length - 1) { F.i++; drawFlow(); return; }
     finishFlow();
   }
-  function commitPost() {
-    if (!F || F.kind !== "post") return;
-    var d = F.d; if (S.post && S.post.at && F.committed) return;
-    S.post = { a: d.a.slice(), c: d.c.slice(), r: d.r.slice(), h: d.h, act: d.act.slice(), cm: d.cm, at: Date.now() }; F.committed = true; save();
+  function fback() { var st = F.steps[F.i]; if (F.i > 0) { F.i = st.back ? st.back() : F.i - 1; drawFlow(); } }
+  /* closing keeps progress. Closing the reveal early just finishes it, so the total is never half-shown. */
+  function fcloseAct() {
+    if (!F) { closeFlow(); return; }
+    var k = F.kind, ft = F.firstTime;
+    if (k === "reveal") {
+      if (!S.revealed) { if (F.finish) F.finish(); return; }
+      rvTimers.forEach(clearTimeout); rvTimers = [];
+      closeFlow();
+      if (ft) { S.fresh = true; save(); render(); window.scrollTo(0, 0); }
+      return;
+    }
+    persistDraft();
+    closeFlow();
+    if (PERSIST.test(k) && S.draft) toast("Progress saved. You can pick up where you left off.");
   }
   function finishFlow() {
     var k = F.kind, d = F.d;
     if (k === "onboard") {
-      S.about = { age: d.age, stat: d.stat, pl: d.pl };
-      S.name = cleanName(d.name);
-      S.mode = d.age === "Under 18" ? "teen" : "adult";
-      if (d.a.every(function (x) { return x != null; })) S.pre = { a: d.a.slice(), c: d.c.slice(), at: Date.now() };
-      var rd = d.rand || randomData(S.mode === "teen");
-      S.income = rd.income; S.items = rd.items; S.goal = rd.goal; S.revealed = false;
-      S.guess = parseFloat(d.guess); if (isNaN(S.guess)) S.guess = null;
-      S.autosend = d.share === "yes"; S.onboarded = true; save(); view = "home"; closeFlow(); startTour();
-    } else if (k === "guide") {
-      S.guided = true; save(); closeFlow(); view = S.items.length ? view : "items"; render();
-    } else if (k === "post") {
-      commitPost(); view = "learn"; closeFlow(); confetti(); toast("Saved. Thank you!"); autoSend(true);
-    } else if (k === "check") {
-      S.check = { act: d.act.slice(), saved: parseFloat(d.saved) || 0, use: d.use, at: Date.now() }; save(); closeFlow(); toast("Check-in saved"); autoSend(true);
+      S.t = newTest(); S.t.age = d.age;
+      S.t.pre = d.preSkip ? { st: "skipped", ver: "A", at: Date.now() } : { st: "done", ver: "A", a: d.a.slice(), s: qScore(d.a, "A"), c: d.c, at: Date.now() };
+      S.income = SCEN_INCOME; S.items = d.scen || scenItems(); S.goal = null; S.revealed = false; S.revealedAt = null;
+      S.guess = parseFloat(d.guess); if (isNaN(S.guess)) S.guess = null; S.guessAt = Date.now();
+      S.onboarded = true; S.draft = null; save(); view = "home"; closeFlow(); startTour();
+    } else if (k === "pre") {
+      S.t.pre = { st: "done", ver: "A", a: d.a.slice(), s: qScore(d.a, "A"), c: d.c, at: Date.now() }; S.draft = null; save(); closeFlow(); toast("Starter quiz saved");
+    } else if (k === "after") {
+      closeFlow(); confetti(); if (!isDone(S.t.fb)) openFlow("fb");
+    } else if (k === "fb") {
+      closeFlow(); openSend();
     }
   }
+
+
+
+  function showBreakdown() { setTimeout(function () { var p = $("#view .paper"); if (p) { p.style.scrollMarginTop = "calc(env(safe-area-inset-top, 0px) + 14px)"; p.scrollIntoView({ block: "start" }); } }, 150); }
+
+
+
+
 
   /* ---------- spotlight tour ---------- */
   var tourEl = null, T = null, tourTimer = null;
   var TOUR = [
-    { view: "home", title: "Quick tutorial", text: "The random values are in. Here is a 30 second look at where everything is. At the end you will see the real total." },
-    { view: "home", sel: ["#view .steps"], title: "Your steps", text: "This card always shows what to do next. The dots fill in as you go." },
-    { view: "items", sel: ["#view .group"], title: "The payments list", text: "Everything in the app is listed here, grouped by type. Tap any payment to open it. Each one has a switch: turn it off to see what cancelling would do." },
-    { view: "items", sel: ["#view [data-act=\"add\"]"], title: "Add your own", text: "Want to test it more? Tap Add and put in a made-up payment. Any numbers you like." },
-    { view: "cal", sel: ["nav.tabs button[data-v=\"cal\"]"], title: "Calendar", text: "Every payment lands on its pay day, so you can see when money leaves the account." },
-    { view: "save", sel: ["nav.tabs button[data-v=\"save\"]"], title: "Save tab", text: "Ways to pay less, a pay-later calculator, a 'Should I buy this?' pause button and a savings goal all live here." },
-    { view: "learn", sel: ["#view section.card:not(.steps) [data-act=\"post\"]", "#view [data-act=\"post\"]"], title: "Your review", text: "When you have explored, tap this to give your review. It takes about a minute." },
-    { view: "home", sel: ["#view [data-act=\"reveal\"]"], title: "Last step: show the total", text: "Ready? Tap Show the total to see what those payments really add up to, compared with your guess.", last: true }
+    { view: "home", title: "Quick tour", text: "Sam's made-up payments are in. Here is a 30 second look at where things are. At the end you will see the real total next to your guess." },
+    { view: "home", sel: ["#view .steps"], title: "Your steps", text: "This card shows what comes next. A step is only ticked once you have done it, and skipped steps stay visible so you can come back." },
+    { view: "items", sel: ["#view .group"], title: "Sam's payments", text: "Everything is listed here, grouped by type. Tap one to see its details. Only optional recurring payments have a switch, and it only changes the simulation: it does not cancel anything." },
+    { view: "cal", sel: ["nav.tabs button[data-v=\"cal\"]"], title: "Calendar", text: "Every payment lands on its pay day, so you can see where payments overlap and when they end." },
+    { view: "save", sel: ["nav.tabs button[data-v=\"save\"]"], title: "Save tab", text: "Ideas for lowering future costs, a pay-later calculator and a 'Should I buy this?' pause button live here." },
+    { view: "learn", sel: ["#view .steps"], title: "Learn tab", text: "Your results, the optional 50/30/20 guide, the follow-up quiz and the feedback form are here, once you have seen the total." },
+    { view: "home", sel: ["#view [data-act=\"reveal\"]"], title: "Last step: show the total", text: "Ready? Tap Show the total to see what Sam's pay-later plans and subscriptions really add up to, with the working, next to your guess.", last: true }
   ];
   function tourFind(sels) { if (!sels) return null; for (var i = 0; i < sels.length; i++) { var e = document.querySelector(sels[i]); if (e && e.offsetParent !== null || (e && getComputedStyle(e).position === "fixed")) return e; } return null; }
   function startTour() {
@@ -1571,11 +1710,10 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   var rvTimers = [];
   function openReveal() {
     closeSheet(true);
-    F = { kind: "reveal" };
-    if (!S.revealed) { S.revealed = true; S.revealedAt = Date.now(); save(); F.firstTime = true; }
+    F = { kind: "reveal", firstTime: !S.revealed };
     if (!flowEl) { flowEl = document.createElement("div"); flowEl.className = "flow"; flowEl.setAttribute("role", "dialog"); flowEl.setAttribute("aria-modal", "true"); flowEl.setAttribute("aria-label", "TrueTotal"); flowEl.setAttribute("tabindex", "-1"); document.body.appendChild(flowEl); }
     document.documentElement.style.overflow = "hidden";
-    var items = S.items.filter(function (i) { return i.on; }).sort(function (a, b) { return monthly(b) - monthly(a); }), shown = items.slice(0, 7), more = items.length - shown.length, tot = total(), real = flexible(), g = S.guess;
+    var items = S.items.filter(function (i) { return i.kind === "pay" || i.kind === "sub"; }).sort(function (a, b) { return monthly(b) - monthly(a); }), shown = items.slice(0, 8), more = items.length - shown.length, tot = flexible(), real = flexible(), g = S.guess;
     var h = '<div class="in"><div class="prog"><span style="width:44px"></span><div class="track" style="visibility:hidden"></div><button class="icon-btn" data-act="fclose" aria-label="Close">' + ic("x", 22) + '</button></div><div class="body rv">';
     h += g != null ? '<div><p class="eyebrow">You guessed</p><div class="mono" style="font-size:30px;font-weight:600">' + aed(g) + '</div><small>for ' + flexLabel().toLowerCase() + '</small></div>' : '<p class="eyebrow">Printing your TrueTotal…</p>';
     h += '<section class="paper" data-act="rvskip"><div class="eyebrow">TrueTotal · per month</div><hr class="rule">';
@@ -1583,11 +1721,12 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     if (more > 0) h += '<div class="line" data-i="' + shown.length + '"><span class="muted">and ' + more + " more…</span></div>";
     h += '<hr class="rule"><div class="leader total-line"><span>TOTAL</span><span class="dots"></span><span class="total-num"><span class="hl" id="rvTot">AED 0</span></span></div><div class="barcode" aria-hidden="true"></div></section>';
     h += '<div class="fade" id="rvCmp">' + (g != null ? '<div class="cmp"><div><div class="row-between"><small>Your guess</small><b class="mono">' + aed(g) + '</b></div><div class="bar" style="--c:var(--k-other)"><i id="rvB1" data-w="0"></i></div></div><div><div class="row-between"><small>Real: ' + flexLabel().toLowerCase() + '</small><b class="mono">' + aed(real) + '</b></div><div class="bar" style="--c:var(--k-pay)"><i id="rvB2" data-w="0"></i></div></div></div>' : "") + "</div>";
-    var diff = real - (g || 0), msg = g == null ? "Here is what you pay for, all in one place." : Math.abs(diff) < Math.max(10, real * 0.05) ? "You were close. Most people aren't." : diff > 0 ? aed(diff) + " more than you thought" + (g > 0 ? " (" + Math.round(diff / g * 100) + "% higher)" : "") + ". Small payments add up." : aed(-diff) + " less than you feared.";
-    h += '<div class="fade" id="rvMsg"><h2>' + msg + '</h2>' + (S.income > 0 ? '<p class="muted" style="margin-top:6px">Everything you pay for takes <b>' + pc(share(tot)) + "</b> " + baseWord() + ".</p>" : '<p class="muted" style="margin-top:6px">Everything you pay for adds up to about <b>' + aed(tot * 12) + "</b> a year.</p>") + '</div></div><div class="foot fade" id="rvFoot"><button class="btn hi block" data-act="rvdone">See my breakdown</button></div></div>';
+    var diff = real - (g || 0), msg = g == null ? "Here is what you pay for, all in one place." : Math.abs(diff) < Math.max(10, real * 0.05) ? "You were close." : diff > 0 ? aed(diff) + " more than you guessed" + (g > 0 ? " (" + Math.round(diff / g * 100) + "% higher)" : "") + ". Small payments add up." : aed(-diff) + " less than you guessed.";
+    h += '<div class="fade" id="rvMsg"><h2>' + msg + '</h2><p class="muted" style="margin-top:6px">That is the average monthly cost of Sam\'s pay-later plans and subscriptions together: <b>' + aed(real) + '</b> a month.</p>' + (S.income > 0 ? '<p class="muted" style="margin-top:6px">All of Sam\'s listed payments, including rent and bills, average <b>' + aed(total()) + '</b> a month, which is <b>' + pc(share(total())) + '</b> of the income entered.</p>' : "") + '<details class="how" style="margin-top:8px"><summary>See how it was worked out</summary>' + workedHTML() + '</details></div></div><div class="foot fade" id="rvFoot"><button class="btn hi block" data-act="rvdone">See my breakdown</button></div></div>';
     flowEl.innerHTML = h; syncBg(); flowEl.focus({ preventScroll: true });
     var lines = $$(".line", flowEl), totEl = $("#rvTot"), run = 0, end;
     var finish = function () {
+      if (!S.revealed) { S.revealed = true; S.revealedAt = Date.now(); save(); }
       rvTimers.forEach(clearTimeout); rvTimers = [];
       lines.forEach(function (l) { l.classList.add("show"); });
       totEl.textContent = aed(tot);
@@ -1608,41 +1747,47 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   /* ---------- results sharing ---------- */
   function canSend() { return !!(RESULTS_FORM.action && RESULTS_FORM.entry); }
   function sendResults() {
-    commitPost();
+    if (DEV) { toast("This is a development copy, so sending is turned off."); return; }
     if (!canSend()) { copyResults(); return; }
+    if (sendBusy) return;
     var txt = resultsText(), body = new URLSearchParams();
     body.append(RESULTS_FORM.entry, txt + "\nSent: " + new Date().toISOString());
-    toast("Sending…");
+    sendBusy = true; toast("Sending…");
     fetch(RESULTS_FORM.action, { method: "POST", mode: "no-cors", body: body }).then(function () {
-      S.sentAt = Date.now(); S.sentTxt = txt; S.pending = false; save(); toast("Sent. Thank you!");
-      if (view === "learn" && !flowEl) render();
-    }, function () { toast("Could not send. Use Copy my results instead."); });
+      sendBusy = false; S.sentAt = Date.now(); S.sentTxt = txt; save(); toast("Sent. Thank you!");
+      if (sheet && sheet.dataset.kind === "send") openSend();
+    }, function () { sendBusy = false; toast("Could not send. Use Copy instead."); });
   }
-  /* automatic send: runs after the reveal, the after-quiz and the check-in. If it fails (offline) it retries later. */
-  var autoBusy = false;
-  function autoSend(mark) {
-    if (S.autosend !== true || !canSend() || !S.revealed) return;
-    if (mark) { S.pending = true; save(); }
-    if (!S.pending || autoBusy || navigator.onLine === false) return;
-    var txt = resultsText();
-    if (txt === S.sentTxt) { S.pending = false; save(); return; }
-    var body = new URLSearchParams(); body.append(RESULTS_FORM.entry, txt + "\nSent: " + new Date().toISOString());
-    autoBusy = true;
-    fetch(RESULTS_FORM.action, { method: "POST", mode: "no-cors", body: body }).then(function () {
-      autoBusy = false; S.sentAt = Date.now(); S.sentTxt = txt; S.pending = false; save();
-      if (!flowEl && !sheet) render();
-      toast("Results sent. Thank you!");
-    }, function () { autoBusy = false; });
+  var sendBusy = false;
+  /* shows exactly what would be sent, in plain words, before anything leaves the device */
+  function sendRows() {
+    var T = S.t, q = function (x, name) { return !x ? "not taken" : x.st === "skipped" ? "skipped" : x.st === "done" ? "version " + x.ver + ", your answers and score " + x.s + " of 3" + (x.c != null ? ", confidence " + x.c + " of 5" : "") : "incomplete"; };
+    var rows = [["Tester code", S.id + " (random, not linked to your name)"], ["Age group", T.age || "not given"], ["Scenario", SCEN_ID + " (the made-up Sam, no real figures)"], ["Starter quiz", q(T.pre)], ["Follow-up quiz", q(T.post)]];
+    if (T.post && T.post.st === "done") rows.push(["Written answer", T.post.why ? "as you typed it" : "none"]);
+    rows.push(["Your guess and Sam's total", S.guess != null ? aed(S.guess) + " and " + aed(flexible()) + " a month" : "no guess"]);
+    var fb = T.fb; rows.push(["Feedback", !fb ? "not given" : fb.st === "skipped" ? "skipped" : "ratings " + fb.ease + " and " + fb.clarity + " of 5, most useful: " + fb.useful + ", plus any comments you typed"]);
+    rows.push(["Other", "what you tried in the app (calendar, a change, the calculator), the time of each step, the app version, and a note on whether it is complete"]);
+    return rows;
   }
-  window.addEventListener("online", function () { autoSend(); });
-  document.addEventListener("visibilitychange", function () { if (!document.hidden) autoSend(); });
-  function sendBlock() {
-    if (S.autosend === true) return '<p class="sm"><b>' + (S.pending ? "Sending your results…" : S.sentAt ? "Your results were sent automatically." : "Your results will be sent automatically.") + "</b>" + (S.sentAt ? " Last sent " + new Date(S.sentAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + "." : "") + ' Nothing to tap. Sent: name, tester code, quiz scores and answers, spending totals. Not your income.</p><button class="btn ghost block" data-act="send">Send again</button>';
-    return '<button class="btn hi block" data-act="send">' + (S.sentAt ? "Send an update" : "Send my results") + '</button><p class="sm">' + (S.sentAt ? "Last sent " + new Date(S.sentAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + ". " : "") + "Sends your name, tester code, quiz scores and answers, and spending figures. Not your income. You can copy them instead.</p>";
+  function openSend() {
+    closeSheet(true);
+    var rows = sendRows(), missing = stages().filter(function (x) { return x.st !== "done"; }).map(function (x) { return x.name + (x.st === "skipped" ? " (skipped)" : " (not done)"); });
+    var h = '<div class="stack" style="gap:12px"><div class="row-between"><h2>Review what will be sent</h2><button class="icon-btn" data-act="sheetclose" aria-label="Close">' + ic("x", 22) + "</button></div>";
+    h += '<p class="sm"><b style="color:var(--ink)">Sending is optional, and nothing has been sent yet' + (S.sentAt ? " except what is shown below" : "") + ".</b> No name, email, real income or account details are included, because you never entered any.</p>";
+    h += '<div class="sendbox">' + rows.map(function (r) { return '<div class="leader"><span>' + r[0] + '</span><span class="dots"></span><span class="amt" style="text-align:right;white-space:normal;max-width:60%">' + esc(r[1]) + "</span></div>"; }).join("") + "</div>";
+    h += '<p class="sm"><b style="color:var(--ink)">Where it goes.</b> To a Google Form owned by the project organiser. The responses are collected in the organiser\'s Google spreadsheet and used for the competition evidence report. Google handles the submission under its own terms.</p>';
+    if (missing.length) h += '<div class="note">Not complete: ' + esc(missing.join(", ")) + ". You can still send. It will be marked as incomplete and kept apart from complete results.</div>";
+    if (S.sentAt && S.sentTxt === resultsText()) h += '<div class="note">Sent on ' + new Date(S.sentAt).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) + ". Nothing has changed since.</div>";
+    else if (S.sentAt) h += '<div class="note">Sent earlier on ' + new Date(S.sentAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + ". Your results have changed since, so you can send an update.</div>";
+    h += '<details class="how"><summary>Show the exact text</summary><textarea readonly style="min-height:160px;font-family:var(--fm);font-size:12.5px" aria-label="Exact text that would be sent">' + esc(resultsText()) + "</textarea></details>";
+    if (DEV) h += '<div class="note">This is a development copy, so sending is turned off here. Copy still works.</div>';
+    h += '<div class="stack" style="gap:8px">' + (DEV || !canSend() ? "" : '<button class="btn hi block" data-act="sendnow">' + (S.sentAt ? "Send an update" : "Send to the project") + "</button>") + '<button class="btn ghost block" data-act="copy">Copy instead (does not submit anything)</button><button class="btn ghost block" data-act="sheetclose">' + (S.sentAt ? "Close" : "Do not send") + "</button></div></div>";
+    openSheet(h, null, "send");
   }
+
+
   function copyResults() {
-    commitPost();
-    var txt = resultsText(), done = function () { toast("Copied. Paste it where you were asked to send it."); };
+    var txt = resultsText(), done = function () { toast("Copied to your clipboard. Nothing has been submitted."); };
     var fallback = function () {
       var ta = document.createElement("textarea"); ta.value = txt; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0"; document.body.appendChild(ta); ta.select();
       var ok = false; try { ok = document.execCommand("copy"); } catch (e) {} ta.remove();
@@ -1655,7 +1800,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   }
   function buildICS() {
     var f = function (d) { return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()); }, trig = ["PT9H", "-PT15H", "-PT39H"][S.remind], L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//TrueTotal//EN", "CALSCALE:GREGORIAN"];
-    counted().forEach(function (it) {
+    S.items.forEach(function (it) {
       var a = pISO(it.anchor), rr = { weekly: "FREQ=WEEKLY", biweekly: "FREQ=WEEKLY;INTERVAL=2", monthly: "FREQ=MONTHLY", yearly: "FREQ=YEARLY" }[it.freq] + (it.left != null ? ";COUNT=" + it.left : "");
       L.push("BEGIN:VEVENT", "UID:" + it.id + "@truetotal", "DTSTAMP:" + f(today()) + "T090000Z", "DTSTART;VALUE=DATE:" + f(a), "DTEND;VALUE=DATE:" + f(addDays(a, 1)), "RRULE:" + rr, "SUMMARY:Pay " + it.name.replace(/[,;\\]/g, " ") + " (" + aed(it.amount) + ")", "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:Payment due", "TRIGGER:" + trig, "END:VALARM", "END:VEVENT");
     });
@@ -1674,44 +1819,28 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   /* random made-up values, so nobody types real money details */
   function ri(min, max, step) { step = step || 1; var n = Math.floor((max - min) / step) + 1; return min + Math.floor(Math.random() * n) * step; }
   function pick(arr, n) { var a = arr.slice(), out = []; while (out.length < n && a.length) out.push(a.splice(Math.floor(Math.random() * a.length), 1)[0]); return out; }
-  function randomData(teen) {
-    var m = function (n, k, a, day, left, freq) { return { id: uid(), name: n, kind: k, amount: a, freq: freq || "monthly", anchor: iso(freq === "yearly" ? addMonths(today(), ri(2, 9)) : freq === "biweekly" ? addDays(today(), ri(1, 10)) : nextDom(day)), left: left == null ? null : left, on: true }; };
-    var d = function () { return ri(1, 28); };
-    if (teen) {
-      var tp = [["Streaming service", "sub", 25, 45], ["Music app", "sub", 15, 30], ["App subscription", "sub", 10, 25], ["Game pass", "game", 30, 55], ["In-game coins", "game", 20, 50], ["Cloud storage", "sub", 5, 15]];
-      var ti = pick(tp, ri(4, 5)).map(function (p) { return m(p[0], p[1], ri(p[2], p[3], 5), d()); });
-      ti.push(m("Phone top-up", "bill", ri(30, 60, 5), d()));
-      if (Math.random() < 0.5) ti.push(m("Pay-later: trainers", "pay", ri(40, 90, 5), d(), ri(2, 4)));
-      return { teen: true, name: "Alex", income: ri(150, 400, 50), goal: { name: "New headphones", target: 600 }, items: ti };
-    }
-    var items = [m("Rent", "bill", ri(2400, 4200, 100), 1), m("Utilities and internet", "bill", ri(350, 650, 10), d()), m("Phone plan", "bill", ri(150, 300, 10), d()), m("Credit card payment", "loan", ri(300, 700, 50), d())];
-    var sp = [["Streaming service", 30, 70], ["Music app", 20, 35], ["Gym membership", 150, 350], ["News app", 25, 60], ["Meal kit", 100, 200], ["Language app", 30, 60]];
-    pick(sp, ri(3, 4)).forEach(function (p) { items.push(m(p[0], "sub", ri(p[1], p[2], 5), d())); });
-    items.push(m("Cloud storage", "sub", ri(100, 400, 50), 1, null, "yearly"));
-    var pl = [["Tabby: sneakers", 150, 400], ["Postpay: headphones", 200, 450], ["Tabby: jacket", 120, 320], ["Postpay: watch", 180, 400]];
-    pick(pl, ri(2, 3)).forEach(function (p) { items.push(m(p[0], "pay", ri(p[1], p[2], 5), d(), ri(2, 5))); });
-    items.push(m("Tamara: phone case", "pay", ri(60, 150, 5), 1, ri(3, 6), "biweekly"));
-    return { teen: false, name: "Sam", income: ri(7000, 12000, 500), goal: null, items: items };
-  }
+
   function exList(e) {
-    var kn = { pay: "Pay-later", sub: "Subscription", game: "Game / in-app", bill: "Bill", loan: "Loan" };
+    var kn = { pay: "Pay-later", sub: "Subscription", game: "Game / in-app", bill: "Bill", loan: "Loan", other: "Other" };
     var fq = function (it) { return it.freq === "yearly" ? " / year" : it.freq === "biweekly" ? " / 2 weeks" : it.freq === "weekly" ? " / week" : " / month"; };
-    var rows = e.items.map(function (it) { return '<div class="exrow"><span class="exn">' + esc(it.name) + '<small>' + (kn[it.kind] || "") + (it.left ? " · " + it.left + " payments left" : "") + '</small></span><span class="exa mono">AED ' + it.amount + fq(it) + "</span></div>"; }).join("");
+    var rows = e.items.map(function (it) { return '<div class="exrow"><span class="exn">' + esc(it.name) + '<small>' + (kn[it.kind] || "") + (it.left ? " · " + it.left + " payment" + (it.left === 1 ? "" : "s") + " left" : "") + '</small></span><span class="exa mono">AED ' + it.amount + fq(it) + "</span></div>"; }).join("");
     return '<div class="card exlist">' + rows + "</div>";
   }
   /* The app is a demo: everyone works with made-up numbers. */
-  function exampleData(teen) {
-    var m = function (n, k, a, day, left) { return { id: uid(), name: n, kind: k, amount: a, freq: "monthly", anchor: iso(nextDom(day)), left: left == null ? null : left, on: true }; };
-    if (teen) return { name: "Alex", income: 300, goal: { name: "New headphones", target: 600 }, items: [m("Streaming service", "sub", 35, 8), m("Music app", "sub", 22, 8), m("App subscription", "sub", 15, 14), m("Game pass", "game", 45, 3), m("In-game coins", "game", 30, 20), m("Phone top-up", "bill", 50, 1)] };
-    return { name: "Sam", income: 9000, goal: null, items: [m("Rent", "bill", 3200, 1), m("Utilities and internet", "bill", 520, 5), m("Phone plan", "bill", 199, 12), m("Credit card payment", "loan", 450, 25), m("Streaming service", "sub", 55, 8), m("Music app", "sub", 25, 8), m("Gym membership", "sub", 260, 15),
-      { id: uid(), name: "Cloud storage", kind: "sub", amount: 300, freq: "yearly", anchor: iso(addMonths(today(), 4)), left: null, on: true },
-      m("Tabby: sneakers", "pay", 225, 10, 3), { id: uid(), name: "Tamara: phone case", kind: "pay", amount: 90, freq: "biweekly", anchor: iso(addDays(today(), 3)), left: 5, on: true }, m("Postpay: headphones", "pay", 340, 20, 4)] };
+  var SCEN_INCOME = 9000; /* fictional */
+  function scenItems() {
+    var m = function (n, k, a, day, left, cls) { return { id: uid(), name: n, kind: k, amount: a, freq: "monthly", anchor: iso(nextDom(day)), left: left == null ? null : left, on: true, cls: cls }; };
+    return [m("Rent", "bill", 3200, 1, null, "need"), m("Utilities and internet", "bill", 520, 5, null, "need"), m("Phone plan", "bill", 199, 12, null, "need"), m("Credit card payment", "loan", 450, 25, null, "save"),
+      m("Streaming service", "sub", 55, 8, null, "want"), m("Music app", "sub", 25, 8, null, "want"), m("Gym membership", "sub", 260, 15, null, "want"),
+      { id: uid(), name: "Cloud storage", kind: "sub", amount: 300, freq: "yearly", anchor: iso(addMonths(today(), 4)), left: null, on: true, cls: "want" },
+      m("Tabby: sneakers", "pay", 225, 10, 3, "want"),
+      { id: uid(), name: "Tamara: phone case", kind: "pay", amount: 90, freq: "biweekly", anchor: iso(addDays(today(), 3)), left: 5, on: true, cls: "want" },
+      m("Postpay: headphones", "pay", 340, 20, 4, "need")];
   }
-  function personaName() { return isTeen() ? "Alex" : "Sam"; }
+
   function loadExample(quiet) {
-    var e = exampleData(isTeen());
-    S.income = e.income; S.items = e.items; S.goal = e.goal; S.revealed = false;
-    save(); render(); if (!quiet) toast("Example numbers loaded");
+    S.income = SCEN_INCOME; S.items = scenItems(); S.revealed = false; S.revealedAt = null;
+    save(); render(); if (quiet !== true) toast("Sam's payments loaded");
   }
 
   /* ---------- events ---------- */
@@ -1723,23 +1852,26 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       tab: function () { view = t.dataset.v; render(); window.scrollTo(0, 0); },
       settings: openSettings, add: function () { openItem(null); }, edit: function () { openItem(id); },
       example: loadExample, goCal: function () { view = "cal"; cal.mode = "month"; render(); window.scrollTo(0, 0); },
-      toggle: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it) { it.on = !it.on; save(); render(); } },
+      toggle: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it && cancellable(it)) { it.on = !it.on; if (S.revealed) S.t.ex.sim = true; save(); render(); } },
+      resetsim: function () { S.items.forEach(function (i) { i.on = true; }); save(); render(); toast("Simulation reset"); },
+      exskip: function () { S.t.ex.skipped = true; save(); render(); toast("Explore step skipped. You can come back to it."); },
       seg: function () { donutSel = donutSel === t.dataset.id ? null : t.dataset.id; render(); },
       calmode: function () { cal.mode = t.dataset.v; render(); },
       calnav: function () { var d = new Date(cal.y, cal.m + Number(t.dataset.d), 1); cal.y = d.getFullYear(); cal.m = d.getMonth(); cal.sel = iso(D(cal.y, cal.m, 1)); render(); },
       calday: function () { cal.sel = t.dataset.d; render(); },
       mbar: function () { var n = Number(t.dataset.i); cal.mi = cal.mi === n ? -1 : n; render(); },
-      reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { S.revealed = true; save(); view = "home"; closeFlow(); S.fresh = true; save(); render(); window.scrollTo(0, 0); confetti(); autoSend(true); },
+      reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { view = "home"; closeFlow(); S.fresh = true; save(); render(); window.scrollTo(0, 0); confetti(); },
       gateskip: leaveGate,
       gateinstall: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; } leaveGate(); },
       copylink: function () { var u = location.origin + location.pathname, ok = function () { toast("Link copied. Paste it in Safari."); }; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(ok, function () { toast(u); }); else toast(u); },
       install: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; $("#installBar").hidden = true; } },
       installoff: function () { $("#installBar").hidden = true; try { localStorage.setItem("tt-install-off", "1"); } catch (er) {} },
       skip: function () { $("#view").focus(); },
-      send: sendResults,
+      sendnow: sendResults, sendreview: openSend, newtest: openNewTest, newtestgo: resetAll,
+      resume: function () { openFlow("onboard"); }, after: function () { openFlow("after"); }, fb: function () { openFlow("fb"); }, redopre: function () { if (S.revealed) { toast("The starter quiz has to come before the total is shown."); return; } openFlow("pre"); },
       gosave: function () { view = "save"; render(); window.scrollTo(0, 0); },
       use: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it) { it.use = it.use === t.dataset.v ? undefined : t.dataset.v; save(); render(); } },
-      switchoff: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it) { it.on = false; save(); render(); toast("Switched off. Check the Total tab to see the effect"); } },
+      switchoff: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it && cancellable(it)) { it.on = false; if (S.revealed) S.t.ex.sim = true; save(); render(); toast("Not counted in the simulation. This does not cancel anything."); } },
       alt: function () { openAlt(id); },
       altfreq: function () { ad.freq = t.dataset.f; $("#altSeg").innerHTML = altSeg(); var it = S.items.filter(function (i) { return i.id === ad.id; })[0]; if (it) $("#altPrev").innerHTML = altPrev(it); },
       altsave: function () { var it = S.items.filter(function (i) { return i.id === ad.id; })[0]; if (!it) return; if (ad.amount > 0) it.alt = { name: (ad.name || "").trim(), amount: ad.amount, freq: ad.freq }; else it.alt = undefined; save(); closeSheet(); toast("Saved"); },
@@ -1749,12 +1881,12 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       goal: openGoal, calc: openCalc, pause: openPause, sharecard: shareCard,
       calcn: function () { cd.n = +t.dataset.v; $("#calcChips").innerHTML = calcChips(); $("#calcPrev").innerHTML = calcPrev(); },
       pq: function () { pdd.q[+t.dataset.k] = +t.dataset.v; $("#pauseQs").innerHTML = pauseQs(); $("#pausePrev").innerHTML = pausePrev(); },
-      pausesave: function () { if (!pdd.name.trim() || !(pdd.price > 0)) { toast("Add what it is and the price"); return; } S.pauses.push({ id: uid(), name: pdd.name.trim(), price: pdd.price, at: Date.now(), until: Date.now() + 864e5, done: null }); save(); closeSheet(); view = "home"; render(); toast("Paused. Decide tomorrow"); },
+      pausesave: function () { if (!pdd.name.trim() || !(pdd.price > 0)) { toast("Add what it is and the price"); return; } S.pauses.push({ id: uid(), name: pdd.name.trim(), price: pdd.price, at: Date.now(), until: Date.now() + 864e5, done: null }); if (S.revealed) S.t.ex.dec = true; save(); closeSheet(); view = "home"; render(); toast("Paused. Decide tomorrow"); },
       pskip: function () { var p = S.pauses.filter(function (q) { return q.id === t.dataset.id; })[0]; if (p) { p.done = "skipped"; save(); render(); toast("Nice. You kept " + aed(p.price)); confetti(); } },
       pbuy: function () { var p = S.pauses.filter(function (q) { return q.id === t.dataset.id; })[0]; if (p) { p.done = "bought"; save(); render(); } },
       goalsave: function () { if (!gd || !gd.name.trim() || !(gd.target > 0)) { toast("Add a name and an amount"); return; } S.goal = { name: gd.name.trim(), target: gd.target }; save(); closeSheet(); toast("Goal saved"); },
       goaldel: function () { S.goal = null; save(); closeSheet(); toast("Goal removed"); },
-      post: function () { openFlow("post"); }, guide: function () { startTour(); }, tourend: function () { endTour(); }, tournext: function () { tourGo(1); }, tourback: function () { tourGo(-1); }, check: function () { openFlow("check"); }, copy: copyResults, ics: downloadICS,
+      guide: function () { startTour(); }, tourend: function () { endTour(); }, tournext: function () { tourGo(1); }, tourback: function () { tourGo(-1); }, copy: copyResults, ics: downloadICS,
       sheetclose: function () { closeSheet(); },
       /* item sheet */
       preset: function () { var p = presets()[+t.dataset.i]; ed.name = p[0]; ed.kind = p[1]; if (p[1] === "pay") { ed.hasEnd = true; } $("#fName").value = ed.name; refreshItemSheet(); },
@@ -1764,47 +1896,49 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       leftdec: function () { ed.leftN = Math.max(1, ed.leftN - 1); refreshItemSheet(); },
       leftinc: function () { ed.leftN = Math.min(240, ed.leftN + 1); refreshItemSheet(); },
       saveitem: function () {
-        var n = ed.name.trim();
-        if (!n || !(ed.amount > 0) || !ed.anchor) { toast("Add a name, an amount and a date"); return; }
-        var it = { id: ed.id, name: n, kind: ed.kind, amount: ed.amount, freq: ed.freq, anchor: ed.anchor, left: ed.hasEnd ? ed.leftN : null, on: ed.on, use: ed.use, alt: ed.alt };
+        var n = ed.name.trim(), err = "", focus = "";
+        if (!n) { err = "Enter a name for the payment."; focus = "#fName"; }
+        else if (!(ed.amount > 0)) { err = "Enter an amount above 0."; focus = "#fAmt"; }
+        else if (ed.amount > 1000000) { err = "That amount looks too large. Check it."; focus = "#fAmt"; }
+        else if (!ed.anchor || isNaN(pISO(ed.anchor).getTime())) { err = "Choose the next payment date."; focus = "#fDate"; }
+        else if (ed.hasEnd && !(ed.leftN >= 1)) err = "Payments left must be at least 1.";
+        else if (!ed.dupOk && S.items.some(function (x) { return x.id !== ed.id && x.name.trim().toLowerCase() === n.toLowerCase() && x.amount === ed.amount && x.freq === ed.freq; })) { ed.dupOk = true; err = "You already have a payment with this name and amount. Save again to add it anyway, or change it."; }
+        if (err) { var e1 = $("#fErr"); if (e1) e1.textContent = err; var f1 = focus && $(focus); if (f1) f1.focus(); return; }
+        var it = { id: ed.id, name: n, kind: ed.kind, amount: ed.amount, freq: ed.freq, anchor: ed.anchor, left: ed.hasEnd ? ed.leftN : null, on: ed.on, use: ed.use, alt: ed.alt, cls: ed.cls };
         var i = S.items.findIndex(function (x) { return x.id === ed.id; }); if (i >= 0) S.items[i] = it; else S.items.push(it);
         save(); closeSheet(); toast("Saved");
       },
       delitem: function () { S.items = S.items.filter(function (x) { return x.id !== ed.id; }); save(); closeSheet(); toast("Deleted"); },
       /* settings */
       theme: function () { S.theme = t.dataset.v; applyTheme(); save(); $$("#themeSeg button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.v === S.theme); }); },
-      autosend: function () { S.autosend = t.dataset.v === "1"; save(); $$("#autoSeg button").forEach(function (b) { b.setAttribute("aria-pressed", (b.dataset.v === "1") === S.autosend); }); if (S.autosend && S.revealed) autoSend(true); },
       notifyon: function () { nativePost({ type: "askNotify" }); },
       notifyno: function () { S.notify = false; S.notifyAsked = true; save(); render(); },
       notifyset: function () { if (t.dataset.v === "1") { nativePost({ type: "askNotify" }); } else { S.notify = false; save(); $$("#notifSeg button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.v === "0"); }); } },
       notifytest: function () { nativePost({ type: "testNotify" }); toast("Test reminder in a few seconds"); },
       rem: function () { S.remind = Number(t.dataset.v); save(); $$("#remSeg button").forEach(function (b) { b.setAttribute("aria-pressed", Number(b.dataset.v) === S.remind); }); },
-      clear: function () {
-        if (t.dataset.armed) { try { localStorage.removeItem(KEY); } catch (er) {} S = fresh(); view = "home"; closeSheet(true); render(); openFlow("onboard"); return; }
-        t.dataset.armed = "1"; t.textContent = "Tap again to delete everything"; setTimeout(function () { if (t.isConnected) { delete t.dataset.armed; t.textContent = "Delete all my data"; } }, 4000);
-      },
       /* flows */
-      fnext: fnext, fback: function () { if (F.i > 0) { F.i--; drawFlow(); } }, fclose: function () { if (F && F.kind === "onboard" && !S.onboarded) { S.onboarded = true; save(); } var ft = F && F.kind === "reveal" && F.firstTime; if (F && F.kind === "reveal") rvTimers.forEach(clearTimeout); closeFlow(); if (ft) { S.fresh = true; save(); render(); window.scrollTo(0, 0); autoSend(true); } },
-      fskip: function () { F.i = F.steps.length - 2; drawFlow(); },
+      fnext: fnext, fback: fback, fclose: fcloseAct,
+      fskipquiz: function () { F.d.preSkip = true; F.d.a = [null, null, null]; F.d.c = null; F.i = 7; drawFlow(); },
+      fskipafter: function () { S.t.post = { st: "skipped", ver: "B", at: Date.now() }; S.draft = null; F.committed = true; save(); closeFlow(); toast("Follow-up quiz skipped. You can take it later."); },
+      fskipfb: function () { S.t.fb = { st: "skipped", at: Date.now() }; S.draft = null; F.committed = true; save(); closeFlow(); toast("Feedback skipped. You can give it later."); },
+      fskipconf: function () { F.d.c = null; fnext(); },
       fopt: function () { F.d.a[F.steps[F.i].quiz] = Number(t.dataset.o); drawFlow(); },
-      frand: function () { F.d.rand = randomData(curMode() === "teen"); drawFlow(); },
-      frate: function () { F.d.r[+t.dataset.i] = +t.dataset.v; drawFlow(); },
-      fshare: function () { F.d.share = t.dataset.v; drawFlow(); },
+      fset: function () { var k = t.dataset.k, v = +t.dataset.v; F.d[k] = F.d[k] === v ? null : v; drawFlow(); },
       fchip: function () { F.d[t.dataset.k] = F.d[t.dataset.k] === t.dataset.v ? null : t.dataset.v; drawFlow(); },
-      fmulti: function () { var i = F.d.act.indexOf(t.dataset.v); if (i >= 0) F.d.act.splice(i, 1); else F.d.act.push(t.dataset.v); drawFlow(); }
+      cls: function () { ed.cls = ed.cls === t.dataset.v ? undefined : t.dataset.v; $("#clsChips").innerHTML = clsChips(); }
     };
     if (A[a]) { if (a === "seg" || a === "toggle" || a === "calday") { /* no default */ } A[a](); }
   });
+  var draftT = null;
   document.addEventListener("input", function (e) {
     var el = e.target, k = el.dataset && el.dataset.in;
     if (!k) return;
     var sk = sheet && sheet.contains(el) ? sheet.dataset.kind : "";
     if (sk === "item" && ed) {
       if (k === "name") ed.name = el.value; else if (k === "amount") ed.amount = parseFloat(el.value) || 0; else if (k === "anchor") ed.anchor = el.value;
+      ed.dupOk = false; var e2 = $("#fErr"); if (e2) e2.textContent = "";
       $("#dateHint").textContent = dateHint(); $("#prev").innerHTML = previewHTML();
     }
-    if (sk === "settings" && k === "pname") { S.name = cleanName(el.value); save(); }
-    if (sk === "settings" && k === "income") { S.income = Math.max(0, parseFloat(el.value) || 0); save(); }
     if (sk === "alt" && ad) {
       if (k === "altname") ad.name = el.value; else if (k === "altamount") ad.amount = parseFloat(el.value) || 0;
       var ait = S.items.filter(function (i) { return i.id === ad.id; })[0]; if (ait) $("#altPrev").innerHTML = altPrev(ait);
@@ -1813,13 +1947,25 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     if (sk === "pause" && pdd) { if (k === "pname") pdd.name = el.value; else if (k === "pprice") pdd.price = parseFloat(el.value) || 0; $("#pausePrev").innerHTML = pausePrev(); }
     if (sk === "goal" && gd) { if (k === "goalname") gd.name = el.value; else if (k === "goaltarget") gd.target = parseFloat(el.value) || 0; }
     if (F && flowEl && flowEl.contains(el)) {
-      if (/^conf\d$/.test(k)) { var i = +k.slice(4); F.d.c[i] = +el.value; $("#cl" + i).textContent = CONF_LBL[el.value - 1]; }
-      else if (/^rate\d$/.test(k)) { var j = +k.slice(4); F.d.r[j] = +el.value; $("#rl" + j).textContent = el.value + " of 5"; }
-      else F.d[k] = el.value;
+      F.d[k] = el.value;
       var st = F.steps[F.i], nb = $("#fnext"); if (nb) nb.disabled = !st.need();
+      var fe = $("#flowErr"); if (fe && st.err) fe.textContent = st.err();
+      var nh = $("#needHint"); if (nh) nh.textContent = !st.need() && st.needMsg ? st.needMsg : "";
+      clearTimeout(draftT); draftT = setTimeout(persistDraft, 300);
     }
   });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { if (flowEl) closeFlow(); else if (sheet) closeSheet(); } });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { if (tourEl) return; if (flowEl) fcloseAct(); else if (sheet) closeSheet(); return; }
+    /* keep keyboard focus inside an open dialog */
+    if (e.key !== "Tab" || tourEl) return;
+    var box = flowEl || sheet; if (!box) return;
+    var f = $$('button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), summary, [tabindex="0"]', box).filter(function (x) { return x.offsetParent !== null; });
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (!box.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && (document.activeElement === first || document.activeElement === box)) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
 
   /* ---------- install prompt (only on the hosted copy, only in a browser tab) ---------- */
   var deferredInstall = null;
@@ -1892,8 +2038,9 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     setTimeout(check, 4000);
     document.addEventListener("visibilitychange", function () { if (!document.hidden) check(); });
   })();
+  /* test hook: only exists in development copies, never in the published site */
+  if (DEV) window.__TT = { get S() { return S; }, total: total, flexible: flexible, forecast: forecast, forecastEach: forecastEach, remaining: remaining, payLaterOwed: payLaterOwed, monthly: monthly, occ: occ, nth: nth, lastDate: lastDate, qScore: qScore, dataObj: dataObj, resultsText: resultsText, tips: tips, buildICS: buildICS, savings: savings, cancellable: cancellable, groupOf: groupOf, scenItems: scenItems, pISO: pISO, iso: iso, today: today, addMonths: addMonths, QZ: QZ, qOrder: qOrder, monthsData: monthsData, monthEvents: monthEvents, complete: complete, stages: stages, needs: needs, leftOver: leftOver, share: share, aed: aed, aed2: aed2, pc: pc };
   render();
-  autoSend();
   if (!S.onboarded) { if (shouldGate()) openGate(); else openFlow("onboard"); }
 })();
 </script>
