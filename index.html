@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1794993219"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1794994086"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -766,6 +766,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     var dp = $("#demoPill"); if (dp) dp.textContent = S.onboarded ? "Demo: made-up numbers" : "";
     v.innerHTML = view === "home" ? vHome() : view === "items" ? vItems() : view === "cal" ? vCal() : view === "save" ? vSave() : vLearn();
     v.className = "v-" + view;
+    if (view !== "home" && S.fresh) { S.fresh = false; }
     if (lastView !== view) { lastView = view; v.classList.add("enter"); }
     renderTabs();
     runCounts(v);
@@ -824,7 +825,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     h += '<div class="row-between" style="padding:0 4px"><small class="mono">' + (st >= 2 ? st + " days in a row" : "Day 1") + '</small>' + (S.guess != null ? '<button class="btn ghost sm2" data-act="sharecard">' + ic("share", 15) + "Share my result</button>" : "") + "</div>";
     return h;
   }
-  function vHome() { return stepsCard(true) + homeExtras() + vHome0(); }
+  function vHome() { if (S.revealed && S.fresh) return vHome0() + stepsCard(true) + homeExtras(); return stepsCard(true) + homeExtras() + vHome0(); }
   function vHome0() {
     var teen = isTeen();
     if (!S.items.length) {
@@ -1635,7 +1636,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       calnav: function () { var d = new Date(cal.y, cal.m + Number(t.dataset.d), 1); cal.y = d.getFullYear(); cal.m = d.getMonth(); cal.sel = iso(D(cal.y, cal.m, 1)); render(); },
       calday: function () { cal.sel = t.dataset.d; render(); },
       mbar: function () { var n = Number(t.dataset.i); cal.mi = cal.mi === n ? -1 : n; render(); },
-      reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { S.revealed = true; save(); view = "home"; closeFlow(); window.scrollTo(0, 0); confetti(); autoSend(true); showBreakdown(); },
+      reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { S.revealed = true; save(); view = "home"; closeFlow(); S.fresh = true; save(); render(); window.scrollTo(0, 0); confetti(); autoSend(true); },
       gateskip: leaveGate,
       gateinstall: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; } leaveGate(); },
       copylink: function () { var u = location.origin + location.pathname, ok = function () { toast("Link copied. Paste it in Safari."); }; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(ok, function () { toast(u); }); else toast(u); },
@@ -1689,7 +1690,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
         t.dataset.armed = "1"; t.textContent = "Tap again to delete everything"; setTimeout(function () { if (t.isConnected) { delete t.dataset.armed; t.textContent = "Delete all my data"; } }, 4000);
       },
       /* flows */
-      fnext: fnext, fback: function () { if (F.i > 0) { F.i--; drawFlow(); } }, fclose: function () { if (F && F.kind === "onboard" && !S.onboarded) { S.onboarded = true; save(); } var ft = F && F.kind === "reveal" && F.firstTime; if (F && F.kind === "reveal") rvTimers.forEach(clearTimeout); closeFlow(); if (ft) { window.scrollTo(0, 0); autoSend(true); showBreakdown(); } },
+      fnext: fnext, fback: function () { if (F.i > 0) { F.i--; drawFlow(); } }, fclose: function () { if (F && F.kind === "onboard" && !S.onboarded) { S.onboarded = true; save(); } var ft = F && F.kind === "reveal" && F.firstTime; if (F && F.kind === "reveal") rvTimers.forEach(clearTimeout); closeFlow(); if (ft) { S.fresh = true; save(); render(); window.scrollTo(0, 0); autoSend(true); } },
       fskip: function () { F.i = F.steps.length - 2; drawFlow(); },
       fopt: function () { F.d.a[F.steps[F.i].quiz] = Number(t.dataset.o); drawFlow(); },
       frand: function () { F.d.rand = randomData(curMode() === "teen"); drawFlow(); },
