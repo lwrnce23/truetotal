@@ -705,7 +705,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   var lastSig = null, lastView = null;
   function render() {
     var v = $("#view"), sig = sigOf(document.activeElement);
-    var dp = $("#demoPill"); if (dp) dp.textContent = S.onboarded ? "Demo: " + personaName() + "'s numbers" : "";
+    var dp = $("#demoPill"); if (dp) dp.textContent = S.onboarded ? "Demo: made-up numbers" : "";
     v.innerHTML = view === "home" ? vHome() : view === "items" ? vItems() : view === "cal" ? vCal() : view === "save" ? vSave() : vLearn();
     v.className = "v-" + view;
     if (lastView !== view) { lastView = view; v.classList.add("enter"); }
@@ -770,7 +770,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       return '<div class="card empty"><span class="ico lg" style="--c:var(--k-pay)">' + ic("receipt", 22) + '</span><h2 style="font-size:24px;font-weight:800">Add what you pay for</h2><p class="muted">' + (teen ? "Subscriptions, games, in-app purchases, phone top-ups. Add the day each one is paid and TrueTotal fills your calendar." : "Pay-later plans, subscriptions, rent, bills, loans. Add the day each one is paid and TrueTotal fills your calendar.") + '</p><button class="btn hi" data-act="add">' + ic("plus", 18) + 'Add a payment</button><button class="btn ghost" data-act="example">Try example numbers</button></div>';
     }
     if (!S.revealed) {
-      return '<div class="card empty"><h2 style="font-size:26px;font-weight:800">Ready for the real number?</h2><p class="muted">' + personaName() + "'s " + S.items.length + ' payments are loaded. Reveal what they really add up to.</p><button class="btn hi block" data-act="reveal">Reveal the real total</button></div>';
+      return '<div class="card empty"><h2 style="font-size:26px;font-weight:800">Ready for the real number?</h2><p class="muted">' + S.items.length + ' random payments are loaded. Reveal what they really add up to.</p><button class="btn hi block" data-act="reveal">Reveal the real total</button></div>';
     }
     var tot = total(), left = leftOver(), lp = share(left);
     var st = teen ? teenStamp() : (left < 0 ? ["Overspent", "var(--bad)"] : lp < 10 ? ["Tight", "var(--warn)"] : lp < 20 ? ["Close", "var(--k-bill)"] : ["On track", "var(--good)"]);
@@ -842,14 +842,14 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     return '<div class="item' + (it.on ? "" : " off") + '"><button class="main" data-act="edit" data-id="' + it.id + '"><span class="ico lg" style="--c:' + kcol(it.kind) + '">' + ic(KINDS[it.kind].icon) + '</span><span class="tx"><b>' + esc(it.name) + "</b><small>" + aed(it.amount) + " " + FREQ[it.freq].l.toLowerCase() + (it.left != null ? " · " + it.left + " left" : "") + eq + "</small>" + (compact ? "" : "<small>" + payText(it) + "</small>") + '</span><span class="rt"><b class="mono" style="color:' + kcol(it.kind) + '">' + pc(sh) + '</b><small>' + baseWord() + '</small></span></button><button class="tapzone" data-act="toggle" data-id="' + it.id + '" role="switch" aria-checked="' + it.on + '" aria-label="Count ' + esc(it.name) + '"><span class="sw" aria-hidden="true" ' + 'aria-checked="' + it.on + '"></span></button></div>';
   }
   function vItems() {
-    var h = '<div class="row-between"><div><h1 class="pg-title">Everything you pay for</h1><small>' + S.items.length + " item" + (S.items.length === 1 ? "" : "s") + " · " + aed(total()) + " a month</small></div><button class=\"btn hi sm2\" data-act=\"add\">" + ic("plus", 16) + "Add</button></div>";
+    var h = '<div class="row-between"><div><h1 class="pg-title">Everything you pay for</h1><small>' + S.items.length + " item" + (S.items.length === 1 ? "" : "s") + (S.revealed ? " · " + aed(total()) + " a month" : "") + "</small></div><button class=\"btn hi sm2\" data-act=\"add\">" + ic("plus", 16) + "Add</button></div>";
     if (!S.items.length) h += '<div class="card empty"><span class="ico lg" style="--c:var(--k-sub)">' + ic("list", 22) + '</span><p class="muted">Nothing yet. ' + (isTeen() ? "Add a subscription, a game, a phone top-up or anything else you pay for." : "Add a pay-later plan, a subscription, your rent or a loan.") + '</p><button class="btn ghost" data-act="example">Try example numbers</button></div>';
     if (S.items.length && !S.revealed) h += '<button class="btn hi block" data-act="reveal">Reveal my TrueTotal</button>';
     korder().forEach(function (k) {
       var g = S.items.filter(function (i) { return i.kind === k; });
       if (!g.length) return;
       var t = g.filter(function (i) { return i.on; }).reduce(function (s, i) { return s + monthly(i); }, 0);
-      h += '<section class="group"><div class="group-h"><span class="ico" style="--c:' + kcol(k) + '">' + ic(KINDS[k].icon) + "</span><h3>" + kname(k) + '</h3><span class="mono sm">' + aed(t) + " · " + pc(share(t)) + "</span></div>" + g.map(function (i) { return itemRow(i, false); }).join("") + "</section>";
+      h += '<section class="group"><div class="group-h"><span class="ico" style="--c:' + kcol(k) + '">' + ic(KINDS[k].icon) + "</span><h3>" + kname(k) + '</h3><span class="mono sm">' + (S.revealed ? aed(t) + " · " + pc(share(t)) : "") + "</span></div>" + g.map(function (i) { return itemRow(i, false); }).join("") + "</section>";
     });
     return h;
   }
@@ -922,7 +922,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     var pre = S.pre ? score(S.pre.a) : null, post = S.post ? score(S.post.a) : null;
     h += '<div class="leader"><span>Before-quiz</span><span class="dots"></span><span class="amt">' + (pre == null ? "skipped" : pre + " / 6") + '</span></div><div class="leader"><span>After-quiz</span><span class="dots"></span><span class="amt">' + (post == null ? "not yet" : post + " / 6" + (pre != null ? " (" + (post - pre >= 0 ? "+" : "") + (post - pre) + ")" : "")) + "</span></div>";
     if (S.pre && S.post) h += '<div class="leader"><span>Confidence</span><span class="dots"></span><span class="amt">' + (S.pre.c[0] + S.pre.c[1]) / 2 + " → " + (S.post.c[0] + S.post.c[1]) / 2 + " of 5</span></div>";
-    if (S.guess != null && S.items.length) h += '<div class="leader"><span>Your guess</span><span class="dots"></span><span class="amt">' + aed(S.guess) + " → " + aed(flexible()) + "</span></div>";
+    if (S.guess != null && S.items.length && S.revealed) h += '<div class="leader"><span>Your guess</span><span class="dots"></span><span class="amt">' + aed(S.guess) + " → " + aed(flexible()) + "</span></div>";
     h += "<p class=\"sm\">" + (S.post ? "Thanks for taking part." : "Take the after-quiz once you have had a good look around the app.") + "</p>";
     h += '<button class="btn ' + (S.post ? "ghost" : "hi") + ' block" data-act="post">' + (S.post ? "Retake the after-quiz" : "Take the after-quiz") + "</button>";
     h += (canSend() ? sendBlock() : "") + '<button class="btn ' + (canSend() ? "ghost " : "") + 'block" data-act="copy">Copy my results</button></section>';
@@ -1235,7 +1235,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function buildFlow(kind) {
     var d = { a: [null, null, null, null, null, null], c: [3, 3], r: [3, 3, 3], h: null, act: [], cm: "", saved: "", use: null, age: null, stat: null, pl: null, guess: "", name: S.name || "", income: S.income > 0 ? String(S.income) : "" }, steps = [];
     if (kind === "onboard") {
-      steps.push({ need: function () { return true; }, next: "Let's go", html: function () { return '<div style="padding-top:18px" class="stack"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>What do small payments <span class="hl">really</span> add up to?</h1><p class="muted" style="font-size:16px">Try TrueTotal on an example person with made-up numbers. You will take a quick quiz, guess a total, watch TrueTotal add it up, look around the app, then tell us what you thought.</p></div><div class="note">This is a student financial literacy project. <b>You never type in your real income or bills.</b> It takes about 6 minutes.</div>'; } });
+      steps.push({ need: function () { return true; }, next: "Let's go", html: function () { return '<div style="padding-top:18px" class="stack"><span class="brand-mark" style="width:54px;height:54px;border-radius:16px">' + ic("receipt", 30) + '</span><h1>What do small payments <span class="hl">really</span> add up to?</h1><p class="muted" style="font-size:16px">Try TrueTotal on an example person with made-up numbers. You will take a quick quiz, fill the app with random made-up values, guess their total, take a quick tutorial, then see the real total and tell us what you thought.</p></div><div class="note">This is a student financial literacy project. <b>You never type in your real income or bills.</b> It takes about 6 minutes.</div>'; } });
       steps.push({ need: function () { return F.d.age != null; }, html: function () {
         var teen = F.d.age === "Under 18";
         return '<p class="eyebrow">First question</p><h2>How old are you?</h2><div class="chips">' + ["Under 18", "18-22", "23-30", "31+"].map(function (o) { return '<button class="chip" data-act="fchip" data-k="age" data-v="' + o + '" aria-pressed="' + (F.d.age === o) + '">' + o + "</button>"; }).join("") + "</div>" + (teen ? '<div class="note">Under 18? You get a version made for you, with no income questions. If you are not sure it is OK to take part, ask a parent or guardian first.</div>' : '<p class="sm">If you are under 18 you get a different version of the quiz and the app.</p>');
@@ -1256,11 +1256,16 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       steps.push({ need: function () { return true; }, next: "Start the quiz", skip: "Skip the quiz", html: function () { return '<p class="eyebrow">Before you start</p><h2>Six quick questions</h2><p class="muted">First, how confident do you feel about your own money? Then six short questions. This shows how much you learn from using the app.</p>'; } });
       steps.push(confStep());
       quizSteps().forEach(function (s) { steps.push(s); });
-      steps.push({ need: function () { return parseFloat(F.d.guess) >= 0 && F.d.guess !== ""; }, next: "Reveal the real total", html: function () {
-        var teen = curMode() === "teen", e = exampleData(teen), kn = { pay: "Pay-later", sub: "Subscription", game: "Game / in-app", bill: "Bill", loan: "Loan" };
-        var fq = function (it) { return it.freq === "yearly" ? " a year" : it.freq === "biweekly" ? " every 2 weeks" : it.freq === "weekly" ? " a week" : " a month"; };
-        var rows = e.items.map(function (it) { return '<div class="leader"><span>' + esc(it.name) + ' <small>' + (kn[it.kind] || "") + (it.left ? ", " + it.left + " payments left" : "") + '</small></span><span class="dots"></span><span class="amt mono">AED ' + it.amount + fq(it) + "</span></div>"; }).join("");
-        return '<p class="eyebrow">Meet ' + e.name + '</p><h2>' + e.name + ' pays for all of this</h2><p class="muted">Made-up numbers. ' + (teen ? e.name + " gets AED " + e.income + " pocket money a month." : e.name + " earns AED " + e.income.toLocaleString("en-US") + " a month.") + '</p><div class="card stack" style="gap:2px">' + rows + '</div><h3 style="font-family:var(--fd);font-size:19px;font-weight:800;margin-top:6px">Take a guess</h3><p class="muted">About how much does ' + e.name + ' spend each month on ' + (teen ? "<b>subscriptions, games, in-app purchases and pay-later</b> together?" : "<b>pay-later plus subscriptions</b> together?") + ' Add it up in your head. No calculator.</p><div class="money"><span>AED</span><input class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="guess" placeholder="e.g. 500" value="' + esc(F.d.guess) + '"></div>';
+      steps.push({ need: function () { return !!F.d.rand; }, next: "Next", html: function () {
+        var teen = curMode() === "teen";
+        if (F.d.rand && F.d.rand.teen !== teen) F.d.rand = null;
+        var r = F.d.rand;
+        if (!r) return '<p class="eyebrow">Last question</p><h2>Now test the app</h2><p class="muted">TrueTotal needs some payments in it before you can try it. Tap the button and it fills in random, made-up pay-later plans, subscriptions and bills. Nothing here is real, and you never type your own details.</p><button class="btn hi block" data-act="frand">Insert random values</button>';
+        return '<p class="eyebrow">Last question</p><h2>Random values are in</h2><p class="muted">These made-up payments are now inside the app. Do not add them up yet.</p>' + exList(r) + '<button class="btn ghost block" data-act="frand">Shuffle new values</button>';
+      } });
+      steps.push({ need: function () { return parseFloat(F.d.guess) >= 0 && F.d.guess !== ""; }, next: "Start the tutorial", html: function () {
+        var teen = curMode() === "teen", r = F.d.rand;
+        return '<p class="eyebrow">Before the tutorial</p><h2>Take a guess</h2><p class="muted">' + (teen ? r.name + " gets AED " + r.income + " pocket money a month." : r.name + " earns AED " + r.income.toLocaleString("en-US") + " a month.") + ' About how much does ' + r.name + ' spend each month on ' + (teen ? "<b>subscriptions, games, in-app purchases and pay-later</b> together?" : "<b>pay-later plus subscriptions</b> together?") + ' Add it up in your head. No calculator.</p><div class="money"><span>AED</span><input class="mono-in" type="number" inputmode="decimal" min="0" step="any" data-in="guess" placeholder="e.g. 500" value="' + esc(F.d.guess) + '"></div>' + exList(r);
       } });
     } else if (kind === "guide") {
       var G = [
@@ -1333,9 +1338,10 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       S.name = cleanName(d.name);
       S.mode = d.age === "Under 18" ? "teen" : "adult";
       if (d.a.every(function (x) { return x != null; })) S.pre = { a: d.a.slice(), c: d.c.slice(), at: Date.now() };
-      loadExample(true);
+      var rd = d.rand || randomData(S.mode === "teen");
+      S.income = rd.income; S.items = rd.items; S.goal = rd.goal; S.revealed = false;
       S.guess = parseFloat(d.guess); if (isNaN(S.guess)) S.guess = null;
-      S.autosend = d.share === "yes"; S.onboarded = true; save(); view = "home"; closeFlow(); openReveal();
+      S.autosend = d.share === "yes"; S.onboarded = true; save(); view = "home"; closeFlow(); startTour();
     } else if (k === "guide") {
       S.guided = true; save(); closeFlow(); view = S.items.length ? view : "items"; render();
     } else if (k === "post") {
@@ -1348,14 +1354,14 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   /* ---------- spotlight tour ---------- */
   var tourEl = null, T = null, tourTimer = null;
   var TOUR = [
-    { view: "home", title: "Quick tour", text: "You have seen the reveal. Now a 30 second look at where everything is. Tap Next to follow along." },
-    { view: "home", sel: ["#view .steps"], title: "Your 5 steps", text: "This card shows what to do next. The dots fill in as you go. You are on step 3, exploring the app." },
-    { view: "home", sel: ["#whatif"], opt: true, title: "What if you cancelled?", text: "Switch a payment off and watch the total change. This is the fastest way to see what cancelling would save." },
-    { view: "items", sel: ["#view .group"], title: "The payments list", text: "Everything the example person pays for, grouped by type. Tap any payment to see its details." },
+    { view: "home", title: "Quick tutorial", text: "The random values are in. Here is a 30 second look at where everything is. At the end you will see the real total." },
+    { view: "home", sel: ["#view .steps"], title: "Your 5 steps", text: "This card always shows what to do next. The dots fill in as you go." },
+    { view: "items", sel: ["#view .group"], title: "The payments list", text: "Everything in the app is listed here, grouped by type. Tap any payment to open it. Each one has a switch: turn it off to see what cancelling would do." },
+    { view: "items", sel: ["#view [data-act=\"add\"]"], title: "Add your own", text: "Want to test it more? Tap Add and put in a made-up payment. Any numbers you like." },
     { view: "cal", sel: ["nav.tabs button[data-v=\"cal\"]"], title: "Calendar", text: "Every payment lands on its pay day, so you can see when money leaves the account." },
-    { view: "save", sel: ["nav.tabs button[data-v=\"save\"]"], title: "Save tab", text: "Ways to pay less, a pay-later calculator, a 'Should I buy this?' pause button and a savings goal all live here. Try one." },
-    { view: "learn", sel: ["#view section.card:not(.steps) [data-act=\"post\"]", "#view [data-act=\"post\"]"], title: "When you are ready", text: "After a few minutes of exploring, tap this for the after-quiz and your review. Your results are then sent automatically if you allowed it." },
-    { view: "home", title: "Your turn", text: "Explore for a few minutes. Try the cancel switches, the calendar and the Save tab. Then take the after-quiz on the Learn tab.", last: true }
+    { view: "save", sel: ["nav.tabs button[data-v=\"save\"]"], title: "Save tab", text: "Ways to pay less, a pay-later calculator, a 'Should I buy this?' pause button and a savings goal all live here." },
+    { view: "learn", sel: ["#view section.card:not(.steps) [data-act=\"post\"]", "#view [data-act=\"post\"]"], title: "After-quiz and review", text: "Later, after you have explored, tap this for the after-quiz and your review." },
+    { view: "home", sel: ["#view [data-act=\"reveal\"]"], title: "Last step: show the total", text: "Ready? Tap Show the total to see what those payments really add up to, compared with your guess.", last: true }
   ];
   function tourFind(sels) { if (!sels) return null; for (var i = 0; i < sels.length; i++) { var e = document.querySelector(sels[i]); if (e && e.offsetParent !== null || (e && getComputedStyle(e).position === "fixed")) return e; } return null; }
   function startTour() {
@@ -1375,14 +1381,14 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   function tourGo(d) {
     var n = T.i + d;
     if (n < 0) return;
-    if (n >= TOUR.length) { endTour(); return; }
+    if (n >= TOUR.length) { var wasReveal = !S.revealed; endTour(); if (wasReveal) openReveal(); return; }
     T.i = n; T.dir = d; drawTour();
   }
   function drawTour() {
     var st = TOUR[T.i];
     if (view !== st.view) { view = st.view; render(); }
     var wasHole = tourEl.querySelector(".t-hole");
-    tourEl.innerHTML = '<div class="t-block"></div><div class="t-hole mv"></div><div class="t-card mv" role="document"><div class="t-top"><span class="t-dots" aria-hidden="true">' + TOUR.map(function (x, i) { return "<i" + (i === T.i ? ' class="cur"' : i < T.i ? ' class="on"' : "") + "></i>"; }).join("") + '</span><button class="t-skip" data-act="tourend">Skip tour</button></div><h2>' + st.title + "</h2><p>" + st.text + '</p><div class="t-btns">' + (T.i > 0 ? '<button class="btn ghost" data-act="tourback">Back</button>' : "") + '<button class="btn hi" data-act="tournext" id="tourNext">' + (st.last ? "Got it" : T.i === 0 ? "Show me" : "Next") + "</button></div></div>";
+    tourEl.innerHTML = '<div class="t-block"></div><div class="t-hole mv"></div><div class="t-card mv" role="document"><div class="t-top"><span class="t-dots" aria-hidden="true">' + TOUR.map(function (x, i) { return "<i" + (i === T.i ? ' class="cur"' : i < T.i ? ' class="on"' : "") + "></i>"; }).join("") + '</span><button class="t-skip" data-act="tourend">Skip tour</button></div><h2>' + st.title + "</h2><p>" + st.text + '</p><div class="t-btns">' + (T.i > 0 ? '<button class="btn ghost" data-act="tourback">Back</button>' : "") + '<button class="btn hi" data-act="tournext" id="tourNext">' + (st.last ? (S.revealed ? "Got it" : "Show the total") : T.i === 0 ? "Show me" : "Next") + "</button></div></div>";
     clearTimeout(tourTimer);
     tourTimer = setTimeout(placeTour, 120);
   }
@@ -1525,7 +1531,35 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
   }
 
   /* ---------- example ---------- */
-  /* The app is a demo: everyone works with the same made-up person, so nobody types real money details. */
+  /* random made-up values, so nobody types real money details */
+  function ri(min, max, step) { step = step || 1; var n = Math.floor((max - min) / step) + 1; return min + Math.floor(Math.random() * n) * step; }
+  function pick(arr, n) { var a = arr.slice(), out = []; while (out.length < n && a.length) out.push(a.splice(Math.floor(Math.random() * a.length), 1)[0]); return out; }
+  function randomData(teen) {
+    var m = function (n, k, a, day, left, freq) { return { id: uid(), name: n, kind: k, amount: a, freq: freq || "monthly", anchor: iso(freq === "yearly" ? addMonths(today(), ri(2, 9)) : freq === "biweekly" ? addDays(today(), ri(1, 10)) : nextDom(day)), left: left == null ? null : left, on: true }; };
+    var d = function () { return ri(1, 28); };
+    if (teen) {
+      var tp = [["Streaming service", "sub", 25, 45], ["Music app", "sub", 15, 30], ["App subscription", "sub", 10, 25], ["Game pass", "game", 30, 55], ["In-game coins", "game", 20, 50], ["Cloud storage", "sub", 5, 15]];
+      var ti = pick(tp, ri(4, 5)).map(function (p) { return m(p[0], p[1], ri(p[2], p[3], 5), d()); });
+      ti.push(m("Phone top-up", "bill", ri(30, 60, 5), d()));
+      if (Math.random() < 0.5) ti.push(m("Pay-later: trainers", "pay", ri(40, 90, 5), d(), ri(2, 4)));
+      return { teen: true, name: "Alex", income: ri(150, 400, 50), goal: { name: "New headphones", target: 600 }, items: ti };
+    }
+    var items = [m("Rent", "bill", ri(2400, 4200, 100), 1), m("Utilities and internet", "bill", ri(350, 650, 10), d()), m("Phone plan", "bill", ri(150, 300, 10), d()), m("Credit card payment", "loan", ri(300, 700, 50), d())];
+    var sp = [["Streaming service", 30, 70], ["Music app", 20, 35], ["Gym membership", 150, 350], ["News app", 25, 60], ["Meal kit", 100, 200], ["Language app", 30, 60]];
+    pick(sp, ri(3, 4)).forEach(function (p) { items.push(m(p[0], "sub", ri(p[1], p[2], 5), d())); });
+    items.push(m("Cloud storage", "sub", ri(100, 400, 50), 1, null, "yearly"));
+    var pl = [["Tabby: sneakers", 150, 400], ["Postpay: headphones", 200, 450], ["Tabby: jacket", 120, 320], ["Postpay: watch", 180, 400]];
+    pick(pl, ri(2, 3)).forEach(function (p) { items.push(m(p[0], "pay", ri(p[1], p[2], 5), d(), ri(2, 5))); });
+    items.push(m("Tamara: phone case", "pay", ri(60, 150, 5), 1, ri(3, 6), "biweekly"));
+    return { teen: false, name: "Sam", income: ri(7000, 12000, 500), goal: null, items: items };
+  }
+  function exList(e) {
+    var kn = { pay: "Pay-later", sub: "Subscription", game: "Game / in-app", bill: "Bill", loan: "Loan" };
+    var fq = function (it) { return it.freq === "yearly" ? " a year" : it.freq === "biweekly" ? " every 2 weeks" : it.freq === "weekly" ? " a week" : " a month"; };
+    var rows = e.items.map(function (it) { return '<div class="leader"><span>' + esc(it.name) + ' <small>' + (kn[it.kind] || "") + (it.left ? ", " + it.left + " payments left" : "") + '</small></span><span class="dots"></span><span class="amt mono">AED ' + it.amount + fq(it) + "</span></div>"; }).join("");
+    return '<div class="card stack" style="gap:2px">' + rows + "</div>";
+  }
+  /* The app is a demo: everyone works with made-up numbers. */
   function exampleData(teen) {
     var m = function (n, k, a, day, left) { return { id: uid(), name: n, kind: k, amount: a, freq: "monthly", anchor: iso(nextDom(day)), left: left == null ? null : left, on: true }; };
     if (teen) return { name: "Alex", income: 300, goal: { name: "New headphones", target: 600 }, items: [m("Streaming service", "sub", 35, 8), m("Music app", "sub", 22, 8), m("App subscription", "sub", 15, 14), m("Game pass", "game", 45, 3), m("In-game coins", "game", 30, 20), m("Phone top-up", "bill", 50, 1)] };
@@ -1555,7 +1589,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       calnav: function () { var d = new Date(cal.y, cal.m + Number(t.dataset.d), 1); cal.y = d.getFullYear(); cal.m = d.getMonth(); cal.sel = iso(D(cal.y, cal.m, 1)); render(); },
       calday: function () { cal.sel = t.dataset.d; render(); },
       mbar: function () { var n = Number(t.dataset.i); cal.mi = cal.mi === n ? -1 : n; render(); },
-      reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { S.revealed = true; save(); view = "home"; closeFlow(); window.scrollTo(0, 0); confetti(); autoSend(true); if (!S.guided) setTimeout(startTour, 700); },
+      reveal: function () { openReveal(); }, rvskip: function () { if (F && F.finish) F.finish(); }, rvdone: function () { S.revealed = true; save(); view = "home"; closeFlow(); window.scrollTo(0, 0); confetti(); autoSend(true); },
       gateskip: leaveGate,
       gateinstall: function () { if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; } leaveGate(); },
       copylink: function () { var u = location.origin + location.pathname, ok = function () { toast("Link copied. Paste it in Safari."); }; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(ok, function () { toast(u); }); else toast(u); },
@@ -1608,6 +1642,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       fnext: fnext, fback: function () { if (F.i > 0) { F.i--; drawFlow(); } }, fclose: function () { if (F && F.kind === "onboard" && !S.onboarded) { S.onboarded = true; save(); } closeFlow(); },
       fskip: function () { F.i = F.steps.length - 2; drawFlow(); },
       fopt: function () { F.d.a[F.steps[F.i].quiz] = Number(t.dataset.o); drawFlow(); },
+      frand: function () { F.d.rand = randomData(curMode() === "teen"); drawFlow(); },
       fshare: function () { F.d.share = t.dataset.v; drawFlow(); },
       fchip: function () { F.d[t.dataset.k] = F.d[t.dataset.k] === t.dataset.v ? null : t.dataset.v; drawFlow(); },
       fmulti: function () { var i = F.d.act.indexOf(t.dataset.v); if (i >= 0) F.d.act.splice(i, 1); else F.d.act.push(t.dataset.v); drawFlow(); }
