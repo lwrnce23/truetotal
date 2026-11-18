@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1795015999"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E8ECF0" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0C0E11" media="(prefers-color-scheme: dark)"><meta name="tt-build" content="1795016177"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="TrueTotal"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>TrueTotal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1056,6 +1056,59 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
     });
     return { list: list, monthly: tot };
   }
+  /* Real cheaper options in the UAE, researched 18 Nov 2026 from provider pages, news and comparison sites.
+     "amt" is AED a month and only set where the price was confirmed; "p" is the wording shown. Prices change. */
+  var ALTS_DATE = "18 Nov 2026";
+  var ALTS = [
+    { re: /music|spotify|anghami/i, list: [
+      { n: "Spotify Premium Student", p: "AED 12.99 a month (needs proof you study)", amt: 12.99, u: "https://www.spotify.com/ae-en/premium/" },
+      { n: "Spotify Premium Duo", p: "AED 32.99 a month for 2 people, so about AED 16.50 each", amt: 16.5, u: "https://www.spotify.com/ae-en/premium/" },
+      { n: "Spotify Premium Family", p: "AED 39.99 a month for up to 6 people", amt: 39.99, u: "https://www.spotify.com/ae-en/premium/" }
+    ] },
+    { re: /stream|netflix|shahid|osn|disney|video/i, list: [
+      { n: "Netflix, cheapest plan", p: "UAE plans start from about AED 35 a month", amt: 35, u: "https://www.netflix.com/ae-en/" },
+      { n: "Keep one service at a time", p: "Cancel when you finish a show and come back later. You can usually restart whenever you like.", u: "" }
+    ] },
+    { re: /gym|fitness/i, list: [
+      { n: "GymNation", p: "From about AED 99 a month, no joining fee (check the contract and extras)", amt: 99, u: "https://gymnation.com/" },
+      { n: "Free or cheap training", p: "Many communities have public parks, running tracks and sports centres. Ask your local centre for prices.", u: "" }
+    ] },
+    { re: /phone plan|mobile|sim\b|top-up|topup/i, list: [
+      { n: "Virgin Mobile UAE", p: "Plans from about AED 49 to 79 a month depending on data (sources differ, check the live price)", amt: 79, u: "https://www.virginmobile.ae/" },
+      { n: "du prepaid and postpaid", p: "Small data plans from about AED 49 for 28 days", amt: 49, u: "https://www.du.ae/" },
+      { n: "e& (Etisalat) plans", p: "Compare their smaller plans against what you actually use", u: "https://www.etisalat.ae/" }
+    ] },
+    { re: /internet|utilit|wifi|wi-fi|broadband/i, list: [
+      { n: "du Home Wireless (5G)", p: "From about AED 229 a month, often cheaper than fibre", u: "https://www.du.ae/" },
+      { n: "Virgin Mobile home internet", p: "Yearly option works out to about AED 167 a month before VAT", u: "https://www.virginmobile.ae/" },
+      { n: "e& eLife fibre", p: "100 Mbps from about AED 340 to 360 a month. Often better value per Mbps if you need speed.", u: "https://www.etisalat.ae/" }
+    ] },
+    { re: /cloud|storage|icloud|drive/i, list: [
+      { n: "iCloud+ 50 GB", p: "AED 3.99 a month (Apple's UAE price)", amt: 3.99, u: "https://support.apple.com/en-us/108047" },
+      { n: "iCloud+ 200 GB", p: "AED 11.99 a month (Apple's UAE price)", amt: 11.99, u: "https://support.apple.com/en-us/108047" },
+      { n: "Clear space instead", p: "Delete old videos and duplicates, then drop to a smaller plan.", u: "" }
+    ] },
+    { re: /language|duolingo/i, list: [
+      { n: "Free version of a language app", p: "Most big language apps have a free tier with ads. Try it for a month before you pay.", u: "" }
+    ] }
+  ];
+  function altsFor(it) {
+    for (var i = 0; i < ALTS.length; i++) if (ALTS[i].re.test(it.name)) return ALTS[i].list;
+    return [];
+  }
+  function altsHtml(it) {
+    var L = altsFor(it); if (!L.length) return "";
+    var cur = monthly(it);
+    return '<div><div class="eyebrow">Cheaper options we found</div><div class="stack" style="gap:8px;margin-top:8px">' + L.map(function (a, i) {
+      var good = a.amt && a.amt < cur;
+      return '<div class="preview" style="margin:0"><b>' + esc(a.n) + '</b><br><small>' + esc(a.p) + '</small>' +
+        (good ? '<p style="margin-top:6px">Could save <span class="hl" style="font-weight:600">' + aed((cur - a.amt) * 12) + '</span> a year</p>' : "") +
+        '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' +
+        (a.amt ? '<button class="btn ' + (good ? "hi" : "ghost") + ' sm2" data-act="tryalt" data-id="' + it.id + '" data-i="' + i + '">Try this price</button>' : "") +
+        (a.u ? '<a class="btn ghost sm2" href="' + a.u + '" target="_blank" rel="noopener">Open site</a>' : "") +
+        '</div></div>';
+    }).join("") + '</div><p class="sm" style="margin-top:6px">Checked ' + ALTS_DATE + '. Prices, student rules and offers change, so confirm on the provider site.</p></div>';
+  }
   function ideasFor(it) {
     var t = isTeen(), k = it.kind;
     if (k === "sub") return [
@@ -1109,6 +1162,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       if (it.use === "never" || it.use === "rarely") h += '<div class="note" style="margin-top:8px">You hardly use this. Cancelling would save <b style="color:var(--ink)">' + aed(m * 12) + "</b> a year.</div>" + (it.on ? '<button class="btn ghost sm2" style="margin-top:8px" data-act="switchoff" data-id="' + it.id + '">Switch it off to see the effect</button>' : "");
       h += "</div>";
     }
+    h += altsHtml(it);
     h += '<div><div class="eyebrow">Ideas to try</div><ul class="ideas">' + ideasFor(it).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>";
     if (it.alt && it.alt.amount > 0) {
       var am = it.alt.amount * FREQ[it.alt.freq].per, d = m - am;
@@ -1689,6 +1743,7 @@ nav.tabs button[aria-current="page"] .pill svg { transform: scale(1.18) rotate(-
       alt: function () { openAlt(id); },
       altfreq: function () { ad.freq = t.dataset.f; $("#altSeg").innerHTML = altSeg(); var it = S.items.filter(function (i) { return i.id === ad.id; })[0]; if (it) $("#altPrev").innerHTML = altPrev(it); },
       altsave: function () { var it = S.items.filter(function (i) { return i.id === ad.id; })[0]; if (!it) return; if (ad.amount > 0) it.alt = { name: (ad.name || "").trim(), amount: ad.amount, freq: ad.freq }; else it.alt = undefined; save(); closeSheet(); toast("Saved"); },
+      tryalt: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; var a = it && altsFor(it)[+t.dataset.i]; if (!a || !a.amt) return; it.alt = { name: a.n, amount: a.amt, freq: "monthly" }; save(); render(); toast("Added as a cheaper option"); },
       altclear: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it) { it.alt = undefined; save(); render(); } },
       altswitch: function () { var it = S.items.filter(function (i) { return i.id === id; })[0]; if (it && it.alt && it.left == null) { it.amount = it.alt.amount; it.freq = it.alt.freq; it.alt = undefined; save(); render(); toast("Switched. Your totals now use the new price"); } },
       goal: openGoal, calc: openCalc, pause: openPause, sharecard: shareCard,
